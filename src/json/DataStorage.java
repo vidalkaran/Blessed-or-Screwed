@@ -58,6 +58,7 @@ public class DataStorage {
 				chars[i].parseArrayData();
 				characters.put(chars[i].getName(), chars[i]);
 			}
+			reader.close();
 		}
 		catch (IOException e)
 		{
@@ -81,6 +82,7 @@ public class DataStorage {
 					specialClasses.add(jobArray[i].getName());
 				jobs.put(jobArray[i].getName(), jobArray[i]);
 			}
+			reader.close();
 		}
 		catch (IOException e)
 		{
