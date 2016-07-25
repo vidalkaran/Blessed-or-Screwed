@@ -1,0 +1,32 @@
+[
+	{
+		name: "Cavalier",
+		baseStats: [17, 6, 0, 5, 5, 3, 5, 3],
+		maxStats: [20, 40, 22, 15, 21, 20, 24, 22, 21],
+		growths: [10, 15, 0, 10, 10, 15, 10, 5],
+		isPromoted: false,
+		promotions: ["Paladin", "Great Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Songstress",
+		baseStats: [16, 3, 0, 6, 5, 3, 2, 3],
+		maxStats: [40, 45, 28, 27, 31, 31, 35, 27, 28],
+		growths: [0, 10, 0, 20, 20, 20, 0, 0],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Great Master",
+		baseStats: [19, 8, 6, 6, 8, 5, 6, 7],
+		maxStats: [20, 55, 32, 30, 31, 33, 32, 28, 32],
+		growths: [10, 15, 5, 5, 15, 15, 10, 10],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "male"
+	}
+]

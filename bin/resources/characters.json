@@ -1,0 +1,31 @@
+[
+	{
+		name : "Silas",
+		routes : [true, true, true],
+		baseClass: "Cavalier",
+		baseStats : {
+			conquest : [6, 22, 11, 0, 9, 8, 7, 10, 5],
+			birthright : [6, 22, 11, 0, 9, 8, 7, 10, 5],
+			revelations: [18, 39, 19, 3, 16, 12, 11, 19, 14]
+		},
+		maxMods : [0, 1, 0, 2, 0, -1, 0, -1],
+		growths : [40, 45, 5, 50, 40, 40, 40, 25],
+		validSpecials : ["Songstress"],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Peri",
+		routes : [true, false, true],
+		baseClass: "Cavalier",
+		baseStats : {
+			conquest : [10, 25, 13, 0, 9, 13, 9, 10, 10],
+			revelations: [16, 27, 16, 0, 10, 15, 12, 12, 11]
+		},
+		maxMods : [0, 1, 0, -1, 1, 0, -2, 2],
+		growths : [30, 50, 5, 30, 50, 35, 25, 45],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	}
+]

@@ -1,0 +1,38 @@
+UNDERSTANDING HOW TO READ CHARACTERS.JSON
+{
+	name : "Silas",
+	// conquest, birthright, revelations
+	routes : [1, 1, 1],
+	baseClass: "Cavalier",
+	baseStats : {
+		// level, hp, str, mag, skl, spd, lck, def, res
+		conquest : [6, 22, 11, 0, 9, 8, 7, 10, 5],
+		birthright : [6, 22, 11, 0, 9, 8, 7, 10, 5]
+	},
+	// level, str, mag, skl, spd, lck, def, res
+	maxMods : [0, 1, 0, 2, 0, -1, 0, -1],
+	// hp, str, mag, skl, spd, lck, def, res
+	growths : [40, 45, 5, 50, 40, 40, 40, 25],
+	// details the special classes the character has access to. EMPTY ARRAY if none
+	validSpecials : ["Songstress"],
+	areYouABoy : true,
+	isChild : false
+}
+
+
+UNDERSTANDING HOW TO READ JOBS.JSON
+{
+	name: "Cavalier",
+	// hp, str, mag, skl, spd, lck, def, res
+	baseStats: [17, 6, 0, 5, 5, 3, 5, 3],
+	// level, hp, str, mag, skl, spd, lck, def, res
+	maxStats: [20, 40, 22, 15, 21, 20, 24, 22, 21],
+	// hp, str, mag, skl, spd, lck, def, res
+	growths: [10, 15, 0, 10, 10, 15, 10, 5],
+	promoted: false,
+	// what classes does this class promote to - EMPTY ARRAY if none
+	promotions: ["Paladin", "Great Knight"],
+	special: false,
+	// Options are: none, male, female
+	genderLock: "none"
+}
