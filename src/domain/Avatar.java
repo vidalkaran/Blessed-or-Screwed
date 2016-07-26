@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class Avatar extends Character{
 
 	private String boon;
