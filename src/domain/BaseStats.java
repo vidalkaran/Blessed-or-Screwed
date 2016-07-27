@@ -27,14 +27,17 @@ public class BaseStats {
 			case "conquest":
 			{
 				output = conquest[stat];
+				break;
 			}
 			case "birthright":
 			{
 				output = birthright[stat];
+				break;
 			}
 			case "revelations":
 			{
 				output = revelations[stat];
+				break;
 			}
 		}
 		return output;
