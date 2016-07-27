@@ -23,6 +23,10 @@ public class DataStorage {
 	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
 	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
 	
+	private final String[] AVATAR_LOCKED = {"Gunter", "Shura", "Izana", "Flora", "Scarlet", "Yukimura", "Fuga", "Anna"};
+	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
+	private final String[] HOSHIDO_ROYALS_LOCKED = {"Hinoka", "Sakura"};
+	
 	// establish singleton pattern - only one one instance of DataStorage to exist in the project
 	public static DataStorage getInstance() {
 		if(instance == null) {
@@ -43,6 +47,19 @@ public class DataStorage {
 	public ArrayList<String> getSpecialClasses() {
 		return specialClasses;
 	}
+	
+	public String[] getAVATAR_LOCKED() {
+		return AVATAR_LOCKED;
+	}
+
+	public String[] getNOHR_ROYALS_LOCKED() {
+		return NOHR_ROYALS_LOCKED;
+	}
+
+	public String[] getHOSHIDO_ROYALS_LOCKED() {
+		return HOSHIDO_ROYALS_LOCKED;
+	}
+
 	
 	// methods
 	// parsing for characters.json
@@ -92,6 +109,7 @@ public class DataStorage {
 	
 	// Sets the based stats of all characters based on the path we are searching
 	// This method is in DataStorage rather than Character as it should be called as the user changes the path they are checking stats for
+	// SHOULD BE MOVED TO A LOGIC CLASS
 	public void setBaseStats(String path){
 		for(Character c : characters.values()) {
 			c.getDesiredBaseStats(path);

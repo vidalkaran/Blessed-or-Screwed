@@ -40,7 +40,7 @@ public class BlessedOrScrewed {
 		
 		System.out.println("\nSilas is a boy! : " + data.getCharacters().get("Silas").getAreYouABoy());
 		System.out.println("Peri is not a boy! : " + data.getCharacters().get("Peri").getAreYouABoy());
-		tmp = Arrays.toString(data.getCharacters().get("Silas").getValidSpecials().toArray());
+		tmp = Arrays.toString(data.getCharacters().get("Silas").getValidSpecials());
 		System.out.println("Silas can be these specials classes: " + tmp + " ;)");
 		System.out.println("Peri may act like a child, but she really isn't one! : " + data.getCharacters().get("Peri").getIsChild());
 		tmp = Arrays.toString(data.getCharacters().get("Silas").getBaseStats().getRevelations());
@@ -50,7 +50,7 @@ public class BlessedOrScrewed {
 		System.out.println("\nJOB TESTS");
 		System.out.println("Cavalier BaseSpd should be 5: " + data.getJobs().get("Cavalier").getBaseSpd());
 		System.out.println("Cavalier MagGrowth should be 0: " + data.getJobs().get("Cavalier").getMagGrowth());
-		tmp = Arrays.toString(data.getJobs().get("Cavalier").getPromotions().toArray());
+		tmp = Arrays.toString(data.getJobs().get("Cavalier").getPromotions());
 		System.out.println("Cavalier promotions should be Paladin and Great Knight: " + tmp);
 		System.out.println("Cavalier is not genderLocked! : " + data.getJobs().get("Cavalier").getGenderLock());
 		

@@ -1,5 +1,124 @@
 [
 	{
+		name: "Avatar",
+		routes : [true, true, true],
+		baseClass: "Nohr Prince/ss",
+		baseStats : {
+			conquest : [1, 19, 7, 4, 7, 6, 5, 6, 2],
+			birthright : [1, 19, 7, 4, 7, 6, 5, 6, 2],
+			revelations: [1, 19, 7, 4, 7, 6, 5, 6, 2]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [45, 45, 30, 40, 45, 45, 35, 25],
+		validSpecials : ["Nohr Prince/ss, Nohr Noble, Hoshido Noble"],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name: "Gunter",
+		routes : [true, false, true],
+		baseClass: "Great Knight",
+		baseStats : {
+			conquest : [10, 34, 17, 0, 24, 10, 13, 20, 6],
+			revelations: [3, 24, 10, 0, 15, 8, 9, 10, 4]
+		},
+		maxMods : [0, 2, 0, 1,-2, 0, 2, -2],
+		growths : [15, 5, 0, 5, 0, 15, 5, 5],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name: "Felicia(M)",
+		routes : [true, true, true],
+		baseClass: "Maid/Butler",
+		baseStats : {
+			conquest : [1, 19, 5, 9, 10, 10, 12, 5, 9],
+			birthright : [1, 19, 5, 9, 10, 10, 12, 5, 9],
+			revelations: [1, 19, 5, 9, 10, 10, 12, 5, 9]
+		},
+		maxMods : [20, -2, 2, 0, 1, 0, -1, 1],
+		growths : [40, 10, 35, 30, 40, 55, 15, 35],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name: "Felicia(F)",
+		routes : [true, true, true],
+		baseClass: "Maid/Butler",
+		baseStats : {
+			conquest : [13, 24, 7, 14, 15, 17, 20, 7, 14],
+			birthright : [13, 24, 7, 14, 15, 17, 20, 7, 14],
+			revelations: [13, 24, 7, 14, 15, 17, 20, 7, 14]
+		},
+		maxMods : [20, -2, 2, 0, 1, 0, -1, 1],
+		growths : [40, 10, 35, 30, 40, 55, 15, 35],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name: "Jakob (F)",
+		routes : [true, true, true],
+		baseClass: "Maid/Butler",
+		baseStats : {
+			conquest : [1, 21, 8, 6, 12, 9, 10, 7, 6],
+			birthright : [1, 21, 8, 6, 12, 9, 10, 7, 6],
+			revelations: [1, 21, 8, 6, 12, 9, 10, 7, 6]
+		},
+		maxMods : [20, 2, -2, 2, 0, -1, 0, -1],
+		growths : [50, 30, 15, 40, 35, 45, 25, 25],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name: "Jakob (M)",
+		routes : [true, true, true],
+		baseClass: "Maid/Butler",
+		baseStats : {
+			conquest : [13, 27, 13, 9, 19, 15, 17, 11, 10],
+			birthright : [13, 27, 13, 9, 19, 15, 17, 11, 10],
+			revelations: [13, 27, 13, 9, 19, 15, 17, 11, 10]
+		},
+		maxMods : [20, 2, -2, 2, 0, -1, 0, -1],
+		growths : [50, 30, 15, 40, 35, 45, 25, 25],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name: "Kaze",
+		routes : [true, true, true],
+		baseClass: "Ninja",
+		baseStats : {
+			conquest : [9, 22, 9, 0, 12, 16, 6, 7, 13],
+			birthright : [3, 19, 7, 0, 9, 12, 4, 5, 10],
+			revelations : [3, 19, 7, 0, 9, 12, 4, 5, 10]
+		},
+		maxMods : [0, -2, 0, 2, 3, -2, -1, 1],
+		growths : [55, 40, 0, 45, 65, 20, 20, 35],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name: "Azura",
+		routes : [true, true, true],
+		baseClass: "Songstress",
+		baseStats : {
+			conquest : [1, 16, 5, 2, 8, 8, 6, 4, 7],
+			birthright : [1, 16, 5, 2, 8, 8, 6, 4, 7],
+			revelations : [1, 16, 5, 2, 8, 8, 6, 4, 7]
+		},
+		maxMods : [0, 0, 0, 1, 3, 0, -3, 0],
+		growths : [25, 50, 25, 60, 60, 40, 15, 35],
+		validSpecials : ["Songstress"],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
 		name : "Silas",
 		routes : [true, true, true],
 		baseClass: "Cavalier",
@@ -15,6 +134,190 @@
 		isChild : false
 	},
 	{
+		name : "Shura",
+		routes : [true, true, true],
+		baseClass: "Adventurer",
+		baseStats : {
+			conquest : [10, 34, 20, 11, 23, 27, 15, 14, 24],
+			birthright : [10, 34, 20, 11, 23, 27, 15, 14, 24],
+			revelations: [10, 34, 20, 11, 23, 27, 15, 14, 24]
+		},
+		maxMods : [0, -1, 0, -1, 3, -1, -2, 2],
+		growths : [30, 25, 10, 20, 35, 30, 15, 35],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Izana",
+		routes : [true, true, false],
+		baseClass: "Onmyoji",
+		baseStats : {
+			conquest : [5, 31, 8, 23, 25, 18, 17, 14, 24],
+			birthright : [5, 31, 8, 23, 25, 18, 17, 14, 24]
+		},
+		maxMods : [0, 0, 1, 1, -2, 0, 0, 1],
+		growths : [45, 15, 35, 55, 30, 45, 35, 35],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Mozu",
+		routes : [true, true, true],
+		baseClass: "Villager",
+		baseStats : {
+			conquest : [1, 16, 6, 0, 5, 7, 3, 4, 1],
+			birthright : [1, 16, 6, 0, 5, 7, 3, 4, 1],
+			revelations: [1, 16, 6, 0, 5, 7, 3, 4, 1]
+		},
+		maxMods : [0, 0, 0, 1, 1, 1, 0, -2],
+		growths : [30, 40, 5, 50, 55, 45, 35, 30],
+		validSpecials : ["Villager"],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Elise",
+		routes : [true, false, true],
+		baseClass: "Troubadour",
+		baseStats : {
+			conquest : [5, 19, 2, 11, 5, 10, 14, 4, 11],
+			revelations: [7, 20, 2, 13, 7, 11, 16, 4, 13]
+		},
+		maxMods : [0, -1, 3, -2, 1, 1, -3, 1],
+		growths : [30, 5, 65, 25, 55, 70, 15, 40],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Arthur",
+		routes : [true, false, true],
+		baseClass: "Fighter",
+		baseStats : {
+			conquest : [7, 24, 12, 0, 9, 8, 1, 9, 4],
+			revelations: [9, 26, 13, 0, 10, 9, 1, 9, 4]
+		},
+		maxMods : [0, 1, 0, 3, 0, -3, 1, -1],
+		growths : [50, 45, 0, 55, 35, 5, 45, 20],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Effie",
+		routes : [true, false, true],
+		baseClass: "Knight",
+		baseStats : {
+			conquest : [6, 23, 13, 0, 8, 5, 10, 12, 4],
+			revelations: [8, 24, 14, 0, 9, 5, 11, 13, 4]
+		},
+		maxMods : [0, 3, 0, -1, 1, 0, -1, -1],
+		growths : [35, 60, 0, 35, 50, 50, 35, 30],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Odin",
+		routes : [true, false, true],
+		baseClass: "Dark Mage",
+		baseStats : {
+			conquest : [5, 21, 5, 8, 10, 7, 9, 6, 7],
+			revelations: [12, 24, 8, 12, 12, 10, 12, 7, 10]
+		},
+		maxMods : [0, 0, 1, 1, -1, 1, 0, -1],
+		growths : [55, 35, 30, 55, 35, 60, 40, 20],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Niles",
+		routes : [true, false, true],
+		baseClass: "Outlaw",
+		baseStats : {
+			conquest : [8, 22, 9, 5, 9, 15, 6, 7, 12],
+			revelations: [14, 24, 11, 6, 11, 17, 7, 10, 16]
+		},
+		maxMods : [0, -2, 0, -1, 3, 0, 0, 1],
+		growths : [40, 35, 20, 40, 50, 30, 30, 40],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Nyx",
+		routes : [true, false, true],
+		baseClass: "Dark Mage",
+		baseStats : {
+			conquest : [9, 20, 1, 12, 5, 11, 3, 4, 8],
+			revelations: [9, 20, 1, 12, 5, 11, 3, 4, 8]
+		},
+		maxMods : [0, 0, 3, -2, 2, -1, -2, 1],
+		growths : [30, 5, 50, 35, 50, 25, 15, 30],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Camilla",
+		routes : [true, false, true],
+		baseClass: "Malig Knight",
+		baseStats : {
+			conquest : [1, 30, 19, 11, 15, 19, 12, 18, 15],
+			revelations: [1, 30, 19, 11, 15, 19, 12, 18, 15]
+		},
+		maxMods : [0, 1, -1, 1, 1, -2, 1, 0],
+		growths : [40, 50, 25, 50, 55, 25, 35, 45],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Selena",
+		routes : [true, false, true],
+		baseClass: "Mercenary",
+		baseStats : {
+			conquest : [10, 24, 12, 3, 12, 15, 9, 11, 8],
+			revelations: [10, 24, 12, 3, 12, 15, 9, 11, 8]
+		},
+		maxMods : [0, -1, 0, -1, 2, 0, 1, 0],
+		growths : [40, 30, 5, 25, 45, 30, 45, 30],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Beruka",
+		routes : [true, false, true],
+		baseClass: "Wyvern Rider",
+		baseStats : {
+			conquest : [9, 23, 13, 0, 14, 9, 10, 14, 7],
+			revelations: [9, 23, 13, 0, 14, 9, 10, 14, 7]
+		},
+		maxMods : [0, -1, 0, 2, -2, 0, 2, -1],
+		growths : [45, 30, 10, 55, 30, 45, 40, 25],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Laslow",
+		routes : [true, false, true],
+		baseClass: "Mercenary",
+		baseStats : {
+			conquest : [12, 28, 15, 0, 16, 13, 14, 10, 7],
+			revelations: [16, 30, 17, 0, 19, 16, 16, 12, 8]
+		},
+		maxMods : [0, 1, 0, 2, -1, 1, -1, -1],
+		growths : [50, 45, 0, 45, 30, 55, 35, 25],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
 		name : "Peri",
 		routes : [true, false, true],
 		baseClass: "Cavalier",
@@ -24,6 +327,90 @@
 		},
 		maxMods : [0, 1, 0, -1, 1, 0, -2, 2],
 		growths : [30, 50, 5, 30, 50, 35, 25, 45],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Benny",
+		routes : [true, false, true],
+		baseClass: "Knight",
+		baseStats : {
+			conquest : [15, 31, 15, 0, 15, 6, 12, 19, 10],
+			revelations: [15, 31, 15, 0, 15, 6, 12, 19, 10]
+		},
+		maxMods : [0, 0, 0, 0, -3, 0, 3, 1],
+		growths : [50, 40, 0, 50, 10, 35, 55, 45],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Charlotte",
+		routes : [true, false, true],
+		baseClass: "Fighter",
+		baseStats : {
+			conquest : [10, 28, 15, 0, 10, 13, 9, 8, 2],
+			revelations: [10, 28, 15, 0, 10, 13, 9, 8, 2]
+		},
+		maxMods : [0, 3, 0, 0, 2, 0, -2, -2],
+		growths : [65, 55, 0, 35, 50, 45, 20, 5],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Leo",
+		routes : [true, false, true],
+		baseClass: "Dark Knight",
+		baseStats : {
+			conquest : [2, 34, 14, 20, 14, 15, 15, 16, 20],
+			revelations: [2, 34, 14, 20, 14, 15, 15, 16, 20]
+		},
+		maxMods : [0, -2, 2, 0, -2, 0, 0, 2],
+		growths : [45, 25, 55, 35, 45, 45, 30, 45],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Keaton",
+		routes : [true, false, true],
+		baseClass: "Wolfskin",
+		baseStats : {
+			conquest : [15, 35, 19, 0, 10, 13, 9, 16, 7],
+			revelations: [15, 35, 19, 0, 10, 13, 9, 16, 7]
+		},
+		maxMods : [0, 3, 0, -2, -1, 0, 2, -1],
+		growths : [60, 60, 0, 20, 35, 30, 50, 25],
+		validSpecials : ["Wolfskin", "Wolfssenger"],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Xander",
+		routes : [true, false, true],
+		baseClass: "Paladin",
+		baseStats : {
+			conquest : [4, 38, 23, 4, 18, 15, 20, 23, 11],
+			revelations: [4, 38, 23, 4, 18, 15, 20, 23, 11]
+		},
+		maxMods : [0, 2, -1, -1, -1, 2, 1, -2],
+		growths : [45, 50, 5, 40, 35, 60, 40, 15],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Flora",
+		routes : [true, false, true],
+		baseClass: "Maid/Butler",
+		baseStats : {
+			conquest : [5, 29, 18, 16, 25, 15, 11, 14, 23],
+			revelations: [5, 29, 18, 16, 25, 15, 11, 14, 23]
+		},
+		maxMods : [0, 1, -1, 2, 0, -1, 1, -1],
+		growths : [35, 40, 20, 45, 30, 35, 30, 30],
 		validSpecials : [],
 		areYouABoy : false,
 		isChild : false
