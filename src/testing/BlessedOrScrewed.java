@@ -3,6 +3,8 @@ package testing;
 import json.DataStorage;
 import java.util.Arrays;
 
+import domain.Unit;
+
 public class BlessedOrScrewed {
 	public static void main(String[] args) {
 		DataStorage data = DataStorage.getInstance();
@@ -64,5 +66,6 @@ public class BlessedOrScrewed {
 		System.out.println("Great Master is genderLocked to male! : " + data.getJobs().get("Great Master").getGenderLock());
 		tmp = Arrays.toString(data.getJobs().get("Great Master").getMaxStats());
 		System.out.println("These are the Great Master's max stat caps: " + tmp);
+		
 	}
 }

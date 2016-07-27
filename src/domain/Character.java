@@ -12,6 +12,7 @@ public class Character {
 	private int[] maxMods;						// Mods to the class stat caps unique to each character (includes Level, but not HP)
 	private int[] growths;						// Character's base growths (includes HP, but not level)
 	private String[] validSpecials;				// Holds the names of all special classes the character can be - EMPTY ARRAY if none
+
 	private boolean areYouABoy;					// True - character is male, False - character is female
 	private boolean isChild;					// True - character is a child unit, False - character is a parent unit
 	private String fixedParent;					// Name of the child character's fixed parent
@@ -44,53 +45,7 @@ public class Character {
 	private int baseDef;
 	private int baseRes;
 	
-	/*
-	//constructor
-	public Character(String name, String baseClass, boolean areYouABoy, boolean isChild, boolean[] routes, ArrayList<String> validSpecials,
-					 int baseLevel, int baseHp, int baseStr, int baseMag, int baseSkl, int baseSpd, int baseLck, int baseDef, int baseRes,
-					 int levelMod, int strMod, int magMod, int sklMod, int spdMod, int lckMod, int defMod, int resMod,
-					 int hpGrowth, int strGrowth, int magGrowth, int sklGrowth, int spdGrowth, int lckGrowth, int defGrowth, int resGrowth)
-	{
-		
-		name = this.name;
-		baseClass = this.baseClass;
-		areYouABoy = this.areYouABoy;
-		isChild = this.isChild;
-		routes = this.routes;
-		validSpecials = this.validSpecials;	
-		
-		baseLevel = this.baseLevel;
-		baseHp = this.baseHp;
-		baseStr = this.baseStr;
-		baseMag = this.baseMag;
-		baseSkl = this.baseSkl;
-		baseSpd = this.baseSpd;
-		baseLck = this.baseLck;
-		baseDef = this.baseDef;
-		baseRes = this.baseRes;
-		
-		//THESE MODS ARE FOR MAX STATS
-		levelMod = this.levelMod;
-		strMod = this.strMod;
-		magMod = this.magMod;
-		sklMod = this.sklMod;
-		spdMod = this.spdMod;
-		lckMod = this.lckMod;
-		defMod = this.defMod;
-		resMod = this.resMod;
-		
-		hpGrowth = this.hpGrowth;
-		strGrowth = this.strGrowth;
-		magGrowth = this.magGrowth;
-		sklGrowth = this.sklGrowth;
-		spdGrowth = this.spdGrowth;
-		lckGrowth = this.lckGrowth;
-		defGrowth = this.defGrowth;
-		resGrowth = this.resGrowth;
-	}*/
-	
-	// set the base stats appropriately using the baseStats class data parsed from the JSON.
-	// path is a String that represents which route is being checked. This method should be called from Unit.
+
 	public void getDesiredBaseStats(String path) {
 		int[] temp = new int[9];
 		
@@ -163,6 +118,14 @@ public class Character {
 
 	public int[] getMaxMods() {
 		return maxMods;
+	}
+	
+	public int getMaxMods(int i) {
+		return maxMods[i];
+	}
+	
+	public int getGrowths(int i) {
+		return growths[i];
 	}
 	
 	public int[] getGrowths() {
@@ -271,7 +234,8 @@ public class Character {
 	
 	public int getBaseRes() {
 		return baseRes;
-	}
+	}	
+
 
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);

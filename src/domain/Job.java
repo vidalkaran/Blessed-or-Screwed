@@ -141,8 +141,16 @@ public class Job {
 		return maxStats;
 	}
 	
+	public int getMaxStats(int i) {
+		return maxStats[i];
+	}
+	
 	public int[] getGrowths() {
 		return growths;
+	}
+	
+	public int getGrowths(int i) {
+		return growths[i];
 	}
 	
 	public int getMaxLevel() {
