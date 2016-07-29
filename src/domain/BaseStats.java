@@ -19,10 +19,11 @@ public class BaseStats {
 		return revelations;
 	}
 	
+	// 0 = Level, 1 = HP, 2 = Str, 3 = Mag, 4 = Skl, 5 = Spd, 6 = Lck, 7 = Def, 8 = Res
 	public int getStats(String route, int stat)
 	{
 		int output = 0;
-		switch(route)
+		switch(route.toLowerCase())
 		{
 			case "conquest":
 			{
