@@ -77,7 +77,7 @@ public class Unit {
 			System.out.println(statblock[i] + ": " + maxstats[i]);
 		}
 
-		System.out.println("STATS...");
+		System.out.println("AVERAGE STATS...");
 		for(int i = 0; i<=7; i++)
 		{
 			System.out.println(statblock[i] + ": " + avgStat[i]);

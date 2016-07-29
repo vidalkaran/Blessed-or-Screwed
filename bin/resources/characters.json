@@ -414,5 +414,298 @@
 		validSpecials : [],
 		areYouABoy : false,
 		isChild : false
+	},
+	{
+		name : "Rinkah",
+		routes : [false, true, true],
+		baseClass: "Oni Savage",
+		baseStats : {
+			birthright : [4, 20, 8, 2, 6, 8, 5, 10, 3],
+			revelations: [4, 20, 8, 2, 6, 8, 5, 10, 3]
+		},
+		maxMods : [0, -1, 0, -2, 1, 0, 2, 0],
+		growths : [20, 25, 15, 50, 45, 35, 45, 20],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Sakura",
+		routes : [false, true, true],
+		baseClass: "Shrine Maiden",
+		baseStats : {
+			birthright : [1, 16, 3, 6, 5, 7, 9, 5, 7],
+			revelations: [4, 19, 4, 8, 6, 10, 11, 8, 5]
+		},
+		maxMods : [0, 0, 2, -1, 1, 0, -1, 0],
+		growths : [45, 30, 50, 40, 40, 55, 30, 20],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Hana",
+		routes : [false, true, true],
+		baseClass: "Samurai",
+		baseStats : {
+			birthright : [4, 20, 9, 0, 11, 11, 5, 6, 9],
+			revelations: [4, 20, 7, 0, 9, 11, 5, 6, 9]
+		},
+		maxMods : [0, 1, 0, 1, 2, -1, -3, 1],
+		growths : [25, 55, 10, 45, 55, 25, 20, 30],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Subaki",
+		routes : [false, true, true],
+		baseClass: "Sky Knight",
+		baseStats : {
+			birthright : [5, 22, 8, 0, 13, 10, 7, 9, 10],
+			revelations: [5, 22, 8, 0, 13, 10, 7, 9, 10]
+		},
+		maxMods : [0, -1, 0, 2, -2, -1, 3, -1],
+		growths : [55, 30, 20, 50, 20, 25, 45, 5],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Saizo",
+		routes : [false, true, true],
+		baseClass: "Ninja",
+		baseStats : {
+			birthright : [7, 23, 11, 3, 14, 11, 9, 9, 7],
+			revelations: [9, 23, 11, 3, 15, 12, 9, 9, 8]
+		},
+		maxMods : [0, 1, 0, 3, -2, 0, 1, -2],
+		growths : [40, 50, 45, 60, 30, 55, 45, 10],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Orochi",
+		routes : [false, true, true],
+		baseClass: "Diviner",
+		baseStats : {
+			birthright : [5, 20, 0, 9, 11, 7, 6, 5, 10],
+			revelations: [7, 20, 1, 10, 12, 7, 6, 5, 10]
+		},
+		maxMods : [0, 0, 3, 2, -2, -1, -2, 1],
+		growths : [35, 5, 65, 50, 15, 35, 25, 45],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Hinoka",
+		routes : [false, true, true],
+		baseClass: "Sky Knight",
+		baseStats : {
+			birthright : [8, 23, 9, 4, 13, 16, 12, 9, 15],
+			revelations: [17, 24, 14, 5, 18, 23, 16, 12, 23]
+		},
+		maxMods : [0, 1, -1, -1, 1, 0, -1, 2],
+		growths : [45, 45, 15, 40, 45, 40, 35, 40],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Azama",
+		routes : [false, true, true],
+		baseClass: "Monk",
+		baseStats : {
+			birthright : [7, 24, 9, 7, 9, 10, 12, 10, 8],
+			revelations: [13, 28, 10, 8, 11, 13, 16, 14, 10]
+		},
+		maxMods : [0, 2, -3, 0, 1, 0, 1, 0],
+		growths : [55, 50, 20, 40, 45, 40, 40, 20],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Setsuna",
+		routes : [false, true, true],
+		baseClass: "Archer",
+		baseStats : {
+			birthright : [3, 19, 8, 0, 9, 10, 6, 5, 3],
+			revelations: [11, 25, 12, 0, 15, 17, 11, 8, 10]
+		},
+		maxMods : [0, 0, 0, 1, 3, -1, -1, -1],
+		growths : [30, 20, 0, 30, 60, 30, 15, 40],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Hayato",
+		routes : [false, true, true],
+		baseClass: "Diviner",
+		baseStats : {
+			birthright : [1, 16, 1, 4, 5, 7, 8, 4, 5],
+			revelations: [9, 22, 2, 9, 9, 13, 11, 5, 7]
+		},
+		maxMods : [0, 0, 1, -1, 2, 1, -1, -1],
+		growths : [50, 30, 40, 30, 45, 60, 40, 20],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Oboro",
+		routes : [false, true, true],
+		baseClass: "Spear Fighter",
+		baseStats : {
+			birthright : [10, 25, 13, 0, 11, 12, 11, 13, 8],
+			revelations: [10, 25, 13, 0, 11, 12, 11, 13, 8]
+		},
+		maxMods : [0, 1, -1, 1, 1, -1, 1, -1],
+		growths : [30, 40, 20, 40, 40, 40, 40, 30],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Hinata",
+		routes : [false, true, true],
+		baseClass: "Samurai",
+		baseStats : {
+			birthright : [10, 26, 11, 0, 9, 14, 10, 12, 4],
+			revelations: [10, 26, 11, 0, 9, 14, 10, 12, 4]
+		},
+		maxMods : [0, 1, 0, -1, -2, 0, 2, 0],
+		growths : [55, 35, 0, 25, 15, 45, 45, 15],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "NOHRIAN SCUM!",
+		routes : [false, true, true],
+		baseClass: "Archer",
+		baseStats : {
+			birthright : [11, 26, 13, 0, 17, 11, 13, 10, 4],
+			revelations: [11, 26, 13, 0, 17, 11, 13, 10, 4]
+		},
+		maxMods : [0, 1, 0, 3, -2, 1, 0, -2],
+		growths : [50, 35, 0, 60, 40, 45, 35, 20],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Kagero",
+		routes : [false, true, true],
+		baseClass: "Ninja",
+		baseStats : {
+			birthright : [10, 22, 15, 0, 10, 12, 7, 9, 10],
+			revelations: [10, 22, 15, 0, 10, 12, 7, 9, 10]
+		},
+		maxMods : [0, 3, 0, -1, -1, 0, -1, 1],
+		growths : [30, 65, 0, 20, 50, 30, 25, 40],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Reina",
+		routes : [false, true, true],
+		baseClass: "Kinshi Knight",
+		baseStats : {
+			birthright : [1, 28, 17, 5, 14, 20, 14, 10, 13],
+			revelations: [1, 28, 18, 4, 16, 21, 15, 10, 13]
+		},
+		maxMods : [0, 2, 0, 0, 2, -1, -2, -1],
+		growths : [40, 45, 5, 20, 45, 10, 20, 10],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Kaden",
+		routes : [false, true, true],
+		baseClass: "Kitsune",
+		baseStats : {
+			birthright : [14, 30, 15, 1, 12, 19, 14, 9, 14],
+			revelations: [14, 30, 15, 1, 12, 19, 14, 9, 14]
+		},
+		maxMods : [0, 1, 0, -3, 2, 1, -2, 2],
+		growths : [45, 40, 10, 25, 45, 50, 35, 40],
+		validSpecials : ["Kitsune", "Nine-Tails"],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Ryouma",
+		routes : [false, true, true],
+		baseClass: "Swordmaster",
+		baseStats : {
+			birthright : [4, 36, 20, 2, 18, 24, 20, 16, 13],
+			revelations: [4, 36, 20, 2, 18, 24, 20, 16, 13]
+		},
+		maxMods : [0, 1, 0, 2, 1, 1, -2, -2],
+		growths : [50, 45, 0, 50, 45, 40, 35, 25],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Scarlet",
+		routes : [false, true, true],
+		baseClass: "Wyvern Lord",
+		baseStats : {
+			birthright : [1, 30, 23, 4, 17, 19, 14, 22, 6],
+			revelations: [1, 32, 22, 4, 18, 19, 14, 23, 7]
+		},
+		maxMods : [0, 2, 0, 0, 1, -1, 1, -2],
+		growths : [30, 45, 20, 40, 50, 40, 25, 20],
+		validSpecials : [],
+		areYouABoy : false,
+		isChild : false
+	},
+	{
+		name : "Yukimura",
+		routes : [false, true, false],
+		baseClass: "Mechanist",
+		baseStats : {
+			birthright : [10, 38, 25, 3, 29, 23, 18, 21, 22]
+		},
+		maxMods : [0, -1, 0, 3, -1, 0, -1, 0],
+		growths : [25, 25, 5, 40, 15, 30, 25, 30],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Fuga",
+		routes : [false, false, true],
+		baseClass: "Master of Arms",
+		baseStats : {
+			revelations : [10, 41, 29, 0, 27, 25, 18, 29, 15]
+		},
+		maxMods : [0, 2, -1, 1, 0, -1, 2, -2],
+		growths : [20, 20, 0, 15, 5, 20, 10, 10],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
+	},
+	{
+		name : "Anna",
+		routes : [true, true, true],
+		baseClass: "Outlaw",
+		baseStats : {
+			conquest : [10, 23, 9, 11, 10, 14, 15, 6, 15],
+			birthright : [10, 23, 9, 11, 10, 14, 15, 6, 15],
+			revelations : [10, 23, 9, 11, 10, 14, 15, 6, 15]
+		},
+		maxMods : [0, -1, 1, 0, -1, 2, -2, 2],
+		growths : [35, 30, 55, 30, 40, 70, 20, 45],
+		validSpecials : [],
+		areYouABoy : true,
+		isChild : false
 	}
 ]

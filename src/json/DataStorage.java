@@ -16,13 +16,36 @@ import domain.Job;
 
 // THIS CLASS IS A SINGLETON
 public class DataStorage {
-	private static DataStorage instance = null;
+	
+	// Enums for accessing the arrays of: Character BaseStats, Character MaxMods, Character Growths
+	// Job BaseStats, Job MaxStats, and JobGrowths
+	public static enum CharBaseStatsEnums {
+		LEVEL, HP, STR, MAG, SKL, SPD, LCK, DEF, RES
+	}
+	public static enum CharMaxModsEnums {
+		LEVEL, STR, MAG, SKL, SPD, LCK, DEF, RES
+	}
+	public static enum CharGrowthsEnums {
+		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
+	}
+	public static enum JobBaseStatsEnums {
+		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
+	}
+	public static enum JobMaxStatsEnums {
+		LEVEL, HP, STR, MAG, SKL, SPD, LCK, DEF, RES
+	}
+	public static enum JobGrowthsEnums {
+		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
+	}
+	
+	private static DataStorage instance = null;	// DataStorage singleton instance
 	private Character[] chars;					// Array used for JSON parsing characters
 	private Map<String, Character> characters;	// Map based off of the chars Array. <key, value> = <character name, Character object>
 	private Job[] jobArray;						// Array used for JSON parsing jobs
 	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
 	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
 	
+	// Arrays representing locked Marriage Options - for example, Xander and Leo cannot marry their sisters (Camilla and Elise)
 	private final String[] AVATAR_LOCKED = {"Gunter", "Shura", "Izana", "Flora", "Scarlet", "Yukimura", "Fuga", "Anna"};
 	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
 	private final String[] HOSHIDO_ROYALS_LOCKED = {"Hinoka", "Sakura"};
@@ -71,8 +94,6 @@ public class DataStorage {
 			chars = gson.fromJson(reader, Character[].class);
 			characters = new HashMap<String, Character>();
 			for(int i = 0; i < chars.length; i++) {
-				// parse array data here to properly set up getters - See Character.class ParseDataArray() method for more info
-				chars[i].parseArrayData();
 				characters.put(chars[i].getName(), chars[i]);
 			}
 			reader.close();
@@ -83,6 +104,7 @@ public class DataStorage {
 		}
 	}
 	
+	// parsing for jobs.json
 	public void ParseJsonJobs() {
 		try
 		{
@@ -92,8 +114,6 @@ public class DataStorage {
 			jobs = new HashMap<String, Job>();
 			specialClasses = new ArrayList<String>();
 			for(int i = 0; i < jobArray.length; i++) {
-				// parse array data here to properly set up getters - See Job.class ParseDataArray() method for more info
-				jobArray[i].parseArrayData();
 				// fill the specialClasses array
 				if(jobArray[i].getIsSpecial())
 					specialClasses.add(jobArray[i].getName());
@@ -106,16 +126,6 @@ public class DataStorage {
 			System.err.println("Caught IOException: " + e.getMessage());
 		}
 	}
-	
-	// Sets the based stats of all characters based on the path we are searching
-	// This method is in DataStorage rather than Character as it should be called as the user changes the path they are checking stats for
-	// SHOULD BE MOVED TO A LOGIC CLASS
-	public void setBaseStats(String path){
-		for(Character c : characters.values()) {
-			c.getDesiredBaseStats(path);
-		}
-	}
-	
 	
 	// Printing methods for testing purposes
 	public void printAllCharacters() {
