@@ -1,12 +1,13 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChildCharacter extends Character{
 
-	private ArrayList<String> possibleParents;
-	private String fixedParent;
-	private String variedParent;
+	protected ArrayList<String> possibleParents;
+	protected String fixedParent;						// Name of the child character's fixed parent
+	protected String variedParent;
 	
 	/*
 	public ChildCharacter(String name, String baseClass, boolean areYouABoy,boolean isChild,
@@ -39,10 +40,6 @@ public class ChildCharacter extends Character{
 		return fixedParent;
 	}
 
-	public void setFixedParent(String fixedParent) {
-		this.fixedParent = fixedParent;
-	}
-
 	public String getVariedParent() {
 		return variedParent;
 	}
@@ -51,7 +48,15 @@ public class ChildCharacter extends Character{
 		this.variedParent = variedParent;
 	}
 
-
+	public String toString() {
+		String allRoutes = Arrays.toString(routes);
+		String allMaxMods = Arrays.toString(maxMods);
+		String allGrowths = Arrays.toString(growths);
+		String allValidSpecials = Arrays.toString(validSpecials);
+		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
+				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
+				isChild + "\nfixedParent: " + fixedParent;
+	}
 }
 
 

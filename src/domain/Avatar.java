@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Arrays;
+
 public class Avatar extends Character{
 
 	private String boon;
@@ -36,5 +38,15 @@ public class Avatar extends Character{
 
 	public void setBane(String bane) {
 		this.bane = bane;
+	}
+	
+	public String toString() {
+		String allRoutes = Arrays.toString(routes);
+		String allMaxMods = Arrays.toString(maxMods);
+		String allGrowths = Arrays.toString(growths);
+		String allValidSpecials = Arrays.toString(validSpecials);
+		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
+				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
+				isChild + "\nboon: " + boon + "\nbane: " + bane;
 	}
 }

@@ -1,13 +1,12 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Kana extends Character{
+public class Kana extends ChildCharacter{
 	
 	private String boon;
 	private String bane;
-	private ArrayList<String> possibleParents;
-	private String variedParent;
 	
 	/*
 	public Kana(String name, String baseClass, boolean areYouABoy, boolean isChild,
@@ -45,19 +44,13 @@ public class Kana extends Character{
 		this.bane = bane;
 	}
 
-	public ArrayList<String> getPossibleParents() {
-		return possibleParents;
-	}
-
-	public void setPossibleParents(ArrayList<String> possibleParents) {
-		this.possibleParents = possibleParents;
-	}
-
-	public String getVariedParent() {
-		return variedParent;
-	}
-
-	public void setVariedParent(String variedParent) {
-		this.variedParent = variedParent;
+	public String toString() {
+		String allRoutes = Arrays.toString(routes);
+		String allMaxMods = Arrays.toString(maxMods);
+		String allGrowths = Arrays.toString(growths);
+		String allValidSpecials = Arrays.toString(validSpecials);
+		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
+				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
+				isChild + "\nfixedParent: " + fixedParent + "\nboon: " + boon + "\nbane: " + bane;
 	}
 }

@@ -1,0 +1,130 @@
+[
+	{
+		name : "Shigure",
+		routes : [true, true, true],
+		baseClass: "Sky Knight",
+		baseStats : {
+			conquest : [10, 9, 6, 1, 7, 7, 5, 8, 7],
+			birthright : [10, 9, 6, 1, 7, 7, 5, 8, 7],
+			revelations : [10, 9, 6, 1, 7, 7, 5, 8, 7]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [35, 45, 5, 45, 35, 25, 35, 25],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Azura"
+	},
+	{
+		name : "Dwyer",
+		routes : [true, true, true],
+		baseClass: "Troubadour",
+		baseStats : {
+			conquest : [10, 8, 7, 7, 2, 6, 4, 6, 7],
+			birthright : [10, 8, 7, 7, 2, 6, 4, 6, 7],
+			revelations : [10, 8, 7, 7, 2, 6, 4, 6, 7]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [45, 45, 30, 20, 30, 30, 30, 35],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Jakob"
+	},
+	{
+		name : "Sophie",
+		routes : [true, true, true],
+		baseClass: "Cavalier",
+		baseStats : {
+			conquest : [10, 8, 6, 2, 7, 6, 7, 4, 6],
+			birthright : [10, 8, 6, 2, 7, 6, 7, 4, 6],
+			revelations : [10, 8, 6, 2, 7, 6, 7, 4, 6]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [35, 35, 10, 55, 50, 35, 25, 35],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Silas"
+	},
+	{
+		name : "Midori",
+		routes : [true, true, true],
+		baseClass: "Apothecary",
+		baseStats : {
+			conquest : [10, 8, 6, 2, 10, 4, 10, 4, 2],
+			birthright : [10, 8, 6, 2, 10, 4, 10, 4, 2],
+			revelations : [10, 8, 6, 2, 10, 4, 10, 4, 2]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [45, 35, 5, 55, 35, 50, 30, 20],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Kaze"
+	},
+	{
+		name : "Siegbert",
+		routes : [true, false, true],
+		baseClass: "Cavalier",
+		baseStats : {
+			conquest : [10, 7, 5, 2, 7, 6, 7, 6, 3],
+			birthright : [10, 7, 5, 2, 7, 6, 7, 6, 3],
+			revelations : [10, 7, 5, 2, 7, 6, 7, 6, 3]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [40, 45, 5, 45, 45, 45, 35, 20],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Xander"
+	},
+	{
+		name : "Forrest",
+		routes : [true, false, true],
+		baseClass: "Troubadour",
+		baseStats : {
+			conquest : [10, 8, 5, 9, 1, 4, 5, 6, 13],
+			birthright : [10, 8, 5, 9, 1, 4, 5, 6, 13],
+			revelations : [10, 8, 5, 9, 1, 4, 5, 6, 13]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [55, 15, 65, 20, 35, 25, 25, 55],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Leo"
+	},
+	{
+		name : "Ignatius",
+		routes : [true, false, true],
+		baseClass: "Knight",
+		baseStats : {
+			conquest : [10, 8, 7, 0, 6, 4, 7, 6, 7],
+			birthright : [10, 8, 7, 0, 6, 4, 7, 6, 7],
+			revelations : [10, 8, 7, 0, 6, 4, 7, 6, 7]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [40, 50, 0, 40, 30, 55, 45, 35],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Benny"
+	},
+	{
+		name : "Velouria",
+		routes : [true, false, true],
+		baseClass: "Wolfskin",
+		baseStats : {
+			conquest : [10, 7, 6, 0, 6, 6, 11, 9, 8],
+			birthright : [10, 7, 6, 0, 6, 6, 11, 9, 8],
+			revelations : [10, 7, 6, 0, 6, 6, 11, 9, 8]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [50, 50, 0, 40, 40, 35, 45, 30],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Keaton"
+	}
+]
