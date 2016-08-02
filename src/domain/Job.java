@@ -34,6 +34,10 @@ public class Job {
 		return isSpecial;
 	}
 	
+	public int getBaseStats(int i ) {
+		return baseStats[i];
+	}
+	
 	public int[] getBaseStats() {
 		return baseStats;
 	}

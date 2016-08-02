@@ -18,7 +18,7 @@ public class UnitController {
 	
 	public Unit buildUnit(Character character, Job job, int level, String route)
 	{
-		Unit newUnit = new Unit(character, job, level, route);
+		Unit newUnit = new Unit(character, job, route);
 		return newUnit;
 	}
 }
