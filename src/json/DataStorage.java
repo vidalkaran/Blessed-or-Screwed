@@ -12,6 +12,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import domain.Character;
+import domain.ChildCharacter;
+import domain.Avatar;
+import domain.Kana;
 import domain.Job;
 
 // THIS CLASS IS A SINGLETON
@@ -38,9 +41,8 @@ public class DataStorage {
 		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
 	}
 	
-	private static DataStorage instance = null;	// DataStorage singleton instance
-	private Character[] chars;					// Array used for JSON parsing characters
-	private Map<String, Character> characters;	// Map based off of the chars Array. <key, value> = <character name, Character object>
+	private static DataStorage instance = null;	// DataStorage singleton instance		
+	private Map<String, Character> characters;	// Map for storing all characters. <key, value> = <character name, Character object>
 	private Job[] jobArray;						// Array used for JSON parsing jobs
 	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
 	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
@@ -87,14 +89,40 @@ public class DataStorage {
 	// methods
 	// parsing for characters.json
 	public void ParseJsonCharacters() {
+		Character[] adults;			// Array used for parsing the adults in characters.json
+		Avatar avatar;				// Used for parsing avatar.json
+		ChildCharacter[] children;	// Array used for parsing children.json
+		Kana kana;					// Used for parsing kana.json
+		
 		try
 		{
-			Reader reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/characters.json"), "UTF-8");
 			Gson gson = new GsonBuilder().create();
-			chars = gson.fromJson(reader, Character[].class);
+			// Parse adult characters
+			Reader reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/characters.json"), "UTF-8");
+			adults = gson.fromJson(reader, Character[].class);
+			// Parse Avatar
+			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/avatar.json"), "UTF-8");
+			avatar = gson.fromJson(reader, Avatar.class);
+			// Parse children
+			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/children.json"), "UTF-8");
+			children = gson.fromJson(reader, ChildCharacter[].class);
+			// Parse Kana
+			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/kana.json"), "UTF-8");
+			kana = gson.fromJson(reader, Kana.class);
+			
+			// Implement characters map
 			characters = new HashMap<String, Character>();
-			for(int i = 0; i < chars.length; i++) {
-				characters.put(chars[i].getName(), chars[i]);
+			// Place Avatar in the map
+			characters.put(avatar.getName(), avatar);
+			// Place all adults in the map
+			for(int i = 0; i < adults.length; i++) {
+				characters.put(adults[i].getName(), adults[i]);
+			}
+			// Place Kana in the map
+			characters.put(kana.getName(), kana);
+			// Place all of the children in the map
+			for(int i = 0; i < children.length; i++) {
+				characters.put(children[i].getName(), children[i]);
 			}
 			reader.close();
 		}
@@ -129,8 +157,8 @@ public class DataStorage {
 	
 	// Printing methods for testing purposes
 	public void printAllCharacters() {
-		for(Character c: chars) {
-			System.out.println(c);
+		for(Character c: characters.values()) {
+			System.out.println(c.toString());
 			System.out.println();
 		}
 	}

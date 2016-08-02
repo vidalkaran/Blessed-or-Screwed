@@ -1,20 +1,5 @@
 [
 	{
-		name: "Avatar",
-		routes : [true, true, true],
-		baseClass: "Nohr Prince/ss",
-		baseStats : {
-			conquest : [1, 19, 7, 4, 7, 6, 5, 6, 2],
-			birthright : [1, 19, 7, 4, 7, 6, 5, 6, 2],
-			revelations: [1, 19, 7, 4, 7, 6, 5, 6, 2]
-		},
-		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
-		growths : [45, 45, 30, 40, 45, 45, 35, 25],
-		validSpecials : ["Nohr Prince/ss, Nohr Noble, Hoshido Noble"],
-		areYouABoy : true,
-		isChild : false
-	},
-	{
 		name: "Gunter",
 		routes : [true, false, true],
 		baseClass: "Great Knight",
