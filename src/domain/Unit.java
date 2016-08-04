@@ -55,7 +55,7 @@ public class Unit {
 	}	
 	
 	//This function reclasses a Unit, and recalculates the growths and maxes without changing the base stats.
-	private void reClass(Job newJob)
+	public void reClass(Job newJob)
 	{
 		myJob = newJob;
 		calculateGrowths();

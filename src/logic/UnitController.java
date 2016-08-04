@@ -23,16 +23,19 @@ package logic;
 
 import java.util.ArrayList;
 import domain.Unit;
+import json.DataStorage;
 import domain.Character;
 import domain.Job;
 
 public class UnitController {
 	
+	DataStorage data = DataStorage.getInstance(); //This is the data
+	
 	private ArrayList<String> classHistory; 
 	
-	public UnitController()
+	public UnitController(DataStorage inputData)
 	{
-		
+		data = inputData;
 	}
 	
 	//builds a unit
@@ -46,11 +49,48 @@ public class UnitController {
 	public ArrayList<Unit> builtUnitSheet(Unit unit, ArrayList<String> inputClassHistory)
 	{
 		//steps
-		//begin loop. Loop should be equal to history length(The length of this array should be equal to the max level of a unit.
-		//check job array to make sure unit job matches the history.
-		//add correct job base stats to the unit's stats.
-		//calculate average stats.
+		//1.add class mods
+		//2.begin loop. Loop should be equal to history length(The length of this array should be equal to the max level of a unit.
+		//3.check job array to make sure unit job matches the history.
+		//4.Reclass, changing the maxes and the growths.
+		//5.add correct job base stats to the unit's stats.
+		//6.calculate average stats.
 		//repeat until end end.
+		
+		//1. adds class mods
+		for(int i = 0; i<unit.getBaseStats().length;i++)
+		{
+			int[] baseStats = unit.getBaseStats();
+			int[] Mods = data.getJobs().get(unit.getMyJob().getName()).getBaseStats();
+			
+			baseStats[i] = baseStats[i] + Mods[i];
+			
+			unit.setBaseStats(baseStats);
+		}
+		
+		//2. THIS STARTS THE LOOP
+		for(int i = 0; i<inputClassHistory.size();i++)
+		{
+			//3. Ensures job is the same, reclasses the unit if not, and adjusts base stats as necessary
+			if(inputClassHistory.get(i) != unit.getMyJob().getName())
+			{
+				Job newJob = data.getJobs().get(inputClassHistory.get(i));
+				Job oldJob = unit.getMyJob();
+				
+				//4. Reclass
+				unit.reClass(newJob);
+				
+				int[] tempStatMods = newJob.getBaseStats();
+				int[] statMods = unit.getBaseStats();
+				
+				//5. this adjusts the mods if the class has changed.
+				for(int j = 0; j<tempStatMods.length;j++)
+				{
+					tempStatMods[i] = tempStatMods[i] - oldJob.getBaseStats(i);
+					statMods[i] = statMods[i] + tempStatMods[i];
+				}
+			}
+		}
 		
 		ArrayList<Unit> unitSheet = new ArrayList();
 		return unitSheet;
