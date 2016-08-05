@@ -7,7 +7,7 @@ public class Unit {
 	private Character myCharacter;
 	private Job myJob;
 	private int level;
-	private int baseStats[] = new int[8];
+	private double[] baseStats = new double[8];
 	private double growths[] = new double[8];
 	private int maxstats[] = new int[8];
 	private String statblock[] = {"HP", "Str", "Mag", "Skl", "Spd", "Lck", "Def", "Res"};
@@ -18,11 +18,17 @@ public class Unit {
 		myCharacter = inputCharacter;
 		myJob = inputJob;
 		route = inputRoute;
+		level = inputCharacter.getBaseStats().getStats(route, 0);
 		
 		calculateBaseStats();
 		calculateGrowths();
 		calculateMaxStats();
 		
+	}
+	
+	public Unit()
+	{
+		//empty!
 	}
 	
 	private void calculateBaseStats()
@@ -66,7 +72,8 @@ public class Unit {
 	{
 		System.out.println("Name: "+myCharacter.getName()
 							+"\n"+"Class: "+myJob.getName()
-							+"\n" + "Route: " + route);
+							+"\n" + "Route: " + route
+							+"\n" + "Base level:" + level);
 
 		System.out.println("GROWTHS...");
 		for(int i = 0; i<growths.length; i++)
@@ -113,11 +120,11 @@ public class Unit {
 		this.level = level;
 	}
 
-	public int[] getBaseStats() {
+	public double[] getBaseStats() {
 		return baseStats;
 	}
 
-	public void setBaseStats(int[] baseStats) {
+	public void setBaseStats(double[] baseStats) {
 		this.baseStats = baseStats;
 	}
 

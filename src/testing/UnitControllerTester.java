@@ -1,9 +1,12 @@
 package testing;
 
+import java.util.ArrayList;
+
 import domain.Character;
 import domain.Job;
 import domain.Unit;
 import json.DataStorage;
+import logic.UnitController;
 
 public class UnitControllerTester {
 
@@ -15,8 +18,23 @@ public static void main(String[]args)
 	
 	UnitControllerTester test = new UnitControllerTester();
 	
+	Character Silas = data.getCharacters().get("Silas");
+	Job Cavalier = data.getJobs().get("Cavalier");
+	Unit SilasUnit = new Unit(Silas, Cavalier, "conquest");
+	
+	ArrayList<String> ClassHistory = new ArrayList();
+	ClassHistory.add("Cavalier");
+	ClassHistory.add("Cavalier");
+	ClassHistory.add("Cavalier");
+	
 	//This is just testing Unit.java.
-	test.testUnit(data.getCharacters().get("Silas"), data.getJobs().get("Cavalier"), "conquest");
+	//test.testUnit(Silas, Cavalier, "conquest");
+	
+	//This is testing UnitController
+	test.testUnitController(SilasUnit, ClassHistory, data);
+	
+	//This is testing calculating avg. stats
+	//test.testCalculateAvgStats(SilasUnit, data);
 	
 	}
 	
@@ -27,6 +45,32 @@ public void testUnit(Character inputChar, Job inputJob, String Route)
 	newUnit.printUnit();
 }
 
+public void testUnitController(Unit inputUnit, ArrayList<String> inputClassHistory, DataStorage inputData)
+{
+	UnitController UnitController = new UnitController(inputData);
+	
+	ArrayList<Unit> unitSheet = UnitController.buildUnitSheet(inputUnit, inputClassHistory);
+	
+	UnitController.print(unitSheet);
+}
+
+public void testCalculateAvgStats(Unit inputUnit, DataStorage inputData)
+{
+	UnitController UnitController = new UnitController(inputData);
+	
+	for(int i = 0; i<inputUnit.getBaseStats().length;i++)
+	{
+		double[] baseStats = inputUnit.getBaseStats();
+		int[] Mods = inputData.getJobs().get(inputUnit.getMyJob().getName()).getBaseStats();
+		
+		baseStats[i] = baseStats[i] + Mods[i];
+		
+		inputUnit.setBaseStats(baseStats);
+	}
+
+	UnitController.CalculateAverageStats(inputUnit, 6);
+	inputUnit.printUnit();
+}
 
 /*
 Silas should look like this:

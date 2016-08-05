@@ -28,7 +28,7 @@ import domain.Character;
 import domain.Job;
 
 public class UnitController {
-	
+
 	DataStorage data = DataStorage.getInstance(); //This is the data
 	
 	private ArrayList<String> classHistory; 
@@ -38,29 +38,14 @@ public class UnitController {
 		data = inputData;
 	}
 	
-	//builds a unit
-	public Unit buildUnit(Character character, Job job, String route)
+	public ArrayList<Unit> buildUnitSheet(Unit unit, ArrayList<String> inputClassHistory)
 	{
-		Unit newUnit = new Unit(character, job, route);
-		return newUnit;
-	}
-	
-	//builds a unitSheet
-	public ArrayList<Unit> builtUnitSheet(Unit unit, ArrayList<String> inputClassHistory)
-	{
-		//steps
-		//1.add class mods
-		//2.begin loop. Loop should be equal to history length(The length of this array should be equal to the max level of a unit.
-		//3.check job array to make sure unit job matches the history.
-		//4.Reclass, changing the maxes and the growths.
-		//5.add correct job base stats to the unit's stats.
-		//6.calculate average stats.
-		//repeat until end end.
-		
+		ArrayList<Unit> unitSheet = new ArrayList();
+
 		//1. adds class mods
 		for(int i = 0; i<unit.getBaseStats().length;i++)
 		{
-			int[] baseStats = unit.getBaseStats();
+			double[] baseStats = unit.getBaseStats();
 			int[] Mods = data.getJobs().get(unit.getMyJob().getName()).getBaseStats();
 			
 			baseStats[i] = baseStats[i] + Mods[i];
@@ -68,46 +53,59 @@ public class UnitController {
 			unit.setBaseStats(baseStats);
 		}
 		
-		//2. THIS STARTS THE LOOP
+		//3. THIS STARTS THE LOOP.
 		for(int i = 0; i<inputClassHistory.size();i++)
-		{
-			//3. Ensures job is the same, reclasses the unit if not, and adjusts base stats as necessary
+		{	
+			//4. Ensures job is the same, reclasses the unit if not, and adjusts base stats as necessary
 			if(inputClassHistory.get(i) != unit.getMyJob().getName())
 			{
 				Job newJob = data.getJobs().get(inputClassHistory.get(i));
 				Job oldJob = unit.getMyJob();
 				
-				//4. Reclass
+				//5. Reclass
 				unit.reClass(newJob);
 				
 				int[] tempStatMods = newJob.getBaseStats();
-				int[] statMods = unit.getBaseStats();
+				double[] statMods = unit.getBaseStats();
 				
-				//5. this adjusts the mods if the class has changed.
+				//6. this adjusts the mods if the class has changed.
 				for(int j = 0; j<tempStatMods.length;j++)
 				{
 					tempStatMods[i] = tempStatMods[i] - oldJob.getBaseStats(i);
 					statMods[i] = statMods[i] + tempStatMods[i];
-				}
+				}	
 			}
+			//7 Calculate!! Also update the unit's new level.
+			CalculateAverageStats(unit, (unit.getLevel()+1));
+			unitSheet.add(unit);
 		}
-		
-		ArrayList<Unit> unitSheet = new ArrayList();
 		return unitSheet;
 	}
 	
+
 	//calculates averagestats for a unit
 	public void CalculateAverageStats(Unit inputUnit, int inputLevel)
 	{
 		int levelDifference = (inputLevel - inputUnit.getLevel());
 		
-		for(int i = 0; i<= inputUnit.getBaseStats().length; i++)
+		for(int i = 0; i< inputUnit.getBaseStats().length; i++)
 		{
-			int[] tempBaseStats = inputUnit.getBaseStats();
+			double[] tempBaseStats = inputUnit.getBaseStats();
 			double[] tempGrowths = inputUnit.getGrowths();
 			
-			tempBaseStats[i] = (((int) tempGrowths[i] * levelDifference)+  tempBaseStats[i]);
+			tempBaseStats[i] = (((tempGrowths[i]/100) * levelDifference) +  tempBaseStats[i]);
 		}
+		
+		inputUnit.setLevel(inputLevel);
 	}
 	
+	//PRINTER METHOD FOR TESTING 
+	public void print(ArrayList<Unit> inputSheet)
+	{
+		for(int i = 0; i<inputSheet.size();i++)
+		{
+			inputSheet.get(i).printUnit();	
+		}
+		
+	}
 }
