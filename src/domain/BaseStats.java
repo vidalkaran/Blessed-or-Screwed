@@ -1,8 +1,9 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class BaseStats {
+public class BaseStats implements Serializable{
 	private int[] conquest;
 	private int[] birthright;
 	private int[] revelations;
