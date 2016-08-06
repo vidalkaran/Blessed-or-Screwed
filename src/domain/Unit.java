@@ -1,8 +1,10 @@
 package domain;
 
+import java.io.Serializable;
+
 // note: two uses of unit, one for player input and one for auto generation.
 
-public class Unit {
+public class Unit implements Serializable{
 	
 	private Character myCharacter;
 	private Job myJob;
@@ -24,11 +26,6 @@ public class Unit {
 		calculateGrowths();
 		calculateMaxStats();
 		
-	}
-	
-	public Unit()
-	{
-		//empty!
 	}
 	
 	private void calculateBaseStats()
@@ -152,5 +149,12 @@ public class Unit {
 		this.route = route;
 	}
 	
-	
+	public String[] getStatblock() {
+		return statblock;
+	}
+
+	public void setStatblock(String[] statblock) {
+		this.statblock = statblock;
+	}
+
 }

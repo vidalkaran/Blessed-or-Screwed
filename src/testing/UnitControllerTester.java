@@ -20,18 +20,19 @@ public static void main(String[]args)
 	
 	Character Silas = data.getCharacters().get("Silas");
 	Job Cavalier = data.getJobs().get("Cavalier");
-	Unit SilasUnit = new Unit(Silas, Cavalier, "conquest");
 	
 	ArrayList<String> ClassHistory = new ArrayList();
 	ClassHistory.add("Cavalier");
 	ClassHistory.add("Cavalier");
-	ClassHistory.add("Cavalier");
-	
+	ClassHistory.add("Songstress");
+	ClassHistory.add("Songstress");
+	ClassHistory.add("Songstress");
+
 	//This is just testing Unit.java.
 	//test.testUnit(Silas, Cavalier, "conquest");
 	
 	//This is testing UnitController
-	test.testUnitController(SilasUnit, ClassHistory, data);
+	test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data);
 	
 	//This is testing calculating avg. stats
 	//test.testCalculateAvgStats(SilasUnit, data);
@@ -45,30 +46,22 @@ public void testUnit(Character inputChar, Job inputJob, String Route)
 	newUnit.printUnit();
 }
 
-public void testUnitController(Unit inputUnit, ArrayList<String> inputClassHistory, DataStorage inputData)
+public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory, DataStorage inputData)
 {
 	UnitController UnitController = new UnitController(inputData);
+	Unit inputUnit = UnitController.buildUnit(inputChar, inputJob, Route);
 	
-	ArrayList<Unit> unitSheet = UnitController.buildUnitSheet(inputUnit, inputClassHistory);
-	
-	UnitController.print(unitSheet);
+	UnitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
+	UnitController.printLocalSheet();
 }
 
 public void testCalculateAvgStats(Unit inputUnit, DataStorage inputData)
 {
 	UnitController UnitController = new UnitController(inputData);
-	
-	for(int i = 0; i<inputUnit.getBaseStats().length;i++)
-	{
-		double[] baseStats = inputUnit.getBaseStats();
-		int[] Mods = inputData.getJobs().get(inputUnit.getMyJob().getName()).getBaseStats();
-		
-		baseStats[i] = baseStats[i] + Mods[i];
-		
-		inputUnit.setBaseStats(baseStats);
-	}
 
-	UnitController.CalculateAverageStats(inputUnit, 6);
+	UnitController.addBaseClassMods(inputUnit);
+	inputUnit.printUnit();
+	UnitController.CalculateAverageStats(inputUnit, 12);
 	inputUnit.printUnit();
 }
 
