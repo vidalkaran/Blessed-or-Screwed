@@ -1,30 +1,13 @@
+//TODO:
+//Need to format decimals and check for max stats!! :O
+
 package logic;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-/*Consider the components
- * Must be capable of creating, accessing, returning, and editing two seperate lists of two units. 
- * These units will be inputUnit and localUnit. These units will be stored in a inputSheet and localSheet, which will be lists. 
- * The lists will be of variable length and will simply keep track of a unit throughout it's history. It will have to calculate stats
- * based on their growths and job. 
- * 
- * General concept: Generate Unit --> Generate unitSheet. unitSHeet is generated in a loop that just creates new permutations of the original unit
- * and adds them to a list in order. In each case the unit's level will increment by one.  
- * 
- * Things we might need:
- * Job Change component- Job changes occur at certain levels. A unit can have a seperate array of what job it was at what level. This can be used
- * to check and make sure the unitSheet is the correct length, and also within the loop to dynamically change jobs.
- * 
- * Functions:
- * 
- * buildUnit(), buildUnitSheet
- * 
- * CalculateAverageStats
- * 
- */
+import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import domain.Unit;
@@ -44,6 +27,7 @@ public class UnitController {
 		data = inputData;
 	}
 	
+	//builds a unit and adds the baseclass mods, used for localSheet
 	public Unit buildUnit(Character inputCharacter, Job inputJob, String route)
 	{
 		Unit outputUnit = new Unit(inputCharacter, inputJob, route);
@@ -51,17 +35,34 @@ public class UnitController {
 		return outputUnit;
 	}
 	
-	//THIS IS INVOKED WHENEVER A NEW LOCALUNITSHEET IS GENERATED. IT CLEARS THE PREVIOUS ONE FIRST.
+	//builds a unit and adjusts values based on player input, used for inputSheet
+	public Unit buildUnit(Character inputCharacter, Job inputJob, String route, int level, double[] inputStats)
+	{
+		Unit outputUnit = new Unit(inputCharacter, inputJob, route);
+		outputUnit.setLevel(level);
+		outputUnit.setBaseStats(inputStats);
+		return outputUnit;
+	}
+	
+	//BUILDS A LOCALUNITSHEET
 	public void buildLocalUnitSheet(Unit unit, ArrayList<String> inputClassHistory)
 	{		
 		localUnitSheet.clear();
 		buildSheet(unit, inputClassHistory, localUnitSheet, 0);
 	}
 	
+	//BUILDS A INPUTUNITSHEET
+	public void buildInputUnitSheet(Unit unit, ArrayList<String> inputClassHistory, int level, double[] inputStats)
+	{
+		inputUnitSheet.clear();
+		buildSheet(unit, inputClassHistory, localUnitSheet, 0);
+	}
+	
 //RECURSION WHAT :O
 	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i)
 	{
-		Unit newUnit = (Unit)deepClone(unit);
+		Unit newUnit = (Unit)deepClone(unit); //this is the deep clone. Very important!!
+		
 		if(i == inputClassHistory.size()) //ends recursion
 		{
 			System.out.println("Complete"); 
@@ -136,17 +137,6 @@ public class UnitController {
 			unit.reClass(newJob);
 		}
 	}
-	
-	//PRINTER METHOD FOR TESTING 
-	public void printLocalSheet()
-	{
-		for(int i = 0; i<localUnitSheet.size();i++)
-		{
-			System.out.println("--------------------------------------------");
-			localUnitSheet.get(i).printUnit();	
-		}
-		
-	}
 
 	//Code for performing a deep clone
 	public static Object deepClone(Object object) 
@@ -163,6 +153,17 @@ public class UnitController {
 	      e.printStackTrace();
 	      return null;
 	    }
+	}
+	
+	//PRINTER METHOD FOR TESTING 
+	public void printLocalSheet()
+	{
+		for(int i = 0; i<localUnitSheet.size();i++)
+		{
+			System.out.println("--------------------------------------------");
+			localUnitSheet.get(i).printUnit();	
+		}
+		
 	}
 
 }
