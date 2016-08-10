@@ -33,13 +33,13 @@ public static void main(String[]args)
 	//test.testUnit(Silas, Cavalier, "conquest");
 	
 	//This is testing UnitController
-	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data);
+	test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data);
 	
 	//This is testing calculating avg. stats
 	//test.testCalculateAvgStats(SilasUnit, data);
 	
 	//this is testing UnitController's buildUnit 
-	test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data, 15, inputStats);
+	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data, 15, inputStats);
 
 	}
 	
