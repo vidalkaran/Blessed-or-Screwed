@@ -36,7 +36,7 @@ public static void main(String[]args)
 	test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data);
 	
 	//This is testing calculating avg. stats
-	//test.testCalculateAvgStats(SilasUnit, data);
+	//test.testCalculateAvgStats(new Unit(Silas, Cavalier, "conquest"), data);
 	
 	//this is testing UnitController's buildUnit 
 	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data, 15, inputStats);
