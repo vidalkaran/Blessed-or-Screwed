@@ -69,7 +69,6 @@
 		baseClass: "Cavalier",
 		baseStats : {
 			conquest : [10, 7, 5, 2, 7, 6, 7, 6, 3],
-			birthright : [10, 7, 5, 2, 7, 6, 7, 6, 3],
 			revelations : [10, 7, 5, 2, 7, 6, 7, 6, 3]
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
@@ -85,7 +84,6 @@
 		baseClass: "Troubadour",
 		baseStats : {
 			conquest : [10, 8, 5, 9, 1, 4, 5, 6, 13],
-			birthright : [10, 8, 5, 9, 1, 4, 5, 6, 13],
 			revelations : [10, 8, 5, 9, 1, 4, 5, 6, 13]
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
@@ -101,7 +99,6 @@
 		baseClass: "Knight",
 		baseStats : {
 			conquest : [10, 8, 7, 0, 6, 4, 7, 6, 7],
-			birthright : [10, 8, 7, 0, 6, 4, 7, 6, 7],
 			revelations : [10, 8, 7, 0, 6, 4, 7, 6, 7]
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
@@ -117,7 +114,6 @@
 		baseClass: "Wolfskin",
 		baseStats : {
 			conquest : [10, 7, 6, 0, 6, 6, 11, 9, 8],
-			birthright : [10, 7, 6, 0, 6, 6, 11, 9, 8],
 			revelations : [10, 7, 6, 0, 6, 6, 11, 9, 8]
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
@@ -126,5 +122,185 @@
 		areYouABoy : false,
 		isChild : true,
 		fixedParent: "Keaton"
-	}
+	},
+	{
+		name : "Percy",
+		routes : [true, false, true],
+		baseClass: "Wyvern Rider",
+		baseStats : {
+			conquest : [10, 6, 4, 0, 6, 6, 15, 8, 4],
+			revelations : [10, 6, 4, 0, 6, 6, 15, 8, 4]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [30, 30, 5, 45, 40, 75, 55, 15],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Arthur"
+	},
+	{
+		name : "Ophelia",
+		routes : [true, false, true],
+		baseClass: "Dark Mage",
+		baseStats : {
+			conquest : [10, 7, 3, 6, 6, 7, 12, 2, 5],
+			revelations : [10, 7, 3, 6, 6, 7, 12, 2, 5]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [45, 15, 45, 40, 45, 65, 20, 30],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Odin"
+	},
+	{
+		name : "Soleil",
+		routes : [true, false, true],
+		baseClass: "Mercenary",
+		baseStats : {
+			conquest : [10, 6, 7, 1, 3, 6, 7, 5, 6],
+			revelations : [10, 6, 7, 1, 3, 6, 7, 5, 6]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [25, 60, 0, 35, 35, 45, 35, 40],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Laslow"
+	},
+	{
+		name : "Nina",
+		routes : [true, false, true],
+		baseClass: "Outlaw",
+		baseStats : {
+			conquest : [10, 5, 8, 5, 5, 5, 11, 3, 10],
+			revelations : [10, 5, 8, 5, 5, 5, 11, 3, 10]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [30, 45, 30, 35, 40, 50, 25, 45],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Niles"
+	},
+	{
+		name : "Shiro",
+		routes : [false, true, true],
+		baseClass: "Spear Fighter",
+		baseStats : {
+			birthright : [10, 8, 7, 0, 5, 3, 6, 8, 5],
+			revelations : [10, 8, 7, 0, 5, 3, 6, 8, 5]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [50, 50, 0, 40, 35, 35, 45, 30],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Ryouma"
+	},
+	{
+		name : "Kiragi",
+		routes : [false, true, true],
+		baseClass: "Archer",
+		baseStats : {
+			birthright : [10, 7, 6, 0, 5, 6, 8, 4, 1],
+			revelations : [10, 7, 6, 0, 5, 6, 8, 4, 1]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [45, 40, 0, 45, 50, 45, 40, 15],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "NOHRIAN SCUM!"
+	},
+	{
+		name : "Asugi",
+		routes : [false, true, true],
+		baseClass: "Ninja",
+		baseStats : {
+			birthright : [10, 6, 7, 4, 7, 6, 9, 4, 9],
+			revelations : [10, 6, 7, 4, 7, 6, 9, 4, 9]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [40, 45, 50, 55, 45, 50, 30, 20],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Saizo"
+	},
+	{
+		name : "Selkie",
+		routes : [false, true, true],
+		baseClass: "Kitsune",
+		baseStats : {
+			birthright : [10, 7, 4, 3, 6, 7, 10, 6, 11],
+			revelations : [10, 7, 4, 3, 6, 7, 10, 6, 11]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [35, 30, 15, 35, 55, 60, 30, 50],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Kitsune", "Nine-Tails"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Kaden"
+	},
+	{
+		name : "Hisame",
+		routes : [false, true, true],
+		baseClass: "Samurai",
+		baseStats : {
+			birthright : [10, 6, 6, 1, 7, 5, 4, 5, 4],
+			revelations : [10, 6, 6, 1, 7, 5, 4, 5, 4]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [50, 40, 0, 40, 40, 25, 30, 20],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Hinata"
+	},
+	{
+		name : "Mitama",
+		routes : [false, true, true],
+		baseClass: "Shrine Maiden",
+		baseStats : {
+			birthright : [10, 6, 7, 6, 6, 8, 10, 3, 5],
+			revelations : [10, 6, 7, 6, 6, 8, 10, 3, 5]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [45, 40, 35, 45, 50, 50, 30, 20],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Azama"
+	},
+	{
+		name : "Caeldori",
+		routes : [false, true, true],
+		baseClass: "Sky Knight",
+		baseStats : {
+			birthright : [10, 8, 8, 3, 5, 6, 9, 5, 6],
+			revelations : [10, 8, 8, 3, 5, 6, 9, 5, 6]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [55, 35, 15, 40, 40, 45, 35, 20],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Subaki"
+	},
+	{
+		name : "Rhajat",
+		routes : [false, true, true],
+		baseClass: "Diviner",
+		baseStats : {
+			birthright : [10, 8, 1, 10, 0, 7, 6, 5, 12],
+			revelations : [10, 8, 1, 10, 0, 7, 6, 5, 12]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [40, 15, 60, 10, 50, 30, 25, 35],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Hayato"
+	},
 ]
