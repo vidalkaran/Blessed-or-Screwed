@@ -20,6 +20,7 @@ public static void main(String[]args)
 	
 	Character Silas = data.getCharacters().get("Silas");
 	Job Cavalier = data.getJobs().get("Cavalier");
+	double[] inputStats = {20,20,20,20,20,20,20,20};
 	
 	ArrayList<String> ClassHistory = new ArrayList();
 	ClassHistory.add("Cavalier");
@@ -37,6 +38,9 @@ public static void main(String[]args)
 	//This is testing calculating avg. stats
 	//test.testCalculateAvgStats(SilasUnit, data);
 	
+	//this is testing UnitController's buildUnit 
+	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data, 15, inputStats);
+
 	}
 	
 //This method is just testing unit.java
@@ -50,6 +54,15 @@ public void testUnitController(Character inputChar, Job inputJob, String Route, 
 {
 	UnitController UnitController = new UnitController(inputData);
 	Unit inputUnit = UnitController.buildUnit(inputChar, inputJob, Route);
+	
+	UnitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
+	UnitController.printLocalSheet();
+}
+
+public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory, DataStorage inputData, int level, double[]inputStats)
+{
+	UnitController UnitController = new UnitController(inputData);
+	Unit inputUnit = UnitController.buildUnit(inputChar, inputJob, Route, level, inputStats);
 	
 	UnitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
 	UnitController.printLocalSheet();
