@@ -1,6 +1,6 @@
 package ui;
 
-import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,11 +8,11 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class NewUI extends JFrame{
+public class GUI extends JFrame{
 
 //ALL VARIABLE DECLARATIONS
 	
-//InputPanel
+		//InputPanel
 		JLabel inputChar;
 		JLabel inputRoute;
 		JLabel inputLevel;
@@ -76,29 +76,42 @@ public class NewUI extends JFrame{
 		JButton calculateButton;
 		JButton optionsButton;
 		
+//Option Window
+		JDialog optionPane;
+		JButton confirmButton;
+		JList jobHistory;
+		JList jobOptions;
+		
 //OTHER STUFF
-String[] routes = {"Conquest", "Birthright", "Revelations"};
+static String[] routes = {"Conquest", "Birthright", "Revelations"};
 
-String[] conquestCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+static String[] conquestCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"BestGirl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
 
-String[] birthrightCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+static String[] birthrightCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
 		"Hayato", "Oboro", "Hinata", "Takumi", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
 
-String[] revelationsCharacters= {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+static String[] revelationsCharacters= {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
 		"Hayato", "Oboro", "Hinata", "Takumi", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"BestGirl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
+
+static String[] conquestJobs = {"TEST1", "TEST2", "TEST3"};
+
+static String[] birthrightJobs;
+
+static String[] revelationsJobs;
+
 		
 public static void main(String[]args)
 {
-	new NewUI();
+	new GUI();
 }
 
-public NewUI()
+public GUI()
 {
 	//Main Panel
 	JPanel mainPanel = new JPanel();
@@ -263,6 +276,8 @@ public NewUI()
 		leftSide.add(mainInputPanel);
 	JPanel optionsButtonPanel = new JPanel();
 		optionsButton = new JButton("Character Options");
+		OpenOptionButtonHandler OptionButtonHandler = new OpenOptionButtonHandler();
+		optionsButton.addActionListener(OptionButtonHandler);
 			optionsButtonPanel.add(optionsButton);
 		leftSide.add(optionsButtonPanel);
 		leftSide.add(resultPanel);
@@ -276,6 +291,8 @@ public NewUI()
 	
 //CALCULATE BUTTON		
 	calculateButton = new JButton("Calculate!");
+	CalculateButtonHandler CalculateButtonHandler = new CalculateButtonHandler();
+	calculateButton.addActionListener(CalculateButtonHandler);
 		rightSide.add(calculateButton);
 		
 	mainPanel.add(leftSide);
@@ -288,9 +305,39 @@ public NewUI()
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.add(mainPanel);
 	this.setVisible(true);
+
+//CHARACTER OPTIONS DIALOG
+	optionPane = new JDialog();
+	
+	//ListPanel
+	JPanel listPanel = new JPanel();
+	jobHistory = new JList(conquestJobs);
+	jobHistory.setVisibleRowCount(4);
+	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	listPanel.add(new JScrollPane(jobHistory));
+	
+	//ModifierPanel
+	JPanel modPanel = new JPanel();
+		confirmButton = new JButton("Confirm");
+		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
+		confirmButton.addActionListener(CloseOptionButtonHandler);
+			modPanel.add(confirmButton);
+	
+	//Add all Components
+	optionPane.setLayout(new FlowLayout());
+	optionPane.add(listPanel);
+	optionPane.add(modPanel);
+	
+	//Window
+	optionPane.setTitle("Character Options");
+	optionPane.setResizable(false);
+	optionPane.setSize(300,300);
+	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
+
 }
 
-public class ButtonHandler implements ActionListener
+//CALCULATE BUTTON
+public class CalculateButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -299,6 +346,26 @@ public class ButtonHandler implements ActionListener
 	
 }
 
+//OPEN OPTIONS WINDOW BUTTON
+public class OpenOptionButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+		optionPane.setVisible(true);
+	}
+	
+}
+
+//CLOSE OPTIONS WINDOW BUTTON
+
+public class CloseOptionButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+		optionPane.dispose();
+	}
+	
+}
 //THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
 public class ComboBoxHandler implements ActionListener
 {
