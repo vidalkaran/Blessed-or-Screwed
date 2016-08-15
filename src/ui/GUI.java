@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class NewUI extends JFrame{
+public class GUI extends JFrame{
 
 //ALL VARIABLE DECLARATIONS
 	
@@ -108,10 +108,10 @@ static String[] revelationsJobs;
 		
 public static void main(String[]args)
 {
-	new NewUI();
+	new GUI();
 }
 
-public NewUI()
+public GUI()
 {
 	//Main Panel
 	JPanel mainPanel = new JPanel();
