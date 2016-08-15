@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,7 +14,6 @@ public class NewUI extends JFrame{
 	
 //InputPanel
 		JLabel inputChar;
-		JLabel inputJob;
 		JLabel inputRoute;
 		JLabel inputLevel;
 		JLabel inputHP;
@@ -25,7 +26,6 @@ public class NewUI extends JFrame{
 		JLabel inputRes;
 	
 		JComboBox inputCharBox;
-		JComboBox inputJobBox;
 		JComboBox inputRouteBox;
 	
 		JTextField inputLevelField;
@@ -74,7 +74,24 @@ public class NewUI extends JFrame{
 		JComboBox graphLevelBox;
 		JComboBox graphStatBox;
 		JButton calculateButton;
+		JButton optionsButton;
+		
+//OTHER STUFF
+String[] routes = {"Conquest", "Birthright", "Revelations"};
 
+String[] conquestCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
+		"BestGirl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
+
+String[] birthrightCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
+		"Hayato", "Oboro", "Hinata", "Takumi", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
+
+String[] revelationsCharacters= {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
+		"Hayato", "Oboro", "Hinata", "Takumi", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
+		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
+		"BestGirl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
 		
 public static void main(String[]args)
 {
@@ -88,18 +105,19 @@ public NewUI()
 	
 	//Input Panel 1 (Contains Character, Job, and Route modifiers)
 	JPanel inputPanel1 = new JPanel();
-		inputChar = new JLabel("Char: ");
-		inputCharBox = new JComboBox();
-			inputPanel1.add(inputChar);
-			inputPanel1.add(inputCharBox);
-		inputJob = new JLabel("Job: ");
-		inputJobBox = new JComboBox();
-			inputPanel1.add(inputJob);
-			inputPanel1.add(inputJobBox);
+
 		inputRoute = new JLabel("Route: ");
-		inputRouteBox = new JComboBox();
+		inputRouteBox = new JComboBox(routes);
+		ComboBoxHandler ComboBoxHandler = new ComboBoxHandler();
+		inputRouteBox.addActionListener(ComboBoxHandler);
 			inputPanel1.add(inputRoute);
 			inputPanel1.add(inputRouteBox);
+		
+		inputChar = new JLabel("Char: ");
+		inputCharBox = new JComboBox(conquestCharacters);
+			inputPanel1.add(inputChar);
+			inputPanel1.add(inputCharBox);
+								
 		inputLevel = new JLabel("Level: ");
 		inputLevelField = new JTextField(" ", 2);
 			inputPanel1.add(inputLevel);
@@ -212,11 +230,14 @@ public NewUI()
 	//GRAPH PANEL 1
 	JPanel graphPanel = new JPanel();
 		graphStat = new JLabel("Stat: ");
-		graphStatBox = new JComboBox();
+		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Luk", "Def", "Res"};
+		graphStatBox = new JComboBox(statArray);
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
-		graphLevel= new JLabel("Stat: ");
-		graphLevelBox = new JComboBox();
+		//note level array is temporary
+		String[] levelArray = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
+		graphLevel= new JLabel("Level: ");
+		graphLevelBox = new JComboBox(levelArray);
 			graphPanel.add(graphLevel);
 			graphPanel.add(graphLevelBox);
 	
@@ -240,6 +261,10 @@ public NewUI()
 	JPanel leftSide = new JPanel();
 	leftSide.setLayout(new BoxLayout(leftSide, BoxLayout.PAGE_AXIS));
 		leftSide.add(mainInputPanel);
+	JPanel optionsButtonPanel = new JPanel();
+		optionsButton = new JButton("Character Options");
+			optionsButtonPanel.add(optionsButton);
+		leftSide.add(optionsButtonPanel);
 		leftSide.add(resultPanel);
 	
 	JPanel rightSide = new JPanel();
@@ -249,20 +274,49 @@ public NewUI()
 		rightSide.add(graphPanel);
 		rightSide.add(graphPanel2);
 	
-	//CALCULATE BUTTON
+//CALCULATE BUTTON		
 	calculateButton = new JButton("Calculate!");
 		rightSide.add(calculateButton);
-	
+		
 	mainPanel.add(leftSide);
 	mainPanel.add(rightSide);
 	
 	//Main Window
-	this.setSize(500,275);
+	this.setSize(650,325);
 	this.setTitle("Blessed or Screwed!");
 	this.setResizable(false);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.add(mainPanel);
 	this.setVisible(true);
+}
+
+public class ButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+		//TO DO
+	}
+	
+}
+
+//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
+public class ComboBoxHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e)
+	{
+		if(inputRouteBox.getSelectedItem() == "Conquest")
+		{
+		    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+		}
+		else if(inputRouteBox.getSelectedItem() == "Birthright")
+		{
+		    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+		}
+		if(inputRouteBox.getSelectedItem() == "Revelations")
+		{
+		    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+		}
+	}
 }
 
 }
