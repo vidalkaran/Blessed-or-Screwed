@@ -1,69 +1,76 @@
 package ui;
 
+import javax.swing.*;
+
 public class MainUI extends javax.swing.JFrame {
-          
-    private javax.swing.JComboBox boxCharacter;
-    private javax.swing.JTextField boxDifferenceDef;
-    private javax.swing.JTextField boxDifferenceHP;
-    private javax.swing.JTextField boxDifferenceLuk;
-    private javax.swing.JTextField boxDifferenceMag;
-    private javax.swing.JTextField boxDifferenceRes;
-    private javax.swing.JTextField boxDifferenceSkl;
-    private javax.swing.JTextField boxDifferenceSpd;
-    private javax.swing.JTextField boxDifferenceStr;
-    private javax.swing.JComboBox boxGraphLevel;
-    private javax.swing.JComboBox boxGraphStat;
-    private javax.swing.JTextField boxInputDef;
-    private javax.swing.JTextField boxInputHP;
-    private javax.swing.JTextField boxInputLuk;
-    private javax.swing.JTextField boxInputMag;
-    private javax.swing.JTextField boxInputRes;
-    private javax.swing.JTextField boxInputSkl;
-    private javax.swing.JTextField boxInputSpd;
-    private javax.swing.JTextField boxInputStr;
-    private javax.swing.JComboBox boxJOb;
-    private javax.swing.JComboBox boxLevel;
-    private javax.swing.JTextField boxResultDef;
-    private javax.swing.JTextField boxResultHP;
-    private javax.swing.JTextField boxResultLuk;
-    private javax.swing.JTextField boxResultMag;
-    private javax.swing.JTextField boxResultRes;
-    private javax.swing.JTextField boxResultSkl;
-    private javax.swing.JTextField boxResultSpd;
-    private javax.swing.JTextField boxResultStr;
-    private javax.swing.JComboBox boxRoute;
-    private javax.swing.JComboBox boxUnitType;
-    private javax.swing.JPanel finalGraph;
-    private javax.swing.JLabel inputLabel;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel labelCharacter;
-    private javax.swing.JLabel labelGraph;
-    private javax.swing.JLabel labelGraphLevel;
-    private javax.swing.JLabel labelGraphStat;
-    private javax.swing.JLabel labelInputDef;
-    private javax.swing.JLabel labelInputHP;
-    private javax.swing.JLabel labelInputLuk;
-    private javax.swing.JLabel labelInputMag;
-    private javax.swing.JLabel labelInputRes;
-    private javax.swing.JLabel labelInputSkl;
-    private javax.swing.JLabel labelInputSpd;
-    private javax.swing.JLabel labelInputStr;
-    private javax.swing.JLabel labelJob;
-    private javax.swing.JLabel labelLevel;
-    private javax.swing.JLabel labelResult;
-    private javax.swing.JLabel labelResultDef;
-    private javax.swing.JLabel labelResultHP;
-    private javax.swing.JLabel labelResultLuk;
-    private javax.swing.JLabel labelResultMag;
-    private javax.swing.JLabel labelResultRes;
-    private javax.swing.JLabel labelResultSkl;
-    private javax.swing.JLabel labelResultSpd;
-    private javax.swing.JLabel labelResultStr;
-    private javax.swing.JLabel labelRoute;
-    private javax.swing.JLabel labelUnitType;
-    private javax.swing.JPanel panelGraph;
-    private javax.swing.JPanel panelInput;
-    private javax.swing.JPanel panelResult;
+     
+	//All text fields
+	    private JTextField boxDifferenceDef;
+	    private JTextField boxDifferenceHP;
+	    private JTextField boxDifferenceLuk;
+	    private JTextField boxDifferenceMag;
+	    private JTextField boxDifferenceRes;
+	    private JTextField boxDifferenceSkl;
+	    private JTextField boxDifferenceSpd;
+	    private JTextField boxDifferenceStr;
+	    private JTextField boxInputDef;
+	    private JTextField boxInputHP;
+	    private JTextField boxInputLuk;
+	    private JTextField boxInputMag;
+	    private JTextField boxInputRes;
+	    private JTextField boxInputSkl;
+	    private JTextField boxInputSpd;
+	    private JTextField boxInputStr;
+	    private JTextField boxResultDef;
+	    private JTextField boxResultHP;
+	    private JTextField boxResultLuk;
+	    private JTextField boxResultMag;
+	    private JTextField boxResultRes;
+	    private JTextField boxResultSkl;
+	    private JTextField boxResultSpd;
+	    private JTextField boxResultStr;
+    //ComboBoxes
+	    private JComboBox boxCharacter;
+	    private JComboBox boxGraphLevel;
+	    private JComboBox boxGraphStat;
+	    private JComboBox boxRoute;
+	    private JComboBox boxUnitType;
+	    private JComboBox boxJob;
+	    private JComboBox boxLevel;
+    //All Labels
+    	private JLabel inputLabel;
+	    private JLabel labelCharacter;
+	    private JLabel labelGraph;
+	    private JLabel labelGraphLevel;
+	    private JLabel labelGraphStat;
+	    private JLabel labelInputDef;
+	    private JLabel labelInputHP;
+	    private JLabel labelInputLuk;
+	    private JLabel labelInputMag;
+	    private JLabel labelInputRes;
+	    private JLabel labelInputSkl;
+	    private JLabel labelInputSpd;
+	    private JLabel labelInputStr;
+	    private JLabel labelJob;
+	    private JLabel labelLevel;
+	    private JLabel labelResult;
+	    private JLabel labelResultDef;
+	    private JLabel labelResultHP;
+	    private JLabel labelResultLuk;
+	    private JLabel labelResultMag;
+	    private JLabel labelResultRes;
+	    private JLabel labelResultSkl;
+	    private JLabel labelResultSpd;
+	    private JLabel labelResultStr;
+	    private JLabel labelRoute;
+	    private JLabel labelUnitType;
+	//All Panels
+	    private JPanel panelGraph;
+	    private JPanel panelInput;
+	    private JPanel panelResult;
+	    private JPanel finalGraph;
+	//THE BUTTON
+	    private JButton jButton2;    
     // End of variables declaration                   
 
 
@@ -76,7 +83,7 @@ public class MainUI extends javax.swing.JFrame {
         labelResult = new javax.swing.JLabel();
         inputLabel = new javax.swing.JLabel();
         panelInput = new javax.swing.JPanel();
-        boxJOb = new javax.swing.JComboBox();
+        boxJob = new javax.swing.JComboBox();
         labelCharacter = new javax.swing.JLabel();
         labelJob = new javax.swing.JLabel();
         boxCharacter = new javax.swing.JComboBox();
@@ -144,7 +151,7 @@ public class MainUI extends javax.swing.JFrame {
 
         panelInput.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        boxJOb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        boxJob.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         labelCharacter.setText("Character");
 
@@ -216,7 +223,7 @@ public class MainUI extends javax.swing.JFrame {
                                     .addComponent(labelJob, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(boxJOb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(boxJob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(boxCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(boxRoute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(boxLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,7 +260,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelInputLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {boxCharacter, boxJOb, boxLevel, boxRoute});
+        panelInputLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {boxCharacter, boxJob, boxLevel, boxRoute});
 
         panelInputLayout.setVerticalGroup(
             panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +280,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelJob)
-                    .addComponent(boxJOb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boxJob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelLevel)
