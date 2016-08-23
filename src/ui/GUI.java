@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import json.DataStorage;
+import logic.UnitController;
 
 public class GUI extends JFrame{
 
@@ -78,9 +82,10 @@ public class GUI extends JFrame{
 		
 //Option Window
 		JDialog optionPane;
+		JButton reclassButton;
+		JButton promoteButton;
 		JButton confirmButton;
-		JList jobHistory;
-		JList jobOptions;
+		JTable jobHistory;
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
@@ -113,6 +118,12 @@ public static void main(String[]args)
 
 public GUI()
 {
+	//MAKING THE HANDLERS
+	DataStorage data = DataStorage.getInstance();
+		data.ParseJsonCharacters();
+		data.ParseJsonJobs();
+	UnitController UnitController = new UnitController(data);
+	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
 	
@@ -311,14 +322,30 @@ public GUI()
 	
 	//ListPanel
 	JPanel listPanel = new JPanel();
-	jobHistory = new JList(conquestJobs);
-	jobHistory.setVisibleRowCount(4);
-	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	listPanel.add(new JScrollPane(jobHistory));
+	Border listBorder = BorderFactory.createTitledBorder("Job History");
+	listPanel.setBorder(listBorder);
 	
+	String[][] tableData = {{"test1", "test2"},{"test5","test6"}};
+	String[] columns = {"test3", "test4"};
+	jobHistory = new JTable(tableData, columns);
+	jobHistory.setPreferredScrollableViewportSize(new Dimension(200,200));
+	jobHistory.setFillsViewportHeight(true);
+	listPanel.add(new JScrollPane(jobHistory));
+
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
-		confirmButton = new JButton("Confirm");
+	Border modBorder = BorderFactory.createTitledBorder("Options");
+		modPanel.setBorder(modBorder);
+	modPanel.setLayout(new BoxLayout(modPanel, BoxLayout.PAGE_AXIS));
+	reclassButton = new JButton("Reclass");
+		ReclassOptionButtonHandler ReclassOptionButtonHandler = new ReclassOptionButtonHandler();
+		reclassButton.addActionListener(ReclassOptionButtonHandler);
+			modPanel.add(reclassButton);	
+	promoteButton = new JButton("Promote");
+		PromoteOptionButtonHandler PromoteOptionButtonHandler = new PromoteOptionButtonHandler();
+		promoteButton.addActionListener(PromoteOptionButtonHandler);
+			modPanel.add(promoteButton);
+	confirmButton = new JButton("Confirm");
 		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
 		confirmButton.addActionListener(CloseOptionButtonHandler);
 			modPanel.add(confirmButton);
@@ -330,8 +357,8 @@ public GUI()
 	
 	//Window
 	optionPane.setTitle("Character Options");
-	optionPane.setResizable(false);
-	optionPane.setSize(300,300);
+	optionPane.setResizable(true);
+	optionPane.setSize(600,300);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 
 }
@@ -352,6 +379,26 @@ public class OpenOptionButtonHandler implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		optionPane.setVisible(true);
+	}
+	
+}
+
+//RECLASS OPTIONS WINDOW BUTTON
+
+public class ReclassOptionButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+	}
+	
+}
+
+//PROMOTE OPTIONS WINDOW BUTTON
+
+public class PromoteOptionButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
 	}
 	
 }
