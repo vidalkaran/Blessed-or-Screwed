@@ -85,7 +85,8 @@ public class GUI extends JFrame{
 		JButton reclassButton;
 		JButton promoteButton;
 		JButton confirmButton;
-		JTable jobHistory;
+		JButton eternalSealButton;
+		JList jobHistory;
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
@@ -324,12 +325,11 @@ public GUI()
 	JPanel listPanel = new JPanel();
 	Border listBorder = BorderFactory.createTitledBorder("Job History");
 	listPanel.setBorder(listBorder);
+
+//Initializes Job History
+	jobHistory = new JList();
+	jobHistory.setSize(new Dimension(250,250));
 	
-	String[][] tableData = {{"test1", "test2"},{"test5","test6"}};
-	String[] columns = {"test3", "test4"};
-	jobHistory = new JTable(tableData, columns);
-	jobHistory.setPreferredScrollableViewportSize(new Dimension(200,200));
-	jobHistory.setFillsViewportHeight(true);
 	listPanel.add(new JScrollPane(jobHistory));
 
 	//ModifierPanel
@@ -345,6 +345,10 @@ public GUI()
 		PromoteOptionButtonHandler PromoteOptionButtonHandler = new PromoteOptionButtonHandler();
 		promoteButton.addActionListener(PromoteOptionButtonHandler);
 			modPanel.add(promoteButton);
+	eternalSealButton = new JButton("EternalSeal");
+		EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
+		eternalSealButton.addActionListener(EternalSealButtonHandler);
+			modPanel.add(eternalSealButton);
 	confirmButton = new JButton("Confirm");
 		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
 		confirmButton.addActionListener(CloseOptionButtonHandler);
@@ -403,6 +407,15 @@ public class PromoteOptionButtonHandler implements ActionListener
 	
 }
 
+//ETERNAL SEAL OPTIONS WINDOW BUTTON
+
+public class EternalSealButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+	}
+	
+}
 //CLOSE OPTIONS WINDOW BUTTON
 
 public class CloseOptionButtonHandler implements ActionListener
