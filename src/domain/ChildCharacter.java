@@ -8,6 +8,8 @@ public class ChildCharacter extends Character{
 	protected ArrayList<String> possibleParents;
 	protected String fixedParent;						// Name of the child character's fixed parent
 	protected String variedParent;
+	protected int chapterAcquired;
+	protected int startLevel;
 	
 	/*
 	public ChildCharacter(String name, String baseClass, boolean areYouABoy,boolean isChild,
@@ -27,6 +29,14 @@ public class ChildCharacter extends Character{
 		variedParent = this.variedParent;
 
 	}*/
+
+	public int getStartLevel() {
+		return startLevel;
+	}
+
+	public void setStartLevel(int startLevel) {
+		this.startLevel = startLevel;
+	}
 
 	public ArrayList<String> getPossibleParents() {
 		return possibleParents;

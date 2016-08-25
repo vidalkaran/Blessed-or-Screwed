@@ -42,7 +42,11 @@ public class Kana extends ChildCharacter{
 	public void setBane(String bane) {
 		this.bane = bane;
 	}
-
+	
+	public void setAreYouABoy(boolean areYouABoy) {
+		this.areYouABoy = areYouABoy;
+	}
+	
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);
 		String allMaxMods = Arrays.toString(maxMods);

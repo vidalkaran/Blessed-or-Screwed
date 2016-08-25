@@ -33,13 +33,13 @@ public static void main(String[]args)
 	//test.testUnit(Silas, Cavalier, "conquest");
 	
 	//This is testing UnitController
-	test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data);
+	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory);
 	
 	//This is testing calculating avg. stats
-	//test.testCalculateAvgStats(new Unit(Silas, Cavalier, "conquest"), data);
+	//test.testCalculateAvgStats(new Unit(Silas, Cavalier, "conquest"));
 	
 	//this is testing UnitController's buildUnit 
-	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, data, 15, inputStats);
+	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, 15, inputStats);
 
 	}
 	
@@ -50,31 +50,31 @@ public void testUnit(Character inputChar, Job inputJob, String Route)
 	newUnit.printUnit();
 }
 
-public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory, DataStorage inputData)
+public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory)
 {
-	UnitController UnitController = new UnitController(inputData);
-	Unit inputUnit = UnitController.buildUnit(inputChar, inputJob, Route);
+	UnitController unitController = UnitController.getInstance();
+	Unit inputUnit = unitController.buildUnit(inputChar, inputJob, Route);
 	
-	UnitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
-	UnitController.printLocalSheet();
+	unitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
+	unitController.printLocalSheet();
 }
 
-public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory, DataStorage inputData, int level, double[]inputStats)
+public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory, int level, double[]inputStats)
 {
-	UnitController UnitController = new UnitController(inputData);
-	Unit inputUnit = UnitController.buildUnit(inputChar, inputJob, Route, level, inputStats);
+	UnitController unitController = UnitController.getInstance();
+	Unit inputUnit = unitController.buildUnit(inputChar, inputJob, Route, level, inputStats);
 	
-	UnitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
-	UnitController.printLocalSheet();
+	unitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
+	unitController.printLocalSheet();
 }
 
-public void testCalculateAvgStats(Unit inputUnit, DataStorage inputData)
+public void testCalculateAvgStats(Unit inputUnit)
 {
-	UnitController UnitController = new UnitController(inputData);
+	UnitController unitController = UnitController.getInstance();
 
-	UnitController.addBaseClassMods(inputUnit);
+	unitController.addBaseClassMods(inputUnit);
 	inputUnit.printUnit();
-	UnitController.CalculateAverageStats(inputUnit, 12);
+	unitController.CalculateAverageStats(inputUnit, 12);
 	inputUnit.printUnit();
 }
 

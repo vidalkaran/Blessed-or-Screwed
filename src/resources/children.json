@@ -302,5 +302,5 @@
 		areYouABoy : false,
 		isChild : true,
 		fixedParent: "Hayato"
-	},
+	}
 ]
