@@ -19,10 +19,17 @@ public class UnitController {
 
 	private static UnitController instance = null;	// DataStorage singleton instance	
 	DataStorage data = DataStorage.getInstance(); //This is the data
-	private ArrayList<String> classHistory; //the class history, this is shared between the localUnitSheet and inputUnitSheet.
 	ArrayList<Unit> localUnitSheet = new ArrayList(); //this unitSheet is calculated to compare the input one against.
 	ArrayList<Unit> inputUnitSheet = new ArrayList(); //this is unitSheet that users will input. This is compared against localUnitSheet.
 	
+	//THIS IS WHERE THE CURRENT CHARACTER AND JOB ARE DEFINED AS PER THE GUI.
+	public Character currentChar;
+	public Job currentJob;
+	public String currentRoute;
+	public int currentLevel;
+	public double[] inputStats;
+	public ArrayList<String> classHistory; //the class history, this is shared between the localUnitSheet and inputUnitSheet.
+
 	// prevents instantiation
 	private UnitController() {
 		
@@ -35,39 +42,30 @@ public class UnitController {
 		}
 		return instance;
 	}
-	
-	//builds a unit and adds the baseclass mods, used for localSheet
-	public Unit buildUnit(Character inputCharacter, Job inputJob, String route)
-	{
-		Unit outputUnit = new Unit(inputCharacter, inputJob, route);
-		addBaseClassMods(outputUnit);
-		return outputUnit;
-	}
-	
-	//builds a unit and adjusts values based on player input, used for inputSheet
-	public Unit buildUnit(Character inputCharacter, Job inputJob, String route, int level, double[] inputStats)
-	{
-		Unit outputUnit = new Unit(inputCharacter, inputJob, route);
-		outputUnit.setLevel(level);
-		outputUnit.setBaseStats(inputStats);
-		return outputUnit;
-	}
-	
+
 	//BUILDS A LOCALUNITSHEET
-	public void buildLocalUnitSheet(Unit unit, ArrayList<String> inputClassHistory)
+	public void buildLocalUnitSheet()
 	{		
+		Unit localUnit = new Unit(currentChar, currentJob, currentRoute);
+		addBaseClassMods(localUnit);
 		localUnitSheet.clear();
-		buildSheet(unit, inputClassHistory, localUnitSheet, 0);
+		buildSheet(localUnit, classHistory, localUnitSheet, 0);
 	}
 	
 	//BUILDS A INPUTUNITSHEET
-	public void buildInputUnitSheet(Unit unit, ArrayList<String> inputClassHistory, int level, double[] inputStats)
+	public void buildInputUnitSheet()
 	{
+		Unit inputUnit = new Unit(currentChar, currentJob, currentRoute);
+		inputUnit.setLevel(currentLevel);
+		inputUnit.setBaseStats(inputStats);		
 		inputUnitSheet.clear();
-		buildSheet(unit, inputClassHistory, localUnitSheet, 0);
+		buildSheet(inputUnit, classHistory, localUnitSheet, 0);
 	}
+
 	
-//RECURSION WHAT :O
+//THIS IS THE MATH ZONE. BEWARE
+	
+	//RECURSION WHAT :O
 	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i)
 	{
 		Unit newUnit = (Unit)deepClone(unit); //this is the deep clone. Very important!!
@@ -123,14 +121,14 @@ public class UnitController {
 	}
 	
 	//this checks the job, and adjusts base, growths, and maxes accordingly.
-	public void checkJob(Unit unit, ArrayList<String> inputClassHistory, int loopCheck)
+	public void checkJob(Unit unit, ArrayList<String> inputClassHistory, int i)
 	{
-		if(inputClassHistory.get(loopCheck).equals(unit.getMyJob().getName()) != true)
+		if(inputClassHistory.get(i).equals(unit.getMyJob().getName()) != true)
 		{
 			Job newJob = new Job();
 			Job oldJob = new Job();
 
-			newJob = data.getJobs().get(inputClassHistory.get(loopCheck));
+			newJob = data.getJobs().get(inputClassHistory.get(i));
 			oldJob = unit.getMyJob();
 			
 			int[] newStatMods = newJob.getBaseStats();
@@ -138,10 +136,10 @@ public class UnitController {
 			
 			double[] unitBaseStats = unit.getBaseStats();
 			
-			for(int i = 0; i < newStatMods.length; i++)
+			for(int j = 0; j < newStatMods.length; j++)
 			{
-				newStatMods[i]-=oldStatMods[i];
-				unitBaseStats[i]+=newStatMods[i];
+				newStatMods[j]-=oldStatMods[j];
+				unitBaseStats[j]+=newStatMods[j];
 			}
 			unit.reClass(newJob);
 		}
@@ -174,6 +172,66 @@ public class UnitController {
 		}
 		
 	}
+	
+	
+//ALL GETTERS/SETTERS
+	public ArrayList<Unit> getLocalUnitSheet() {
+		return localUnitSheet;
+	}
 
+	public ArrayList<Unit> getInputUnitSheet() {
+		return inputUnitSheet;
+	}
+
+	public Character getCurrentChar() {
+		return currentChar;
+	}
+
+	public void setCurrentChar(Character currentChar) {
+		this.currentChar = currentChar;
+	}
+
+	public Job getCurrentJob() {
+		return currentJob;
+	}
+
+	public void setCurrentJob(Job currentJob) {
+		this.currentJob = currentJob;
+	}
+
+	public String getCurrentRoute() {
+		return currentRoute;
+	}
+
+	public void setCurrentRoute(String currentRoute) {
+		this.currentRoute = currentRoute;
+	}
+
+	public int getCurrentLevel() {
+		return currentLevel;
+	}
+
+	public void setCurrentLevel(int currentLevel) {
+		this.currentLevel = currentLevel;
+	}
+
+	public double[] getInputStats() {
+		return inputStats;
+	}
+
+	public void setInputStats(double[] inputStats) {
+		this.inputStats = inputStats;
+	}
+
+	public ArrayList<String> getClassHistory() {
+		return classHistory;
+	}
+
+	public void setClassHistory(ArrayList<String> classHistory) {
+		this.classHistory = classHistory;
+	}
+
+	
+	
 }
 

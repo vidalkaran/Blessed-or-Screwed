@@ -3,6 +3,7 @@ package json;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import domain.Kana;
 import domain.Job;
 
 // THIS CLASS IS A SINGLETON
-public class DataStorage {
+public class DataStorage implements Serializable{
 	
 	// Enums for accessing the arrays of: Character BaseStats, Character MaxMods, Character Growths
 	// Job BaseStats, Job MaxStats, and JobGrowths
