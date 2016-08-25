@@ -14,9 +14,7 @@ public static void main(String[]args)
 {
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
-	data.ParseJsonJobs();
-	
-	UnitControllerTester test = new UnitControllerTester();
+	data.ParseJsonJobs();	
 	
 	Character Silas = data.getCharacters().get("Silas");
 	Job Cavalier = data.getJobs().get("Cavalier");
@@ -29,54 +27,20 @@ public static void main(String[]args)
 	ClassHistory.add("Songstress");
 	ClassHistory.add("Songstress");
 
-	//This is just testing Unit.java.
-	//test.testUnit(Silas, Cavalier, "conquest");
+	UnitController unitController = UnitController.getInstance();
 	
-	//This is testing UnitController
-	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory);
+	unitController.setCurrentChar(Silas);
+	unitController.setCurrentLevel(6);
+	unitController.setCurrentJob(Cavalier);
+	unitController.setCurrentRoute("Conquest");
+	unitController.setClassHistory(ClassHistory);
 	
-	//This is testing calculating avg. stats
-	//test.testCalculateAvgStats(new Unit(Silas, Cavalier, "conquest"));
+	unitController.buildLocalUnitSheet();
+	unitController.printLocalSheet();
 	
-	//this is testing UnitController's buildUnit 
-	//test.testUnitController(Silas, Cavalier, "conquest", ClassHistory, 15, inputStats);
-
 	}
 	
-//This method is just testing unit.java
-public void testUnit(Character inputChar, Job inputJob, String Route)
-{
-	Unit newUnit = new Unit(inputChar, inputJob, Route);
-	newUnit.printUnit();
-}
 
-public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory)
-{
-	UnitController unitController = UnitController.getInstance();
-	Unit inputUnit = unitController.buildUnit(inputChar, inputJob, Route);
-	
-	unitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
-	unitController.printLocalSheet();
-}
-
-public void testUnitController(Character inputChar, Job inputJob, String Route, ArrayList<String> inputClassHistory, int level, double[]inputStats)
-{
-	UnitController unitController = UnitController.getInstance();
-	Unit inputUnit = unitController.buildUnit(inputChar, inputJob, Route, level, inputStats);
-	
-	unitController.buildLocalUnitSheet(inputUnit, inputClassHistory);
-	unitController.printLocalSheet();
-}
-
-public void testCalculateAvgStats(Unit inputUnit)
-{
-	UnitController unitController = UnitController.getInstance();
-
-	unitController.addBaseClassMods(inputUnit);
-	inputUnit.printUnit();
-	unitController.CalculateAverageStats(inputUnit, 12);
-	inputUnit.printUnit();
-}
 
 /*
 Silas should look like this:
