@@ -93,17 +93,17 @@ static String[] routes = {"Conquest", "Birthright", "Revelations"};
 
 static String[] conquestCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"BestGirl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
+		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
 
 static String[] birthrightCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "Takumi", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
+		"Hayato", "Oboro", "Hinata", "NOHRIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
 
 static String[] revelationsCharacters= {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "Takumi", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
+		"Hayato", "Oboro", "Hinata", "NORHIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"BestGirl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
+		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
 
 static String[] conquestJobs = {"TEST1", "TEST2", "TEST3"};
 

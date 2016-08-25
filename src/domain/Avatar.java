@@ -40,6 +40,10 @@ public class Avatar extends Character{
 		this.bane = bane;
 	}
 	
+	public void setAreYouABoy(boolean areYouABoy) {
+		this.areYouABoy = areYouABoy;
+	}
+	
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);
 		String allMaxMods = Arrays.toString(maxMods);
