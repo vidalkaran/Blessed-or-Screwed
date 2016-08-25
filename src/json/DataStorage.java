@@ -52,6 +52,11 @@ public class DataStorage {
 	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
 	private final String[] HOSHIDO_ROYALS_LOCKED = {"Hinoka", "Sakura"};
 	
+	// prevents instantiation of the class
+	private DataStorage() {
+		
+	}
+	
 	// establish singleton pattern - only one one instance of DataStorage to exist in the project
 	public static DataStorage getInstance() {
 		if(instance == null) {

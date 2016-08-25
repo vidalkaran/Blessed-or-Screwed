@@ -17,14 +17,23 @@ import domain.Job;
 
 public class UnitController {
 
+	private static UnitController instance = null;	// DataStorage singleton instance	
 	DataStorage data = DataStorage.getInstance(); //This is the data
 	private ArrayList<String> classHistory; //the class history, this is shared between the localUnitSheet and inputUnitSheet.
 	ArrayList<Unit> localUnitSheet = new ArrayList(); //this unitSheet is calculated to compare the input one against.
 	ArrayList<Unit> inputUnitSheet = new ArrayList(); //this is unitSheet that users will input. This is compared against localUnitSheet.
 	
-	public UnitController(DataStorage inputData)
-	{
-		data = inputData;
+	// prevents instantiation
+	private UnitController() {
+		
+	}
+	
+	// establish singleton pattern - only one one instance of UnitController to exist in the project
+	public static UnitController getInstance() {
+		if(instance == null) {
+			instance = new UnitController();
+		}
+		return instance;
 	}
 	
 	//builds a unit and adds the baseclass mods, used for localSheet
