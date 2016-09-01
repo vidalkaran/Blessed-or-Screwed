@@ -1,12 +1,17 @@
 package ui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import json.DataStorage;
+import logic.UnitController;
 
 public class GUI extends JFrame{
 
@@ -78,22 +83,25 @@ public class GUI extends JFrame{
 		
 //Option Window
 		JDialog optionPane;
+		JButton reclassButton;
+		JButton promoteButton;
 		JButton confirmButton;
+		JButton eternalSealButton;
 		JList jobHistory;
-		JList jobOptions;
+		String[] ClassHistory;
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
 
-static String[] conquestCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+static String[] conquestCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
 
-static String[] birthrightCharacters = {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+static String[] birthrightCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
 		"Hayato", "Oboro", "Hinata", "NOHRIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
 
-static String[] revelationsCharacters= {"Avatar", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
+static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
 		"Hayato", "Oboro", "Hinata", "NORHIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
@@ -112,7 +120,7 @@ public static void main(String[]args)
 }
 
 public GUI()
-{
+{	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
 	
@@ -128,6 +136,8 @@ public GUI()
 		
 		inputChar = new JLabel("Char: ");
 		inputCharBox = new JComboBox(conquestCharacters);
+		CharBoxHandler CharBoxHandler = new CharBoxHandler();
+		inputCharBox.addActionListener(CharBoxHandler);
 			inputPanel1.add(inputChar);
 			inputPanel1.add(inputCharBox);
 								
@@ -311,14 +321,42 @@ public GUI()
 	
 	//ListPanel
 	JPanel listPanel = new JPanel();
-	jobHistory = new JList(conquestJobs);
-	jobHistory.setVisibleRowCount(4);
-	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	listPanel.add(new JScrollPane(jobHistory));
-	
+	Border listBorder = BorderFactory.createTitledBorder("Job History");
+	listPanel.setBorder(listBorder);
+
+//Initializes Job History
+			jobHistory = new JList();
+			jobHistory.setSize(new Dimension(250,250));
+			
+			String[] tempArray = new String[ClassHistory.length];
+			
+			for(int i = 0; i <ClassHistory.length; i++)
+			{
+				tempArray[i] = ClassHistory[i];
+			}
+			
+			jobHistory.setListData(tempArray);
+			
+			listPanel.add(new JScrollPane(jobHistory));
+
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
-		confirmButton = new JButton("Confirm");
+	Border modBorder = BorderFactory.createTitledBorder("Options");
+		modPanel.setBorder(modBorder);
+	modPanel.setLayout(new BoxLayout(modPanel, BoxLayout.PAGE_AXIS));
+	reclassButton = new JButton("Reclass");
+		ReclassOptionButtonHandler ReclassOptionButtonHandler = new ReclassOptionButtonHandler();
+		reclassButton.addActionListener(ReclassOptionButtonHandler);
+			modPanel.add(reclassButton);	
+	promoteButton = new JButton("Promote");
+		PromoteOptionButtonHandler PromoteOptionButtonHandler = new PromoteOptionButtonHandler();
+		promoteButton.addActionListener(PromoteOptionButtonHandler);
+			modPanel.add(promoteButton);
+	eternalSealButton = new JButton("EternalSeal");
+		EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
+		eternalSealButton.addActionListener(EternalSealButtonHandler);
+			modPanel.add(eternalSealButton);
+	confirmButton = new JButton("Confirm");
 		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
 		confirmButton.addActionListener(CloseOptionButtonHandler);
 			modPanel.add(confirmButton);
@@ -330,8 +368,8 @@ public GUI()
 	
 	//Window
 	optionPane.setTitle("Character Options");
-	optionPane.setResizable(false);
-	optionPane.setSize(300,300);
+	optionPane.setResizable(true);
+	optionPane.setSize(600,300);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 
 }
@@ -356,6 +394,35 @@ public class OpenOptionButtonHandler implements ActionListener
 	
 }
 
+//RECLASS OPTIONS WINDOW BUTTON
+
+public class ReclassOptionButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+	}
+	
+}
+
+//PROMOTE OPTIONS WINDOW BUTTON
+
+public class PromoteOptionButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+	}
+	
+}
+
+//ETERNAL SEAL OPTIONS WINDOW BUTTON
+
+public class EternalSealButtonHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e) 
+	{
+	}
+	
+}
 //CLOSE OPTIONS WINDOW BUTTON
 
 public class CloseOptionButtonHandler implements ActionListener
@@ -386,4 +453,39 @@ public class ComboBoxHandler implements ActionListener
 	}
 }
 
+public class CharBoxHandler implements ActionListener
+{
+	public void actionPerformed(ActionEvent e)
+	{
+		DataStorage data = DataStorage.getInstance();
+		data.ParseJsonCharacters();
+		data.ParseJsonJobs();
+		
+		UnitController unitController = UnitController.getInstance();
+		
+		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem());
+		String tempRoute = inputRouteBox.getSelectedItem().toString();
+		int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
+		ArrayList<String> tempClassHistory = new ArrayList();
+		for(int i = tempLevel; i<20; i++)
+		{
+			tempClassHistory.add(tempChar.getBaseClass());
+		}
+		
+		unitController.setCurrentChar(tempChar);
+			System.out.println("Character: "+tempChar);
+		unitController.setCurrentJob(data.getJobs().get(tempChar.getBaseClass()));
+			System.out.println("Base Class: "+data.getJobs().get(tempChar.getBaseClass()));
+		unitController.setCurrentLevel(tempLevel);	
+			System.out.println("Base Level: "+tempLevel);
+		unitController.setCurrentRoute(tempRoute);
+			System.out.println("Route: "+tempRoute);
+		unitController.setClassHistory(tempClassHistory);
+			for(int i = 0; i<tempClassHistory.size();i++)
+			{
+				System.out.println("Lvl "+(tempLevel+i)+". "+tempClassHistory.get(i));
+			}
+	ClassHistory = tempClassHistory.toArray(new String[tempClassHistory.size()]);
+	}
+}
 }
