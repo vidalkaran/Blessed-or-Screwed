@@ -88,7 +88,6 @@ public class GUI extends JFrame{
 		JButton confirmButton;
 		JButton eternalSealButton;
 		JList jobHistory;
-		String[] ClassHistory;
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
@@ -121,12 +120,17 @@ public static void main(String[]args)
 
 public GUI()
 {	
+	UnitController unitController = UnitController.getInstance();
+	DataStorage data = DataStorage.getInstance();
+	data.ParseJsonCharacters();
+	data.ParseJsonJobs();
+	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
 	
 	//Input Panel 1 (Contains Character, Job, and Route modifiers)
 	JPanel inputPanel1 = new JPanel();
-
+	
 		inputRoute = new JLabel("Route: ");
 		inputRouteBox = new JComboBox(routes);
 		ComboBoxHandler ComboBoxHandler = new ComboBoxHandler();
@@ -325,19 +329,10 @@ public GUI()
 	listPanel.setBorder(listBorder);
 
 //Initializes Job History
-			jobHistory = new JList();
-			jobHistory.setSize(new Dimension(250,250));
-			
-			String[] tempArray = new String[ClassHistory.length];
-			
-			for(int i = 0; i <ClassHistory.length; i++)
-			{
-				tempArray[i] = ClassHistory[i];
-			}
-			
-			jobHistory.setListData(tempArray);
-			
-			listPanel.add(new JScrollPane(jobHistory));
+		jobHistory = new JList();
+		jobHistory.setSize(new Dimension(250,250));
+		jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+		listPanel.add(new JScrollPane(jobHistory));
 
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
@@ -453,39 +448,50 @@ public class ComboBoxHandler implements ActionListener
 	}
 }
 
+//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
 public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
 	{
 		DataStorage data = DataStorage.getInstance();
+//Not sure if I need these
 		data.ParseJsonCharacters();
 		data.ParseJsonJobs();
 		
 		UnitController unitController = UnitController.getInstance();
 		
-		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem());
+		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+ 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
 		String tempRoute = inputRouteBox.getSelectedItem().toString();
 		int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
+		
 		ArrayList<String> tempClassHistory = new ArrayList();
-		for(int i = tempLevel; i<20; i++)
+		int levelMod = 0;
+		
+		for(int i = tempLevel; i<=20; i++)
 		{
-			tempClassHistory.add(tempChar.getBaseClass());
+			String input = "Lvl "+(tempLevel+levelMod)+". "+tempChar.getBaseClass();
+			tempClassHistory.add(input);
+			levelMod++;
 		}
 		
+		Object[] listData = tempClassHistory.toArray();
+		
+		jobHistory.setListData(listData);
+		
 		unitController.setCurrentChar(tempChar);
-			System.out.println("Character: "+tempChar);
-		unitController.setCurrentJob(data.getJobs().get(tempChar.getBaseClass()));
-			System.out.println("Base Class: "+data.getJobs().get(tempChar.getBaseClass()));
+			System.out.println("Character: "+unitController.getCurrentChar().getName());
+		unitController.setCurrentJob(tempJob);
+			System.out.println("Base Class: "+unitController.getCurrentJob().getName());
 		unitController.setCurrentLevel(tempLevel);	
-			System.out.println("Base Level: "+tempLevel);
+			System.out.println("Base Level: "+ unitController.getCurrentLevel());
 		unitController.setCurrentRoute(tempRoute);
-			System.out.println("Route: "+tempRoute);
+			System.out.println("Route: "+unitController.getCurrentRoute());
 		unitController.setClassHistory(tempClassHistory);
 			for(int i = 0; i<tempClassHistory.size();i++)
 			{
-				System.out.println("Lvl "+(tempLevel+i)+". "+tempClassHistory.get(i));
-			}
-	ClassHistory = tempClassHistory.toArray(new String[tempClassHistory.size()]);
+				System.out.println(tempClassHistory.get(i));
+			}			
 	}
 }
 }

@@ -230,8 +230,5 @@ public class UnitController {
 	public void setClassHistory(ArrayList<String> classHistory) {
 		this.classHistory = classHistory;
 	}
-
-	
-	
 }
 
