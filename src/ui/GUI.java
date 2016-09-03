@@ -88,6 +88,16 @@ public class GUI extends JFrame{
 		JButton confirmButton;
 		JButton eternalSealButton;
 		JList jobHistory;
+	//reclassWindow
+		JDialog reclassPane;
+		JLabel reclassLevel;
+		JLabel reclassClass;
+		JTextField reclassTextField;
+		JList reclassClasses;
+		JButton reclassConfirm;
+		JButton reclassCancel;
+	//promoteWindow
+	//EternalSeal window mayyybe?
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
@@ -106,12 +116,7 @@ static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
 
-static String[] conquestJobs = {"TEST1", "TEST2", "TEST3"};
-
-static String[] birthrightJobs;
-
-static String[] revelationsJobs;
-
+static String[] jobs = {"Songstress"};
 		
 public static void main(String[]args)
 {
@@ -321,7 +326,7 @@ public GUI()
 	this.setVisible(true);
 
 //CHARACTER OPTIONS DIALOG
-	optionPane = new JDialog();
+	optionPane = new JDialog(this, true);
 	
 	//ListPanel
 	JPanel listPanel = new JPanel();
@@ -356,6 +361,42 @@ public GUI()
 		confirmButton.addActionListener(CloseOptionButtonHandler);
 			modPanel.add(confirmButton);
 	
+//RECLASS PANEL
+	reclassPane  = new JDialog(optionPane, true);
+	JPanel reClassPanel = new JPanel();
+	
+	JPanel ReClassLevelPanel = new JPanel();
+		reclassLevel = new JLabel("Level:");
+		reclassTextField = new JTextField(4);
+		ReClassLevelPanel.add(reclassLevel);
+		ReClassLevelPanel.add(reclassTextField);
+	JPanel ReClassClassPanel = new JPanel();
+		reclassClass = new JLabel("Class: ");
+		//TEMPORARY, THE CHRACTER OPTION BOX SHOULD HANDLE THIS SOMEHOW...
+		Object[] reclassJobs= jobs;
+		reclassClasses = new JList(reclassJobs);
+		ReClassClassPanel.add(reclassClass);
+		ReClassClassPanel.add(new JScrollPane(reclassClasses));
+	JPanel ReClassButtonPanel = new JPanel();
+		reclassConfirm = new JButton("Confirm");
+		ReClassConfirmButtonHandler ReClassConfirmButtonHandler = new ReClassConfirmButtonHandler();
+		reclassConfirm.addActionListener(ReClassConfirmButtonHandler);
+		ReClassButtonPanel.add(reclassConfirm);
+		reclassCancel = new JButton("Cancel");
+		ReClassCancelButtonHandler ReClassCancelButtonHandler = new ReClassCancelButtonHandler();
+		reclassCancel.addActionListener(ReClassCancelButtonHandler);
+		ReClassButtonPanel.add(reclassCancel);
+		
+	reClassPanel.add(ReClassLevelPanel);
+	reClassPanel.add(ReClassClassPanel);
+	reClassPanel.add(ReClassButtonPanel);
+	reClassPanel.setLayout(new BoxLayout(reClassPanel, BoxLayout.PAGE_AXIS));
+	reclassPane.add(reClassPanel);
+	reclassPane.setTitle("Reclass");
+	reclassPane.setResizable(true);
+	reclassPane.setSize(300,300);
+	reclassPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+
 	//Add all Components
 	optionPane.setLayout(new FlowLayout());
 	optionPane.add(listPanel);
@@ -369,58 +410,61 @@ public GUI()
 
 }
 
-//CALCULATE BUTTON
-public class CalculateButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+//ALL THE BUTTON HANDLERS
+
+//OPTIONWINDOW HANDLERS
+	//OPEN OPTIONS WINDOW BUTTON
+	public class OpenOptionButtonHandler implements ActionListener
 	{
-		//TO DO
+		public void actionPerformed(ActionEvent e) 
+		{
+			optionPane.setVisible(true);
+		}
+		
 	}
-	
-}
-
-//OPEN OPTIONS WINDOW BUTTON
-public class OpenOptionButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+	//RECLASS OPTIONS WINDOW BUTTON
+	public class ReclassOptionButtonHandler implements ActionListener
 	{
-		optionPane.setVisible(true);
+		public void actionPerformed(ActionEvent e) 
+		{
+			reclassPane.setVisible(true);
+		}
+		
 	}
-	
-}
-
-//RECLASS OPTIONS WINDOW BUTTON
-
-public class ReclassOptionButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+		//Reclass Confirm
+			public class ReClassConfirmButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					
+				}
+			}
+		//Reclass Close
+			public class ReClassCancelButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					reclassPane.setVisible(false);
+				}
+			}
+	//PROMOTE OPTIONS WINDOW BUTTON
+	public class PromoteOptionButtonHandler implements ActionListener
 	{
+		public void actionPerformed(ActionEvent e) 
+		{
+		}
+		
 	}
-	
-}
-
-//PROMOTE OPTIONS WINDOW BUTTON
-
-public class PromoteOptionButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+	//ETERNAL SEAL OPTIONS WINDOW BUTTON
+	public class EternalSealButtonHandler implements ActionListener
 	{
+		public void actionPerformed(ActionEvent e) 
+		{
+		}
+		
 	}
-	
-}
-
-//ETERNAL SEAL OPTIONS WINDOW BUTTON
-
-public class EternalSealButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
-	{
-	}
-	
-}
-//CLOSE OPTIONS WINDOW BUTTON
-
-public class CloseOptionButtonHandler implements ActionListener
+	//CLOSE OPTIONS WINDOW BUTTON
+	public class CloseOptionButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -428,46 +472,53 @@ public class CloseOptionButtonHandler implements ActionListener
 	}
 	
 }
-//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
-public class ComboBoxHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e)
+
+//MAIN WINDOW HANDLERS
+	//CALCULATE BUTTON
+	public class CalculateButtonHandler implements ActionListener
 	{
-		if(inputRouteBox.getSelectedItem() == "Conquest")
+		public void actionPerformed(ActionEvent e) 
 		{
-		    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			//TO DO
 		}
-		else if(inputRouteBox.getSelectedItem() == "Birthright")
+		
+	}
+	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
+	public class ComboBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
 		{
-		    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
-		}
-		if(inputRouteBox.getSelectedItem() == "Revelations")
-		{
-		    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			if(inputRouteBox.getSelectedItem() == "Conquest")
+			{
+			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			}
+			else if(inputRouteBox.getSelectedItem() == "Birthright")
+			{
+			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+			}
+			if(inputRouteBox.getSelectedItem() == "Revelations")
+			{
+			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			}
 		}
 	}
-}
-
-//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
-public class CharBoxHandler implements ActionListener
+	//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
+	public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
 	{
-		DataStorage data = DataStorage.getInstance();
-//Not sure if I need these
-		data.ParseJsonCharacters();
-		data.ParseJsonJobs();
-		
+		DataStorage data = DataStorage.getInstance();		
 		UnitController unitController = UnitController.getInstance();
 		
+		//Storing the Character, Job, Route, and BaseLevel
 		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
  		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
 		String tempRoute = inputRouteBox.getSelectedItem().toString();
 		int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
 		
+		//Making the class history
 		ArrayList<String> tempClassHistory = new ArrayList();
 		int levelMod = 0;
-		
 		for(int i = tempLevel; i<=20; i++)
 		{
 			String input = "Lvl "+(tempLevel+levelMod)+". "+tempChar.getBaseClass();
@@ -475,23 +526,26 @@ public class CharBoxHandler implements ActionListener
 			levelMod++;
 		}
 		
+		//Send jobhistory to UI
 		Object[] listData = tempClassHistory.toArray();
-		
 		jobHistory.setListData(listData);
 		
+		//Update UnitController
 		unitController.setCurrentChar(tempChar);
-			System.out.println("Character: "+unitController.getCurrentChar().getName());
 		unitController.setCurrentJob(tempJob);
-			System.out.println("Base Class: "+unitController.getCurrentJob().getName());
 		unitController.setCurrentLevel(tempLevel);	
-			System.out.println("Base Level: "+ unitController.getCurrentLevel());
 		unitController.setCurrentRoute(tempRoute);
-			System.out.println("Route: "+unitController.getCurrentRoute());
 		unitController.setClassHistory(tempClassHistory);
-			for(int i = 0; i<tempClassHistory.size();i++)
-			{
-				System.out.println(tempClassHistory.get(i));
-			}			
+		
+		//Debug print to console
+		System.out.println("Character: "+unitController.getCurrentChar().getName());
+		System.out.println("Base Class: "+unitController.getCurrentJob().getName());
+		System.out.println("Base Level: "+ unitController.getCurrentLevel());
+		System.out.println("Route: "+unitController.getCurrentRoute());
+		for(int i = 0; i<tempClassHistory.size();i++)
+		{
+			System.out.println(tempClassHistory.get(i));
+		}			
 	}
 }
 }

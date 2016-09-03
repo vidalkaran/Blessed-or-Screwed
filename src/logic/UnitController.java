@@ -173,6 +173,16 @@ public class UnitController {
 		
 	}
 	
+	//Method for reclassing, only affects jobHistory
+	public void ReClass(String newJob, int changeLevel)
+	{
+		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
+		
+		for(int i = 0; i<classHistory.size(); i++)
+		{
+			classHistory.set((i+levelVector), newJob);
+		}
+	}
 	
 //ALL GETTERS/SETTERS
 	public ArrayList<Unit> getLocalUnitSheet() {
