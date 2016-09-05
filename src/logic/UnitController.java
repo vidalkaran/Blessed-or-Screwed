@@ -174,13 +174,14 @@ public class UnitController {
 	}
 	
 	//Method for reclassing, only affects jobHistory
-	public void ReClass(String newJob, int changeLevel)
+	public void reclass(String newJob, int changeLevel)
 	{
 		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
 		
-		for(int i = 0; i<classHistory.size(); i++)
+		for(int i = 0; i<(classHistory.size()-levelVector); i++)
 		{
-			classHistory.set((i+levelVector), newJob);
+			String input = ("Lvl "+(changeLevel+i)+". "+newJob);
+			classHistory.set((levelVector+i), input);
 		}
 	}
 	
