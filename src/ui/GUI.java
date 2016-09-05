@@ -409,6 +409,9 @@ public GUI()
 	optionPane.setResizable(true);
 	optionPane.setSize(600,300);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
+	
+	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
+	inputCharBox.setSelectedIndex(1);
 
 }
 
