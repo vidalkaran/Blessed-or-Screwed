@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -375,6 +376,7 @@ public GUI()
 		//TEMPORARY, THE CHRACTER OPTION BOX SHOULD HANDLE THIS SOMEHOW...
 		Object[] reclassJobs= jobs;
 		reclassClasses = new JList(reclassJobs);
+		reclassClasses.setSelectedIndex(0);
 		ReClassClassPanel.add(reclassClass);
 		ReClassClassPanel.add(new JScrollPane(reclassClasses));
 	JPanel ReClassButtonPanel = new JPanel();
@@ -436,7 +438,35 @@ public GUI()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
+					UnitController unitcontroller = UnitController.getInstance();
+					int newLevel = 0 ;
+					String newJob = reclassClasses.getSelectedValue().toString();
+
+					try
+					{
+						newLevel = Integer.parseInt(reclassTextField.getText());
+					}
+					catch(NumberFormatException excep)
+					{
+						JOptionPane.showMessageDialog(GUI.this, "Please Enter a Number", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 					
+					if(newLevel <= 20)
+					{
+					
+					unitcontroller.reclass(newJob, newLevel);
+					
+					Object[] listData = unitcontroller.getClassHistory().toArray();
+					jobHistory.setListData(listData);
+					
+					reclassTextField.setBackground(Color.WHITE);
+					reclassPane.dispose();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(GUI.this, "Please Enter a Number between "+unitcontroller.getCurrentLevel()+" and 20", "Error", JOptionPane.ERROR_MESSAGE);
+						reclassTextField.setBackground(Color.RED);
+					}
 				}
 			}
 		//Reclass Close
@@ -444,7 +474,7 @@ public GUI()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					reclassPane.setVisible(false);
+					reclassPane.dispose();
 				}
 			}
 	//PROMOTE OPTIONS WINDOW BUTTON
