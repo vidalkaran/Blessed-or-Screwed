@@ -26,8 +26,6 @@ public class UnitController {
 	public Character currentChar;
 	public Job currentJob;
 	public String currentRoute;
-	public int currentLevel;
-	public double[] inputStats;
 	public ArrayList<String> classHistory; //the class history, this is shared between the localUnitSheet and inputUnitSheet.
 
 	// prevents instantiation
@@ -53,13 +51,13 @@ public class UnitController {
 	}
 	
 	//BUILDS A INPUTUNITSHEET
-	public void buildInputUnitSheet()
+	public void buildInputUnitSheet(int inputLevel, double[] inputStats)
 	{
 		Unit inputUnit = new Unit(currentChar, currentJob, currentRoute);
-		inputUnit.setLevel(currentLevel);
+		inputUnit.setLevel(inputLevel);
 		inputUnit.setBaseStats(inputStats);		
 		inputUnitSheet.clear();
-		buildSheet(inputUnit, classHistory, localUnitSheet, 0);
+		buildSheet(inputUnit, classHistory, inputUnitSheet, 0);
 	}
 
 	
@@ -78,7 +76,7 @@ public class UnitController {
 		{
 			inputSheet.add(newUnit);
 			i++;
-			buildSheet(newUnit, inputClassHistory, localUnitSheet, i);
+			buildSheet(newUnit, inputClassHistory, inputSheet, i);
 		}
 		else //this does the fun stuff!
 		{
@@ -86,7 +84,7 @@ public class UnitController {
 			CalculateAverageStats(newUnit, (newUnit.getLevel()+1));
 			inputSheet.add(newUnit);
 			i++;
-			buildSheet(newUnit, inputClassHistory, localUnitSheet, i);
+			buildSheet(newUnit, inputClassHistory, inputSheet, i);
 		}
 	}
 	
@@ -167,8 +165,20 @@ public class UnitController {
 	{
 		for(int i = 0; i<localUnitSheet.size();i++)
 		{
+			System.out.println("--PRINTING LOCAL SHEET--");
 			System.out.println("--------------------------------------------");
 			localUnitSheet.get(i).printUnit();	
+		}
+		
+	}
+	
+	public void printInputSheet()
+	{
+		for(int i = 0; i<inputUnitSheet.size();i++)
+		{
+			System.out.println("--PRINTING INPUT SHEET--");
+			System.out.println("--------------------------------------------");
+			inputUnitSheet.get(i).printUnit();	
 		}
 		
 	}
@@ -180,8 +190,7 @@ public class UnitController {
 		
 		for(int i = 0; i<(classHistory.size()-levelVector); i++)
 		{
-			String input = ("Lvl "+(changeLevel+i)+". "+newJob);
-			classHistory.set((levelVector+i), input);
+			classHistory.set((levelVector+i), newJob);
 		}
 	}
 	
@@ -218,26 +227,18 @@ public class UnitController {
 		this.currentRoute = currentRoute;
 	}
 
-	public int getCurrentLevel() {
-		return currentLevel;
-	}
-
-	public void setCurrentLevel(int currentLevel) {
-		this.currentLevel = currentLevel;
-	}
-
-	public double[] getInputStats() {
-		return inputStats;
-	}
-
-	public void setInputStats(double[] inputStats) {
-		this.inputStats = inputStats;
-	}
-
 	public ArrayList<String> getClassHistory() {
 		return classHistory;
 	}
 
+	public String[] getClassArray() {
+		String[] newClassHistory = new String[classHistory.size()];
+			for(int i = 0; i< classHistory.size();i++)
+			{
+				newClassHistory[i] = "Lvl "+(currentChar.getBaseStats().getStats(currentRoute, 0)+i)+". "+classHistory.get(i);
+			}
+		return newClassHistory;
+	}
 	public void setClassHistory(ArrayList<String> classHistory) {
 		this.classHistory = classHistory;
 	}

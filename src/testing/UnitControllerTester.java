@@ -21,40 +21,35 @@ public static void main(String[]args)
 	double[] inputStats = {20,20,20,20,20,20,20,20};
 	
 	ArrayList<String> ClassHistory = new ArrayList();
-	ClassHistory.add("Lvl 6. Cavalier");// level 6
-	ClassHistory.add("Lvl 7. Cavalier");// level 7
-	ClassHistory.add("Lvl 8. Cavalier");// level 8
-	ClassHistory.add("Lvl 9. Cavalier");// level 9
-	ClassHistory.add("Lvl 10. Cavalier");// level 10
-	ClassHistory.add("Lvl 11. Cavalier");// level 11
-	ClassHistory.add("Lvl 12. Cavalier");// level 12
-	ClassHistory.add("Lvl 13. Cavalier");// level 13
-	ClassHistory.add("Lvl 14. Cavalier");// level 14
-	ClassHistory.add("Lvl 15. Cavalier");// level 15
+	ClassHistory.add("Cavalier");// level 6
+	ClassHistory.add("Cavalier");// level 7
+	ClassHistory.add("Cavalier");// level 8
+	ClassHistory.add("Cavalier");// level 9
+	ClassHistory.add("Cavalier");// level 10
+	ClassHistory.add("Cavalier");// level 11
+	ClassHistory.add("Cavalier");// level 12
+	ClassHistory.add("Cavalier");// level 13
+	ClassHistory.add("Cavalier");// level 14
+	ClassHistory.add("Cavalier");// level 15
 
 	UnitController unitController = UnitController.getInstance();
 	
 	unitController.setCurrentChar(Silas);
-	unitController.setCurrentLevel(6);
 	unitController.setCurrentJob(Cavalier);
 	unitController.setCurrentRoute("Conquest");
 	unitController.setClassHistory(ClassHistory);
 	
 	//Testing Reclass
-	unitController.reclass("Dancer", 10);
-	
-	System.out.println("CLASS HISTORY: ");	
-	for(int i = 0; i<ClassHistory.size();i++)
-	{
-		System.out.println(i+", "+ClassHistory.get(i));
-		System.out.println("Done");
-	}
-	
+//	unitController.reclass("Dancer", 10);
 	
 	//TESTING CALCULATIONS
 //	unitController.buildLocalUnitSheet();
 //	unitController.printLocalSheet();
 	
+	//TESTING CALCULATIONS
+	unitController.buildInputUnitSheet(10, inputStats);
+	unitController.printInputSheet();
+
 	}
 	
 
