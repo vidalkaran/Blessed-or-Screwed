@@ -33,8 +33,8 @@ public class GUI extends JFrame{
 	
 		JComboBox inputCharBox;
 		JComboBox inputRouteBox;
-	
-		JTextField inputLevelField;
+		JComboBox inputLevelBox;
+
 		JTextField inputHPField;
 		JTextField inputStrField;
 		JTextField inputMagField;
@@ -93,7 +93,7 @@ public class GUI extends JFrame{
 		JDialog reclassPane;
 		JLabel reclassLevel;
 		JLabel reclassClass;
-		JTextField reclassTextField;
+		JComboBox reclassLevelBox;
 		JList reclassClasses;
 		JButton reclassConfirm;
 		JButton reclassCancel;
@@ -152,51 +152,53 @@ public GUI()
 			inputPanel1.add(inputCharBox);
 								
 		inputLevel = new JLabel("Level: ");
-		inputLevelField = new JTextField(" ", 2);
+		inputLevelBox = new JComboBox();
+		LevelBoxHandler LevelBoxHandler = new LevelBoxHandler();
+		inputLevelBox.addActionListener(LevelBoxHandler);
 			inputPanel1.add(inputLevel);
-			inputPanel1.add(inputLevelField);
+			inputPanel1.add(inputLevelBox);
 
 	//Input Panel 2 (Contains all the stat mods)
 	JPanel inputPanel2 = new JPanel();
 	inputPanel2.setLayout(new GridLayout(4,4));
 	
 		inputHP = new JLabel("HP: ");
-		inputHPField = new JTextField(" ", 2);
+		inputHPField = new JTextField(" ");
 			inputPanel2.add(inputHP);
 			inputPanel2.add(inputHPField);	
 	
 		inputSpd = new JLabel("Spd: ");
-		inputSpdField = new JTextField(" ", 2);
+		inputSpdField = new JTextField(" ");
 			inputPanel2.add(inputSpd);
 			inputPanel2.add(inputSpdField);		
 			
 		inputStr = new JLabel("Str: ");
-		inputStrField = new JTextField(" ", 2);
+		inputStrField = new JTextField(" ");
 			inputPanel2.add(inputStr);
 			inputPanel2.add(inputStrField);	
 			
 		inputLuk = new JLabel("Luk: ");
-		inputLukField = new JTextField(" ", 2);
+		inputLukField = new JTextField(" ");
 			inputPanel2.add(inputLuk);
 			inputPanel2.add(inputLukField);				
 			
 		inputMag = new JLabel("Mag: ");
-		inputMagField = new JTextField(" ", 2);
+		inputMagField = new JTextField(" ");
 			inputPanel2.add(inputMag);
 			inputPanel2.add(inputMagField);
 			
 		inputDef = new JLabel("Def: ");
-		inputDefField = new JTextField(" ", 2);
+		inputDefField = new JTextField(" ");
 			inputPanel2.add(inputDef);
 			inputPanel2.add(inputDefField);			
 			
 		inputSkl = new JLabel("Skl: ");
-		inputSklField = new JTextField(" ", 2);
+		inputSklField = new JTextField(" ");
 			inputPanel2.add(inputSkl);
 			inputPanel2.add(inputSklField);	
 			
 		inputRes = new JLabel("Res: ");
-		inputResField = new JTextField(" ", 2);
+		inputResField = new JTextField(" ");
 			inputPanel2.add(inputRes);
 			inputPanel2.add(inputResField);	
 			
@@ -268,9 +270,8 @@ public GUI()
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
 		//note level array is temporary
-		String[] levelArray = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
 		graphLevel= new JLabel("Level: ");
-		graphLevelBox = new JComboBox(levelArray);
+		graphLevelBox = new JComboBox();
 			graphPanel.add(graphLevel);
 			graphPanel.add(graphLevelBox);
 	
@@ -368,9 +369,9 @@ public GUI()
 	
 	JPanel ReClassLevelPanel = new JPanel();
 		reclassLevel = new JLabel("Level:");
-		reclassTextField = new JTextField(4);
+		reclassLevelBox = new JComboBox();
 		ReClassLevelPanel.add(reclassLevel);
-		ReClassLevelPanel.add(reclassTextField);
+		ReClassLevelPanel.add(reclassLevelBox);
 	JPanel ReClassClassPanel = new JPanel();
 		reclassClass = new JLabel("Class: ");
 		//TEMPORARY, THE CHRACTER OPTION BOX SHOULD HANDLE THIS SOMEHOW...
@@ -409,6 +410,9 @@ public GUI()
 	optionPane.setResizable(true);
 	optionPane.setSize(600,300);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
+	
+	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
+	inputCharBox.setSelectedIndex(1);
 
 }
 
@@ -439,34 +443,16 @@ public GUI()
 				public void actionPerformed(ActionEvent e)
 				{
 					UnitController unitcontroller = UnitController.getInstance();
-					int newLevel = 0 ;
+					int newLevel = Integer.parseInt(reclassLevelBox.getSelectedItem().toString()) ;
 					String newJob = reclassClasses.getSelectedValue().toString();
 
-					try
-					{
-						newLevel = Integer.parseInt(reclassTextField.getText());
-					}
-					catch(NumberFormatException excep)
-					{
-						JOptionPane.showMessageDialog(GUI.this, "Please Enter a Number", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-					
-					if(newLevel <= 20)
-					{
-					
 					unitcontroller.reclass(newJob, newLevel);
 					
-					Object[] listData = unitcontroller.getClassHistory().toArray();
+					Object[] listData = unitcontroller.getClassArray();
 					jobHistory.setListData(listData);
 					
-					reclassTextField.setBackground(Color.WHITE);
+					reclassLevelBox.setBackground(Color.WHITE);
 					reclassPane.dispose();
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(GUI.this, "Please Enter a Number between "+unitcontroller.getCurrentLevel()+" and 20", "Error", JOptionPane.ERROR_MESSAGE);
-						reclassTextField.setBackground(Color.RED);
-					}
 				}
 			}
 		//Reclass Close
@@ -509,9 +495,52 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
-			//TO DO
+			int HP = 0;
+			int Str = 0;
+			int Mag = 0;
+			int Skl = 0;
+			int Spd = 0;
+			int Luk = 0;
+			int Def = 0;
+			int Res = 0;
+			
+			UnitController unitcontroller = UnitController.getInstance();
+			
+			try
+			{
+				HP = Integer.parseInt(inputHPField.getText());
+				Str = Integer.parseInt(inputStrField.getText());
+				Mag = Integer.parseInt(inputMagField.getText());
+				Skl = Integer.parseInt(inputSklField.getText());
+				Spd = Integer.parseInt(inputSpdField.getText());
+				Luk = Integer.parseInt(inputLukField.getText());
+				Def = Integer.parseInt(inputDefField.getText());
+				Res = Integer.parseInt(inputResField.getText());
+			}
+			catch(NumberFormatException f)
+			{
+				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()) ;
+			double[]inputStats = {HP, Str, Mag, Skl, Spd, Luk, Def,Res};
+			
+			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
+			unitcontroller.buildLocalUnitSheet();
+			
+			unitcontroller.printLocalSheet();
+			System.out.println("==================================");
+			unitcontroller.printInputSheet();
 		}
 		
+	}
+	//THIS HANDLER CHANGES THE LEVEL IN UNITCONTROLLER
+	public class LevelBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			graphLevelBox.setModel(inputLevelBox.getModel());
+		}
 	}
 	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
 	public class ComboBoxHandler implements ActionListener
@@ -538,7 +567,7 @@ public GUI()
 	public void actionPerformed(ActionEvent e)
 	{
 		DataStorage data = DataStorage.getInstance();		
-		UnitController unitController = UnitController.getInstance();
+		UnitController unitcontroller = UnitController.getInstance();
 		
 		//Storing the Character, Job, Route, and BaseLevel
 		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
@@ -551,27 +580,45 @@ public GUI()
 		int levelMod = 0;
 		for(int i = tempLevel; i<=20; i++)
 		{
-			String input = "Lvl "+(tempLevel+levelMod)+". "+tempChar.getBaseClass();
+			String input = tempChar.getBaseClass();
 			tempClassHistory.add(input);
 			levelMod++;
 		}
-		
-		//Send jobhistory to UI
-		Object[] listData = tempClassHistory.toArray();
-		jobHistory.setListData(listData);
-		
+				
 		//Update UnitController
-		unitController.setCurrentChar(tempChar);
-		unitController.setCurrentJob(tempJob);
-		unitController.setCurrentLevel(tempLevel);	
-		unitController.setCurrentRoute(tempRoute);
-		unitController.setClassHistory(tempClassHistory);
+		unitcontroller.setCurrentChar(tempChar);
+		unitcontroller.setCurrentJob(tempJob);
+		unitcontroller.setCurrentRoute(tempRoute);
+		unitcontroller.setClassHistory(tempClassHistory);
 		
+		//Sets the stat boxes
+		inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
+		inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
+		inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
+		inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
+		inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
+		inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
+		inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
+		inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
+		
+		//This code will set the level fields and possible classes in the character option windows
+		String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+		for(int i = 0; i<=(20 - tempLevel); i++)
+		{
+			possibleLevels[i] = (i+tempLevel+"");
+		}
+		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		graphLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		
+		Object[] listData = unitcontroller.getClassArray();
+		jobHistory.setListData(listData);
+
 		//Debug print to console
-		System.out.println("Character: "+unitController.getCurrentChar().getName());
-		System.out.println("Base Class: "+unitController.getCurrentJob().getName());
-		System.out.println("Base Level: "+ unitController.getCurrentLevel());
-		System.out.println("Route: "+unitController.getCurrentRoute());
+		System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
+		System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
+		System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
+		System.out.println("Route: "+unitcontroller.getCurrentRoute());
 		for(int i = 0; i<tempClassHistory.size();i++)
 		{
 			System.out.println(tempClassHistory.get(i));
