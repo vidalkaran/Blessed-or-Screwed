@@ -2,6 +2,8 @@ package testing;
 
 import json.DataStorage;
 import java.util.Arrays;
+import domain.ChildCharacter;
+import domain.Unit;
 
 public class BlessedOrScrewed {
 	public static void main(String[] args) {
@@ -65,5 +67,19 @@ public class BlessedOrScrewed {
 		tmp = Arrays.toString(data.getJobs().get("Great Master").getMaxStats());
 		System.out.println("These are the Great Master's max stat caps: " + tmp);
 		
+		// Test Children Math
+		System.out.println();
+		System.out.println("Testing Children Math");
+		//USING ACTUAL IN-GAME DATA!
+		//ACTUAL: LEVEL: 20, HP: 26, STR: 7, MAG: 20, SKL: 12, SPD: 21, LCK: 13, DEF: 8, RES: 20
+		System.out.println("AZURA!RHAJAT");
+		ChildCharacter tempC = (ChildCharacter) data.getCharacters().get("Rhajat");
+		tempC.setStartLevel(20);
+		tempC.setVariedParent("Azura");
+		double[] fixedParentStats = {27,11,14,13,20,20,12,8};
+		double[] variedParentStats = {18,17,5,26,25,17,7,13};
+		
+		Unit tempUnit = new Unit(tempC, data.getJobs().get("Diviner"), "Birthright", fixedParentStats, data.getJobs().get("Diviner"), variedParentStats, data.getJobs().get("Songstress"));
+		tempUnit.printUnit();
 	}
 }

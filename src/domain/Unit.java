@@ -21,9 +21,9 @@ public class Unit implements Serializable{
 	// These variables will only be used for children
 	private ChildCharacter myChildCharacter;
 	DataStorage data = DataStorage.getInstance(); //This is the data
-	private int[] fixedParentStats;
+	private double[] fixedParentStats;
 	private Job fixedParentJob;
-	private int[] variedParentStats;
+	private double[] variedParentStats;
 	private Job variedParentJob;
 	
 	public Unit(Character inputCharacter, Job inputJob, String inputRoute)
@@ -39,12 +39,12 @@ public class Unit implements Serializable{
 		calculateMaxStats();
 	}
 	
-	public Unit(ChildCharacter inputCharacter, Job inputJob, String inputRoute, int[] fixedParentStats, Job fixedParentJob, int[] variedParentStats, Job variedParentJob)
+	public Unit(ChildCharacter inputCharacter, Job inputJob, String inputRoute, double[] fixedParentStats, Job fixedParentJob, double[] variedParentStats, Job variedParentJob)
 	{
 		myChildCharacter = inputCharacter;
 		myJob = inputJob;
 		route = inputRoute;
-		level = inputCharacter.getBaseStats().getStats(route, 0);
+		level = inputCharacter.getStartLevel();
 		isChild = true;
 		this.fixedParentStats = fixedParentStats;
 		this.fixedParentJob = fixedParentJob;
@@ -87,15 +87,17 @@ public class Unit implements Serializable{
 			{
 				// FORUMLA: c = Child's absolute base stats + {(n x Child's full growth rates) rounded down}
 				//      Child's absolute base stat							 + ROUNDED DOWN	  (n * full growths while in the character's base class)
-				int c = myChildCharacter.getBaseStats().getStats(route, i+1) + (int)Math.floor(n * (growths[i] - myJob.getGrowths(i) + tempGrowths[i]));
-				
+				double c = myChildCharacter.getBaseStats().getStats(route, i+1) + n * ((growths[i] - myJob.getGrowths(i) + tempGrowths[i])/100.0);
+				System.out.println(statblock[i] + ": " + c);
 				// Calculate the fixedParent's and variedParent's personal stats by subtracting the base stats of their job
-				int fixedParentPersonal = fixedParentStats[i] - fixedParentJob.getBaseStats(i);
-				int variedParentPersonal = variedParentStats[i] - variedParentJob.getBaseStats(i);
+				double fixedParentPersonal = fixedParentStats[i] - fixedParentJob.getBaseStats(i);
+				double variedParentPersonal = variedParentStats[i] - variedParentJob.getBaseStats(i);
+				System.out.println("fixedParentPersonal" + statblock[i] + ": " + fixedParentPersonal);
+				System.out.println("variedParentPersonal" + statblock[i] + ": " + variedParentPersonal);
 				
 				// fatherCalc and motherCalc are used to calculate inheritanceTotal. Neither value can be negative and any negative values will become 0.
-				int fixedParentCalc = fixedParentPersonal - c;
-				int variedParentCalc = variedParentPersonal - c;
+				double fixedParentCalc = fixedParentPersonal - c;
+				double variedParentCalc = variedParentPersonal - c;
 				
 				if(fixedParentCalc < 0)
 					fixedParentCalc = 0;
@@ -103,12 +105,16 @@ public class Unit implements Serializable{
 				if(variedParentCalc < 0)
 					variedParentCalc = 0;
 				
+				System.out.println("fixedParentCalc" + statblock[i] + ": " + fixedParentCalc);
+				System.out.println("variedParentCalc" + statblock[i] + ": " + variedParentCalc);
 				// FORMULA: inheritanceTotal = {[(fixedParent's personal stats – c; 0 if < 0) + (variedParent's personal stats – c; 0 if < 0)] / 4; cannot be > than (c/10) +2 rounded down}
-				int inheritanceTotal = (fixedParentCalc + variedParentCalc)/4;
+				double inheritanceTotal = (fixedParentCalc + variedParentCalc)/4.0;
 				
-				if(inheritanceTotal > (c/10) + 2)
-					inheritanceTotal = (c/10) + 2;
+				if(inheritanceTotal > Math.floor((c/10.0) + 2.0))
+					inheritanceTotal = Math.floor((c/10.0) + 2.0);
 				
+				
+				System.out.println("InheritanceTotal" + statblock[i] + ": " + inheritanceTotal);
 				// FORMULA: Job base stats + c (see above) + inheritanceTotal (see above)
 				baseStats[i] = myJob.getBaseStats(i) + c + inheritanceTotal;
 			}
@@ -141,7 +147,7 @@ public class Unit implements Serializable{
 				Character temp = data.getCharacters().get(myChildCharacter.getVariedParent());
 				for(int i = 0; i< growths.length; i++)
 				{
-					growths[i] = Math.floor((myChildCharacter.getGrowths(i) + temp.getGrowths(i))/2) + myJob.getGrowths(i);
+					growths[i] = (myChildCharacter.getGrowths(i) + temp.getGrowths(i))/2.0 + myJob.getGrowths(i);
 					//debug: Use this to print the equation to the console
 					//System.out.println(myCharacter.getGrowths(i)+ "+" + myJob.getGrowths(i));
 				}
@@ -174,7 +180,14 @@ public class Unit implements Serializable{
 			if(myChildCharacter instanceof Kana && variedParent.getIsChild()) {
 				for(int i = 0; i < maxstats.length; i++) {
 					// FORMULA FOR KANA'S WITH CHILD CHARACTER AS VARIEDPARENT MAXMODS: fixedParent's mods + variedParent's mods
-					maxstats[i] = (fixedParent.getMaxMods(i) + variedParent.getMaxMods(i)) + myJob.getMaxStats(i);
+					if(i == 0)
+					{
+						maxstats[i] =  myJob.getMaxStats(i+1);
+					}
+					else
+					{
+						maxstats[i] = (fixedParent.getMaxMods(i) + variedParent.getMaxMods(i)) + myJob.getMaxStats(i+1);
+					}
 				}
 			}
 			// Calculate maxStats for all children (including Kana if variedParent is not a child
@@ -182,7 +195,14 @@ public class Unit implements Serializable{
 			{
 				for(int i = 0; i < maxstats.length; i++) {
 					// FORMULA FOR CHILD'S MAXMODS: fixedParent's mods + variedParent's mods + 1
-					maxstats[i] = (fixedParent.getMaxMods(i) + variedParent.getMaxMods(i) + 1) + myJob.getMaxStats(i);
+					if(i == 0)
+					{
+						maxstats[i] =  myJob.getMaxStats(i+1);
+					}
+					else
+					{
+						maxstats[i] = (fixedParent.getMaxMods(i) + variedParent.getMaxMods(i) + 1) + myJob.getMaxStats(i+1);
+					}
 				}
 			}
 		}
@@ -198,10 +218,21 @@ public class Unit implements Serializable{
 	
 	public void printUnit()
 	{
-		System.out.println("Name: "+myCharacter.getName()
-							+"\n"+"Class: "+myJob.getName()
-							+"\n" + "Route: " + route
-							+"\n" + "Base level:" + level);
+		if(myCharacter != null)
+		{
+			System.out.println("Name: "+myCharacter.getName()
+								+"\n"+"Class: "+myJob.getName()
+								+"\n" + "Route: " + route
+								+"\n" + "Base level:" + level);
+		}
+		else if(myChildCharacter != null)
+		{
+			System.out.println("Name: "+myChildCharacter.getName()
+			+"\n"+"Class: "+myJob.getName()
+			+"\n" + "Route: " + route
+			+"\n" + "Base level:" + level
+			+"\nVariedParent: " + myChildCharacter.getVariedParent());
+		}
 
 		System.out.println("GROWTHS...");
 		for(int i = 0; i<growths.length; i++)
