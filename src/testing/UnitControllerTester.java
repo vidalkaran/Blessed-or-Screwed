@@ -21,23 +21,35 @@ public static void main(String[]args)
 	double[] inputStats = {20,20,20,20,20,20,20,20};
 	
 	ArrayList<String> ClassHistory = new ArrayList();
-	ClassHistory.add("Cavalier");
-	ClassHistory.add("Cavalier");
-	ClassHistory.add("Songstress");
-	ClassHistory.add("Songstress");
-	ClassHistory.add("Songstress");
+	ClassHistory.add("Cavalier");// level 6
+	ClassHistory.add("Cavalier");// level 7
+	ClassHistory.add("Cavalier");// level 8
+	ClassHistory.add("Cavalier");// level 9
+	ClassHistory.add("Cavalier");// level 10
+	ClassHistory.add("Cavalier");// level 11
+	ClassHistory.add("Cavalier");// level 12
+	ClassHistory.add("Cavalier");// level 13
+	ClassHistory.add("Cavalier");// level 14
+	ClassHistory.add("Cavalier");// level 15
 
 	UnitController unitController = UnitController.getInstance();
 	
 	unitController.setCurrentChar(Silas);
-	unitController.setCurrentLevel(6);
 	unitController.setCurrentJob(Cavalier);
 	unitController.setCurrentRoute("Conquest");
 	unitController.setClassHistory(ClassHistory);
 	
-	unitController.buildLocalUnitSheet();
-	unitController.printLocalSheet();
+	//Testing Reclass
+//	unitController.reclass("Dancer", 10);
 	
+	//TESTING CALCULATIONS
+//	unitController.buildLocalUnitSheet();
+//	unitController.printLocalSheet();
+	
+	//TESTING CALCULATIONS
+	unitController.buildInputUnitSheet(10, inputStats);
+	unitController.printInputSheet();
+
 	}
 	
 

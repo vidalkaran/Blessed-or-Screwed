@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -32,8 +33,8 @@ public class GUI extends JFrame{
 	
 		JComboBox inputCharBox;
 		JComboBox inputRouteBox;
-	
-		JTextField inputLevelField;
+		JComboBox inputLevelBox;
+
 		JTextField inputHPField;
 		JTextField inputStrField;
 		JTextField inputMagField;
@@ -88,7 +89,16 @@ public class GUI extends JFrame{
 		JButton confirmButton;
 		JButton eternalSealButton;
 		JList jobHistory;
-		String[] ClassHistory;
+	//reclassWindow
+		JDialog reclassPane;
+		JLabel reclassLevel;
+		JLabel reclassClass;
+		JComboBox reclassLevelBox;
+		JList reclassClasses;
+		JButton reclassConfirm;
+		JButton reclassCancel;
+	//promoteWindow
+	//EternalSeal window mayyybe?
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
@@ -107,12 +117,7 @@ static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
 
-static String[] conquestJobs = {"TEST1", "TEST2", "TEST3"};
-
-static String[] birthrightJobs;
-
-static String[] revelationsJobs;
-
+static String[] jobs = {"Songstress"};
 		
 public static void main(String[]args)
 {
@@ -121,12 +126,17 @@ public static void main(String[]args)
 
 public GUI()
 {	
+	UnitController unitController = UnitController.getInstance();
+	DataStorage data = DataStorage.getInstance();
+	data.ParseJsonCharacters();
+	data.ParseJsonJobs();
+	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
 	
 	//Input Panel 1 (Contains Character, Job, and Route modifiers)
 	JPanel inputPanel1 = new JPanel();
-
+	
 		inputRoute = new JLabel("Route: ");
 		inputRouteBox = new JComboBox(routes);
 		ComboBoxHandler ComboBoxHandler = new ComboBoxHandler();
@@ -142,51 +152,53 @@ public GUI()
 			inputPanel1.add(inputCharBox);
 								
 		inputLevel = new JLabel("Level: ");
-		inputLevelField = new JTextField(" ", 2);
+		inputLevelBox = new JComboBox();
+		LevelBoxHandler LevelBoxHandler = new LevelBoxHandler();
+		inputLevelBox.addActionListener(LevelBoxHandler);
 			inputPanel1.add(inputLevel);
-			inputPanel1.add(inputLevelField);
+			inputPanel1.add(inputLevelBox);
 
 	//Input Panel 2 (Contains all the stat mods)
 	JPanel inputPanel2 = new JPanel();
 	inputPanel2.setLayout(new GridLayout(4,4));
 	
 		inputHP = new JLabel("HP: ");
-		inputHPField = new JTextField(" ", 2);
+		inputHPField = new JTextField(" ");
 			inputPanel2.add(inputHP);
 			inputPanel2.add(inputHPField);	
 	
 		inputSpd = new JLabel("Spd: ");
-		inputSpdField = new JTextField(" ", 2);
+		inputSpdField = new JTextField(" ");
 			inputPanel2.add(inputSpd);
 			inputPanel2.add(inputSpdField);		
 			
 		inputStr = new JLabel("Str: ");
-		inputStrField = new JTextField(" ", 2);
+		inputStrField = new JTextField(" ");
 			inputPanel2.add(inputStr);
 			inputPanel2.add(inputStrField);	
 			
 		inputLuk = new JLabel("Luk: ");
-		inputLukField = new JTextField(" ", 2);
+		inputLukField = new JTextField(" ");
 			inputPanel2.add(inputLuk);
 			inputPanel2.add(inputLukField);				
 			
 		inputMag = new JLabel("Mag: ");
-		inputMagField = new JTextField(" ", 2);
+		inputMagField = new JTextField(" ");
 			inputPanel2.add(inputMag);
 			inputPanel2.add(inputMagField);
 			
 		inputDef = new JLabel("Def: ");
-		inputDefField = new JTextField(" ", 2);
+		inputDefField = new JTextField(" ");
 			inputPanel2.add(inputDef);
 			inputPanel2.add(inputDefField);			
 			
 		inputSkl = new JLabel("Skl: ");
-		inputSklField = new JTextField(" ", 2);
+		inputSklField = new JTextField(" ");
 			inputPanel2.add(inputSkl);
 			inputPanel2.add(inputSklField);	
 			
 		inputRes = new JLabel("Res: ");
-		inputResField = new JTextField(" ", 2);
+		inputResField = new JTextField(" ");
 			inputPanel2.add(inputRes);
 			inputPanel2.add(inputResField);	
 			
@@ -258,9 +270,8 @@ public GUI()
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
 		//note level array is temporary
-		String[] levelArray = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
 		graphLevel= new JLabel("Level: ");
-		graphLevelBox = new JComboBox(levelArray);
+		graphLevelBox = new JComboBox();
 			graphPanel.add(graphLevel);
 			graphPanel.add(graphLevelBox);
 	
@@ -317,7 +328,7 @@ public GUI()
 	this.setVisible(true);
 
 //CHARACTER OPTIONS DIALOG
-	optionPane = new JDialog();
+	optionPane = new JDialog(this, true);
 	
 	//ListPanel
 	JPanel listPanel = new JPanel();
@@ -325,19 +336,10 @@ public GUI()
 	listPanel.setBorder(listBorder);
 
 //Initializes Job History
-			jobHistory = new JList();
-			jobHistory.setSize(new Dimension(250,250));
-			
-			String[] tempArray = new String[ClassHistory.length];
-			
-			for(int i = 0; i <ClassHistory.length; i++)
-			{
-				tempArray[i] = ClassHistory[i];
-			}
-			
-			jobHistory.setListData(tempArray);
-			
-			listPanel.add(new JScrollPane(jobHistory));
+		jobHistory = new JList();
+		jobHistory.setSize(new Dimension(250,250));
+		jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+		listPanel.add(new JScrollPane(jobHistory));
 
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
@@ -361,6 +363,43 @@ public GUI()
 		confirmButton.addActionListener(CloseOptionButtonHandler);
 			modPanel.add(confirmButton);
 	
+//RECLASS PANEL
+	reclassPane  = new JDialog(optionPane, true);
+	JPanel reClassPanel = new JPanel();
+	
+	JPanel ReClassLevelPanel = new JPanel();
+		reclassLevel = new JLabel("Level:");
+		reclassLevelBox = new JComboBox();
+		ReClassLevelPanel.add(reclassLevel);
+		ReClassLevelPanel.add(reclassLevelBox);
+	JPanel ReClassClassPanel = new JPanel();
+		reclassClass = new JLabel("Class: ");
+		//TEMPORARY, THE CHRACTER OPTION BOX SHOULD HANDLE THIS SOMEHOW...
+		Object[] reclassJobs= jobs;
+		reclassClasses = new JList(reclassJobs);
+		reclassClasses.setSelectedIndex(0);
+		ReClassClassPanel.add(reclassClass);
+		ReClassClassPanel.add(new JScrollPane(reclassClasses));
+	JPanel ReClassButtonPanel = new JPanel();
+		reclassConfirm = new JButton("Confirm");
+		ReClassConfirmButtonHandler ReClassConfirmButtonHandler = new ReClassConfirmButtonHandler();
+		reclassConfirm.addActionListener(ReClassConfirmButtonHandler);
+		ReClassButtonPanel.add(reclassConfirm);
+		reclassCancel = new JButton("Cancel");
+		ReClassCancelButtonHandler ReClassCancelButtonHandler = new ReClassCancelButtonHandler();
+		reclassCancel.addActionListener(ReClassCancelButtonHandler);
+		ReClassButtonPanel.add(reclassCancel);
+		
+	reClassPanel.add(ReClassLevelPanel);
+	reClassPanel.add(ReClassClassPanel);
+	reClassPanel.add(ReClassButtonPanel);
+	reClassPanel.setLayout(new BoxLayout(reClassPanel, BoxLayout.PAGE_AXIS));
+	reclassPane.add(reClassPanel);
+	reclassPane.setTitle("Reclass");
+	reclassPane.setResizable(true);
+	reclassPane.setSize(300,300);
+	reclassPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+
 	//Add all Components
 	optionPane.setLayout(new FlowLayout());
 	optionPane.add(listPanel);
@@ -371,61 +410,77 @@ public GUI()
 	optionPane.setResizable(true);
 	optionPane.setSize(600,300);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
-
-}
-
-//CALCULATE BUTTON
-public class CalculateButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
-	{
-		//TO DO
-	}
 	
+	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
+	inputCharBox.setSelectedIndex(1);
+
 }
 
-//OPEN OPTIONS WINDOW BUTTON
-public class OpenOptionButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+//ALL THE BUTTON HANDLERS
+
+//OPTIONWINDOW HANDLERS
+	//OPEN OPTIONS WINDOW BUTTON
+	public class OpenOptionButtonHandler implements ActionListener
 	{
-		optionPane.setVisible(true);
+		public void actionPerformed(ActionEvent e) 
+		{
+			optionPane.setVisible(true);
+		}
+		
 	}
-	
-}
-
-//RECLASS OPTIONS WINDOW BUTTON
-
-public class ReclassOptionButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+	//RECLASS OPTIONS WINDOW BUTTON
+	public class ReclassOptionButtonHandler implements ActionListener
 	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			reclassPane.setVisible(true);
+		}
+		
 	}
-	
-}
+		//Reclass Confirm
+			public class ReClassConfirmButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					UnitController unitcontroller = UnitController.getInstance();
+					int newLevel = Integer.parseInt(reclassLevelBox.getSelectedItem().toString()) ;
+					String newJob = reclassClasses.getSelectedValue().toString();
 
-//PROMOTE OPTIONS WINDOW BUTTON
-
-public class PromoteOptionButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+					unitcontroller.reclass(newJob, newLevel);
+					
+					Object[] listData = unitcontroller.getClassArray();
+					jobHistory.setListData(listData);
+					
+					reclassLevelBox.setBackground(Color.WHITE);
+					reclassPane.dispose();
+				}
+			}
+		//Reclass Close
+			public class ReClassCancelButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					reclassPane.dispose();
+				}
+			}
+	//PROMOTE OPTIONS WINDOW BUTTON
+	public class PromoteOptionButtonHandler implements ActionListener
 	{
+		public void actionPerformed(ActionEvent e) 
+		{
+		}
+		
 	}
-	
-}
-
-//ETERNAL SEAL OPTIONS WINDOW BUTTON
-
-public class EternalSealButtonHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e) 
+	//ETERNAL SEAL OPTIONS WINDOW BUTTON
+	public class EternalSealButtonHandler implements ActionListener
 	{
+		public void actionPerformed(ActionEvent e) 
+		{
+		}
+		
 	}
-	
-}
-//CLOSE OPTIONS WINDOW BUTTON
-
-public class CloseOptionButtonHandler implements ActionListener
+	//CLOSE OPTIONS WINDOW BUTTON
+	public class CloseOptionButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -433,59 +488,141 @@ public class CloseOptionButtonHandler implements ActionListener
 	}
 	
 }
-//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
-public class ComboBoxHandler implements ActionListener
-{
-	public void actionPerformed(ActionEvent e)
+
+//MAIN WINDOW HANDLERS
+	//CALCULATE BUTTON
+	public class CalculateButtonHandler implements ActionListener
 	{
-		if(inputRouteBox.getSelectedItem() == "Conquest")
+		public void actionPerformed(ActionEvent e) 
 		{
-		    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			int HP = 0;
+			int Str = 0;
+			int Mag = 0;
+			int Skl = 0;
+			int Spd = 0;
+			int Luk = 0;
+			int Def = 0;
+			int Res = 0;
+			
+			UnitController unitcontroller = UnitController.getInstance();
+			
+			try
+			{
+				HP = Integer.parseInt(inputHPField.getText());
+				Str = Integer.parseInt(inputStrField.getText());
+				Mag = Integer.parseInt(inputMagField.getText());
+				Skl = Integer.parseInt(inputSklField.getText());
+				Spd = Integer.parseInt(inputSpdField.getText());
+				Luk = Integer.parseInt(inputLukField.getText());
+				Def = Integer.parseInt(inputDefField.getText());
+				Res = Integer.parseInt(inputResField.getText());
+			}
+			catch(NumberFormatException f)
+			{
+				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()) ;
+			double[]inputStats = {HP, Str, Mag, Skl, Spd, Luk, Def,Res};
+			
+			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
+			unitcontroller.buildLocalUnitSheet();
+			
+			unitcontroller.printLocalSheet();
+			System.out.println("==================================");
+			unitcontroller.printInputSheet();
 		}
-		else if(inputRouteBox.getSelectedItem() == "Birthright")
+		
+	}
+	//THIS HANDLER CHANGES THE LEVEL IN UNITCONTROLLER
+	public class LevelBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
 		{
-		    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
-		}
-		if(inputRouteBox.getSelectedItem() == "Revelations")
-		{
-		    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			graphLevelBox.setModel(inputLevelBox.getModel());
 		}
 	}
-}
-
-public class CharBoxHandler implements ActionListener
+	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
+	public class ComboBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			if(inputRouteBox.getSelectedItem() == "Conquest")
+			{
+			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			}
+			else if(inputRouteBox.getSelectedItem() == "Birthright")
+			{
+			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+			}
+			if(inputRouteBox.getSelectedItem() == "Revelations")
+			{
+			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			}
+		}
+	}
+	//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
+	public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
 	{
-		DataStorage data = DataStorage.getInstance();
-		data.ParseJsonCharacters();
-		data.ParseJsonJobs();
+		DataStorage data = DataStorage.getInstance();		
+		UnitController unitcontroller = UnitController.getInstance();
 		
-		UnitController unitController = UnitController.getInstance();
-		
-		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem());
+		//Storing the Character, Job, Route, and BaseLevel
+		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+ 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
 		String tempRoute = inputRouteBox.getSelectedItem().toString();
 		int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
-		ArrayList<String> tempClassHistory = new ArrayList();
-		for(int i = tempLevel; i<20; i++)
-		{
-			tempClassHistory.add(tempChar.getBaseClass());
-		}
 		
-		unitController.setCurrentChar(tempChar);
-			System.out.println("Character: "+tempChar);
-		unitController.setCurrentJob(data.getJobs().get(tempChar.getBaseClass()));
-			System.out.println("Base Class: "+data.getJobs().get(tempChar.getBaseClass()));
-		unitController.setCurrentLevel(tempLevel);	
-			System.out.println("Base Level: "+tempLevel);
-		unitController.setCurrentRoute(tempRoute);
-			System.out.println("Route: "+tempRoute);
-		unitController.setClassHistory(tempClassHistory);
-			for(int i = 0; i<tempClassHistory.size();i++)
-			{
-				System.out.println("Lvl "+(tempLevel+i)+". "+tempClassHistory.get(i));
-			}
-	ClassHistory = tempClassHistory.toArray(new String[tempClassHistory.size()]);
+		//Making the class history
+		ArrayList<String> tempClassHistory = new ArrayList();
+		int levelMod = 0;
+		for(int i = tempLevel; i<=20; i++)
+		{
+			String input = tempChar.getBaseClass();
+			tempClassHistory.add(input);
+			levelMod++;
+		}
+				
+		//Update UnitController
+		unitcontroller.setCurrentChar(tempChar);
+		unitcontroller.setCurrentJob(tempJob);
+		unitcontroller.setCurrentRoute(tempRoute);
+		unitcontroller.setClassHistory(tempClassHistory);
+		
+		//Sets the stat boxes
+		inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
+		inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
+		inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
+		inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
+		inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
+		inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
+		inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
+		inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
+		
+		//This code will set the level fields and possible classes in the character option windows
+		String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+		for(int i = 0; i<=(20 - tempLevel); i++)
+		{
+			possibleLevels[i] = (i+tempLevel+"");
+		}
+		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		graphLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		
+		Object[] listData = unitcontroller.getClassArray();
+		jobHistory.setListData(listData);
+
+		//Debug print to console
+		System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
+		System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
+		System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
+		System.out.println("Route: "+unitcontroller.getCurrentRoute());
+		for(int i = 0; i<tempClassHistory.size();i++)
+		{
+			System.out.println(tempClassHistory.get(i));
+		}			
 	}
 }
 }
