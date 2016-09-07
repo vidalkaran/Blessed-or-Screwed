@@ -64,7 +64,7 @@ public class Unit implements Serializable{
 			Avatar avatar = (Avatar) myCharacter;
 			for(int i = 0; i< baseStats.length; i++)
 			{
-				baseStats[i] = myCharacter.getBaseStats().getStats(route, i+1) - myJob.getBaseStats(i);
+				baseStats[i] = myCharacter.getBaseStats().getStats(route, i+1) /*- myJob.getBaseStats(i)*/;
 				//System.out.println(myCharacter.getBaseStats().getStats(route, i+1) + "+" + myJob.getBaseStats(i));
 			}
 			
@@ -224,7 +224,7 @@ public class Unit implements Serializable{
 			// Mag = +20 Mag[2], +5 Spd[4], +5 Res[7]
 			else if(avatar.getBoon().equals("Mag")) {
 				growths[2] += 20;
-				growths[5] += 5;
+				growths[4] += 5;
 				growths[7] += 5;
 			}
 			// Skl = +5 Str[1], +25 Skl[3], +5 Def[6]
@@ -388,7 +388,7 @@ public class Unit implements Serializable{
 			// Mag = +4 Mag[2], +2 Spd[4], +2 Res[7]
 			else if(avatar.getBoon().equals("Mag")) {
 				maxstats[2] += 4;
-				maxstats[5] += 2;
+				maxstats[4] += 2;
 				maxstats[7] += 2;
 			}
 			// Skl = +2 Str[1], +4 Skl[3], +2 Def[6]
