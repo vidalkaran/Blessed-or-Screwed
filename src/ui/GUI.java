@@ -12,7 +12,17 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import json.DataStorage;
+import logic.GraphController;
 import logic.UnitController;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYDataset;
 
 public class GUI extends JFrame{
 
@@ -97,6 +107,8 @@ public class GUI extends JFrame{
 		JList reclassClasses;
 		JButton reclassConfirm;
 		JButton reclassCancel;
+		
+		JFreeChart lineChart;
 	//promoteWindow
 	//EternalSeal window mayyybe?
 		
@@ -126,7 +138,8 @@ public static void main(String[]args)
 
 public GUI()
 {	
-	UnitController unitController = UnitController.getInstance();
+	GraphController graphcontroller = GraphController.getInstance();
+	UnitController unitcontroller = UnitController.getInstance();
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
 	data.ParseJsonJobs();
@@ -320,9 +333,9 @@ public GUI()
 	mainPanel.add(rightSide);
 	
 	//Main Window
-	this.setSize(650,325);
+	this.setSize(500,800);
 	this.setTitle("Blessed or Screwed!");
-	this.setResizable(false);
+	this.setResizable(true);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.add(mainPanel);
 	this.setVisible(true);
@@ -414,11 +427,23 @@ public GUI()
 	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
 	inputCharBox.setSelectedIndex(1);
 
-}
+	//THIS IS WORK IN PROGRESS FOR THE GRAPH------------------------------------------------------------------------------------------
+	graphcontroller.createGraph("");
+	ChartPanel inputChart = graphcontroller.getChartPanel();
+	graphPanel2.add(inputChart);
+	
+	this.pack();
+	
+	
+}// ENDS GUI
 
-//ALL THE BUTTON HANDLERS
+//------------------------------------------------------------ACTION LISTENERS-----------------------------------------------------
 
-//OPTIONWINDOW HANDLERS
+//-------------------------------------------------------------GRAPH WINDOW-------------------------------------------------------
+
+
+	
+//-------------------------------------------------------------OPTION WINDOW-------------------------------------------------------
 	//OPEN OPTIONS WINDOW BUTTON
 	public class OpenOptionButtonHandler implements ActionListener
 	{
@@ -489,12 +514,14 @@ public GUI()
 	
 }
 
-//MAIN WINDOW HANDLERS
+//-------------------------------------------------------------MAIN WINDOW-------------------------------------------------------
 	//CALCULATE BUTTON
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			GraphController graphcontroller = GraphController.getInstance();
+			
 			int HP = 0;
 			int Str = 0;
 			int Mag = 0;
@@ -531,6 +558,8 @@ public GUI()
 			unitcontroller.printLocalSheet();
 			System.out.println("==================================");
 			unitcontroller.printInputSheet();
+			
+			graphcontroller.setDataset(graphcontroller.createDataset("Hello"));
 		}
 		
 	}
