@@ -160,6 +160,7 @@ public GUI()
 		
 		inputChar = new JLabel("Char: ");
 		inputCharBox = new JComboBox(conquestCharacters);
+		inputCharBox.setPreferredSize(new Dimension(100,25));
 		CharBoxHandler CharBoxHandler = new CharBoxHandler();
 		inputCharBox.addActionListener(CharBoxHandler);
 			inputPanel1.add(inputChar);
@@ -755,15 +756,18 @@ public GUI()
 		{
 			if(inputRouteBox.getSelectedItem() == "Conquest")
 			{
-			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));	
+			    repaint();
 			}
 			else if(inputRouteBox.getSelectedItem() == "Birthright")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+			    repaint();
 			}
 			if(inputRouteBox.getSelectedItem() == "Revelations")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			    repaint();
 			}
 		}
 	}
