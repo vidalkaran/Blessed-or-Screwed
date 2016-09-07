@@ -61,7 +61,7 @@ public class UnitController {
 	}
 
 	
-//THIS IS THE MATH ZONE. BEWARE
+//=================================================================THIS IS THE MATH ZONE. BEWARE
 	
 	//RECURSION WHAT :O
 	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i)
@@ -160,6 +160,46 @@ public class UnitController {
 	    }
 	}
 	
+//===========================================================STUFF FOR GUI AND TESTING
+	
+	//Method for reclassing, only affects jobHistory
+	public void reclass(String newJob, int changeLevel)
+	{
+		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
+		
+		for(int i = 0; i<(classHistory.size()-levelVector); i++)
+		{
+			classHistory.set((levelVector+i), newJob);
+		}
+	}
+
+	//This returns an of stats from the local sheet
+	//REFERENCE: 0=HP, 1=STR, 2=MAG, 3=SPD, 4=SKL, 5=LUK, 6=DEF, 7=RES 
+	public double[] getLocalStatSpread(int stat)
+	{
+		double[] output = new double[localUnitSheet.size()];
+		
+			for(int i = 0; i<localUnitSheet.size();i++)
+			{
+				double[] tempArray = localUnitSheet.get(i).getBaseStats();
+				output[i] = tempArray[stat];
+			}	
+			
+		return output;
+	}
+	
+	public double[] getInputStatSpread(int stat)
+	{
+		double[] output = new double[inputUnitSheet.size()];
+		
+			for(int i = 0; i<inputUnitSheet.size();i++)
+			{
+				double[] tempArray = inputUnitSheet.get(i).getBaseStats();
+				output[i] = tempArray[stat];
+			}	
+			
+		return output;
+	}
 	//PRINTER METHOD FOR TESTING 
 	public void printLocalSheet()
 	{
@@ -172,6 +212,7 @@ public class UnitController {
 		
 	}
 	
+	//PRINTER METHOD FOR TESTING 
 	public void printInputSheet()
 	{
 		for(int i = 0; i<inputUnitSheet.size();i++)
@@ -181,17 +222,6 @@ public class UnitController {
 			inputUnitSheet.get(i).printUnit();	
 		}
 		
-	}
-	
-	//Method for reclassing, only affects jobHistory
-	public void reclass(String newJob, int changeLevel)
-	{
-		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
-		
-		for(int i = 0; i<(classHistory.size()-levelVector); i++)
-		{
-			classHistory.set((levelVector+i), newJob);
-		}
 	}
 	
 //ALL GETTERS/SETTERS

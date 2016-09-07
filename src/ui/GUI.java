@@ -6,23 +6,17 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-
 import json.DataStorage;
 import logic.GraphController;
 import logic.UnitController;
 
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYDataset;
 
 public class GUI extends JFrame{
 
@@ -55,6 +49,8 @@ public class GUI extends JFrame{
 		JTextField inputResField;
 
 //ResultPanel
+		JComboBox resultLevelBox;
+		
 		JLabel resultHP;
 		JLabel resultStr;
 		JLabel resultMag;
@@ -64,7 +60,6 @@ public class GUI extends JFrame{
 		JLabel resultDef;
 		JLabel resultRes;
 		
-		JTextField resultLevelField;
 		JTextField resultHPField;
 		JTextField resultStrField;
 		JTextField resultMagField;
@@ -73,8 +68,16 @@ public class GUI extends JFrame{
 		JTextField resultLukField;
 		JTextField resultDefField;
 		JTextField resultResField;
+
+		JTextField avgHPField;
+		JTextField avgStrField;
+		JTextField avgMagField;
+		JTextField avgSklField;
+		JTextField avgSpdField;
+		JTextField avgLukField;
+		JTextField avgDefField;
+		JTextField avgResField;
 		
-		JTextField resultLevelDifference;
 		JTextField resultHPDifference;
 		JTextField resultStrDifference;
 		JTextField resultMagDifference;
@@ -85,9 +88,7 @@ public class GUI extends JFrame{
 		JTextField resultResDifference;
 		
 //GraphPanel
-		JLabel graphLevel;
 		JLabel graphStat;
-		JComboBox graphLevelBox;
 		JComboBox graphStatBox;
 		JButton calculateButton;
 		JButton optionsButton;
@@ -166,8 +167,8 @@ public GUI()
 								
 		inputLevel = new JLabel("Level: ");
 		inputLevelBox = new JComboBox();
-		LevelBoxHandler LevelBoxHandler = new LevelBoxHandler();
-		inputLevelBox.addActionListener(LevelBoxHandler);
+		InputLevelBoxHandler inputlevelboxhandler = new InputLevelBoxHandler();
+		inputLevelBox.addActionListener(inputlevelboxhandler);
 			inputPanel1.add(inputLevel);
 			inputPanel1.add(inputLevelBox);
 
@@ -220,59 +221,123 @@ public GUI()
 	resultPanel.setLayout(new GridLayout(4,4));
 	
 		resultHP = new JLabel("HP: ");
-		resultHPField = new JTextField(" ", 2);
-		resultHPDifference = new JTextField(" ", 2);
+		resultHPField = new JTextField(" ");
+		resultHPField.setEditable(false);
+		avgHPField = new JTextField(" ");
+		avgHPField.setEditable(false);
+		resultHPDifference = new JTextField(" ");
+		resultHPDifference.setEditable(false);
+			resultHPField.setBackground(Color.WHITE);
+			avgHPField.setBackground(Color.WHITE);
+			resultHPDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultHP);
 			resultPanel.add(resultHPField);	
+			resultPanel.add(avgHPField);	
 			resultPanel.add(resultHPDifference);
 		
 		resultSpd = new JLabel("Spd: ");
-		resultSpdField = new JTextField(" ", 2);
-		resultSpdDifference = new JTextField(" ", 2);
+		resultSpdField = new JTextField(" ");
+		resultSpdField.setEditable(false);
+		avgSpdField = new JTextField(" ");
+		avgSpdField.setEditable(false);
+		resultSpdDifference = new JTextField(" ");
+		resultSpdDifference.setEditable(false);
+			resultSpdField.setBackground(Color.WHITE);
+			avgSpdField.setBackground(Color.WHITE);
+			resultSpdDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultSpd);
 			resultPanel.add(resultSpdField);	
+			resultPanel.add(avgSpdField);	
 			resultPanel.add(resultSpdDifference);
 		
 		resultStr = new JLabel("Str: ");
-		resultStrField = new JTextField(" ", 2);
-		resultStrDifference = new JTextField(" ", 2);
+		resultStrField = new JTextField(" ");
+		resultStrField.setEditable(false);
+		avgStrField = new JTextField(" ");
+		avgStrField.setEditable(false);
+		resultStrDifference = new JTextField(" ");
+		resultStrDifference.setEditable(false);
+			resultStrField.setBackground(Color.WHITE);
+			avgStrField.setBackground(Color.WHITE);
+			resultStrDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultStr);
 			resultPanel.add(resultStrField);	
+			resultPanel.add(avgStrField);	
 			resultPanel.add(resultStrDifference);
 
 		resultLuk = new JLabel("Luk: ");
-		resultLukField = new JTextField(" ", 2);
-		resultLukDifference = new JTextField(" ", 2);
+		resultLukField = new JTextField(" ");
+		resultLukField.setEditable(false);
+		avgLukField = new JTextField(" ");
+		avgLukField.setEditable(false);
+		resultLukDifference = new JTextField(" ");
+		resultLukDifference.setEditable(false);
+			resultLukField.setBackground(Color.WHITE);
+			avgLukField.setBackground(Color.WHITE);
+			resultLukDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultLuk);
 			resultPanel.add(resultLukField);	
+			resultPanel.add(avgLukField);	
 			resultPanel.add(resultLukDifference);			
 		
 		resultMag = new JLabel("Mag: ");
-		resultMagField = new JTextField(" ", 2);
-		resultMagDifference = new JTextField(" ", 2);
+		resultMagField = new JTextField(" ");
+		resultMagField.setEditable(false);
+		avgMagField = new JTextField(" ");
+		avgMagField.setEditable(false);
+		resultMagDifference = new JTextField(" ");
+		resultMagDifference.setEditable(false);
+			resultMagField.setBackground(Color.WHITE);
+			avgMagField.setBackground(Color.WHITE);
+			resultMagDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultMag);
 			resultPanel.add(resultMagField);	
+			resultPanel.add(avgMagField);	
 			resultPanel.add(resultMagDifference);			
 		
 		resultDef = new JLabel("Def: ");
-		resultDefField = new JTextField(" ", 2);
-		resultDefDifference = new JTextField(" ", 2);
+		resultDefField = new JTextField(" ");
+		resultDefField.setEditable(false);
+		avgDefField = new JTextField(" ");
+		avgDefField.setEditable(false);
+		resultDefDifference = new JTextField(" ");
+		resultDefDifference.setEditable(false);
+			resultDefField.setBackground(Color.WHITE);
+			avgDefField.setBackground(Color.WHITE);
+			resultDefDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultDef);
 			resultPanel.add(resultDefField);	
+			resultPanel.add(avgDefField);	
 			resultPanel.add(resultDefDifference);				
 
 		resultSkl= new JLabel("Skl: ");
-		resultSklField = new JTextField(" ", 2);
-		resultSklDifference = new JTextField(" ", 2);
+		resultSklField = new JTextField(" ");
+		resultSklField.setEditable(false);
+		avgSklField = new JTextField(" ");
+		avgSklField.setEditable(false);
+		resultSklDifference = new JTextField(" ");
+		resultSklDifference.setEditable(false);
+			resultSklField.setBackground(Color.WHITE);
+			avgSklField.setBackground(Color.WHITE);
+			resultSklDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultSkl);
 			resultPanel.add(resultSklField);	
+			resultPanel.add(avgSklField);	
 			resultPanel.add(resultSklDifference);	
 			
 		resultRes= new JLabel("Res: ");
-		resultResField = new JTextField(" ", 2);
-		resultResDifference = new JTextField(" ", 2);
+		resultResField = new JTextField(" ");
+		resultResField.setEditable(false);
+		avgResField = new JTextField(" ");
+		avgResField.setEditable(false);
+		resultResDifference = new JTextField(" ");
+		resultResDifference.setEditable(false);
+			resultResField.setBackground(Color.WHITE);
+			avgResField.setBackground(Color.WHITE);
+			resultResDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultRes);
 			resultPanel.add(resultResField);	
+			resultPanel.add(avgResField);	
 			resultPanel.add(resultResDifference);	
 	
 	//GRAPH PANEL 1
@@ -280,13 +345,10 @@ public GUI()
 		graphStat = new JLabel("Stat: ");
 		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Luk", "Def", "Res"};
 		graphStatBox = new JComboBox(statArray);
+		graphBoxHandler graphboxhandler = new graphBoxHandler();
+		graphStatBox.addActionListener(graphboxhandler);
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
-		//note level array is temporary
-		graphLevel= new JLabel("Level: ");
-		graphLevelBox = new JComboBox();
-			graphPanel.add(graphLevel);
-			graphPanel.add(graphLevelBox);
 	
 	//GRAPH PANEL 2
 	JPanel graphPanel2 = new JPanel();
@@ -313,6 +375,10 @@ public GUI()
 		OpenOptionButtonHandler OptionButtonHandler = new OpenOptionButtonHandler();
 		optionsButton.addActionListener(OptionButtonHandler);
 			optionsButtonPanel.add(optionsButton);
+		resultLevelBox = new JComboBox();
+			ResultLevelBoxHandler resultlevelboxhandler = new ResultLevelBoxHandler();
+			resultLevelBox.addActionListener(resultlevelboxhandler);
+			optionsButtonPanel.add(resultLevelBox);
 		leftSide.add(optionsButtonPanel);
 		leftSide.add(resultPanel);
 	
@@ -519,9 +585,7 @@ public GUI()
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
-		{
-			GraphController graphcontroller = GraphController.getInstance();
-			
+		{			
 			int HP = 0;
 			int Str = 0;
 			int Mag = 0;
@@ -532,7 +596,8 @@ public GUI()
 			int Res = 0;
 			
 			UnitController unitcontroller = UnitController.getInstance();
-			
+			GraphController graphcontroller = GraphController.getInstance();
+
 			try
 			{
 				HP = Integer.parseInt(inputHPField.getText());
@@ -555,20 +620,132 @@ public GUI()
 			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
 			unitcontroller.buildLocalUnitSheet();
 			
-			unitcontroller.printLocalSheet();
-			System.out.println("==================================");
-			unitcontroller.printInputSheet();
+			//UPDATES GRAPH
+			int stat = graphStatBox.getSelectedIndex();
+			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+
+			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
 			
-			graphcontroller.setDataset(graphcontroller.createDataset("Hello"));
+			//UPDATES BOXES			
+			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+
+			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+			
+			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			
+			resultHPField.setText(formatter.format(inputResults[0]));
+			avgHPField.setText(formatter.format(localResults[0]));
+			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
+				if((inputResults[0] - localResults[0]) < 0)
+				{
+					resultHPDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[0] - localResults[0]) > 0)
+				{
+					resultHPDifference.setBackground(Color.GREEN);
+				}
+			resultStrField.setText(formatter.format(inputResults[1]));
+			avgStrField.setText(formatter.format(localResults[1]));
+			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
+				if((inputResults[1] - localResults[1]) < 0)
+				{
+					resultStrDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[1] - localResults[1]) > 0)
+				{
+					resultStrDifference.setBackground(Color.GREEN);
+				}
+			resultMagField.setText(formatter.format(inputResults[2]));
+			avgMagField.setText(formatter.format(localResults[2]));
+			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
+				if((inputResults[2] - localResults[2]) < 0)
+				{
+					resultMagDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[2] - localResults[2]) > 0)
+				{
+					resultMagDifference.setBackground(Color.GREEN);
+				}
+			resultSpdField.setText(formatter.format(inputResults[3]));
+			avgSpdField.setText(formatter.format(localResults[3]));
+			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+				if((inputResults[3] - localResults[3]) < 0)
+				{
+					resultSpdDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[3] - localResults[3]) > 0)
+				{
+					resultSpdDifference.setBackground(Color.GREEN);
+				}
+			resultSklField.setText(formatter.format(inputResults[4]));
+			avgSklField.setText(formatter.format(localResults[4]));
+			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+				if((inputResults[4] - localResults[4]) < 0)
+				{
+					resultSklDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[4] - localResults[4]) > 0)
+				{
+					resultSklDifference.setBackground(Color.GREEN);
+				}
+			resultLukField.setText(formatter.format(inputResults[5]));
+			avgLukField.setText(formatter.format(localResults[5]));
+			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+			if((inputResults[5] - localResults[5]) < 0)
+				{
+				resultLukDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[5] - localResults[5]) > 0)
+				{
+					resultLukDifference.setBackground(Color.GREEN);
+				}
+			resultDefField.setText(formatter.format(inputResults[6]));
+			avgDefField.setText(formatter.format(localResults[6]));
+			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
+				if((inputResults[6] - localResults[6]) < 0)
+				{
+					resultDefDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[6] - localResults[6]) > 0)
+				{
+					resultDefDifference.setBackground(Color.GREEN);
+				}
+			resultResField.setText(formatter.format(inputResults[7]));
+			avgResField.setText(formatter.format(localResults[7]));
+			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
+				if((inputResults[7] - localResults[7]) < 0)
+				{
+					resultResDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[7] - localResults[7]) > 0)
+				{
+					resultResDifference.setBackground(Color.GREEN);
+				}
+			//Stuff for Debug
+			//unitcontroller.printLocalSheet();
+			//unitcontroller.printInputSheet();
 		}
 		
 	}
-	//THIS HANDLER CHANGES THE LEVEL IN UNITCONTROLLER
-	public class LevelBoxHandler implements ActionListener
+	//Handles the stat combobox in the graphPanel
+	public class graphBoxHandler implements ActionListener
 	{
-		public void actionPerformed(ActionEvent e)
+		public void actionPerformed(ActionEvent e) 
 		{
-			graphLevelBox.setModel(inputLevelBox.getModel());
+			UnitController unitcontroller = UnitController.getInstance();
+			GraphController graphcontroller = GraphController.getInstance();
+			
+			int stat = graphStatBox.getSelectedIndex();
+			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+
+			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
 		}
 	}
 	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
@@ -637,8 +814,8 @@ public GUI()
 			possibleLevels[i] = (i+tempLevel+"");
 		}
 		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		graphLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		
 		Object[] listData = unitcontroller.getClassArray();
 		jobHistory.setListData(listData);
@@ -654,4 +831,70 @@ public GUI()
 		}			
 	}
 }
+
+	//This handler populates the resultLevel box based on whats in the level box
+	public class InputLevelBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			String[] possibleLevels = new String[(20 - inputLevel + 1)];	
+			for(int i = 0; i<=(20 - inputLevel); i++)
+			{
+				possibleLevels[i] = (i+inputLevel+"");
+			}
+
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		}
+	}
+	
+	//This panel updates the result panel based on the inputted level
+	public class ResultLevelBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			UnitController unitcontroller = UnitController.getInstance();
+			
+			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+
+			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+			
+			DecimalFormat formatter = new DecimalFormat( "##.##" );
+
+			resultHPField.setText(formatter.format(inputResults[0]));
+			avgHPField.setText(formatter.format(localResults[0]));
+			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
+			
+			resultStrField.setText(formatter.format(inputResults[1]));
+			avgStrField.setText(formatter.format(localResults[1]));
+			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
+
+			resultMagField.setText(formatter.format(inputResults[2]));
+			avgMagField.setText(formatter.format(localResults[2]));
+			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
+
+			resultSpdField.setText(formatter.format(inputResults[3]));
+			avgSpdField.setText(formatter.format(localResults[3]));
+			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+			
+			resultSklField.setText(formatter.format(inputResults[4]));
+			avgSklField.setText(formatter.format(localResults[4]));
+			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+			
+			resultLukField.setText(formatter.format(inputResults[5]));
+			avgLukField.setText(formatter.format(localResults[5]));
+			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+			
+			resultDefField.setText(formatter.format(inputResults[6]));
+			avgDefField.setText(formatter.format(localResults[6]));
+			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
+
+			resultResField.setText(formatter.format(inputResults[7]));
+			avgResField.setText(formatter.format(localResults[7]));
+			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));			
+		}
+	}
+
 }

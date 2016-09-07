@@ -35,22 +35,31 @@ public static GraphController getInstance() {
 	
  public XYSeriesCollection createDataset( )
  {
-    XYSeriesCollection dataset = new XYSeriesCollection( );          
-
+    final XYSeries localDataset = new XYSeries("Average Stats");          
+    localDataset.add( 0 , 0 );          
+    
+    final XYSeries InputDataset = new XYSeries("Your Stats");          
+    InputDataset.add( 0 , 0 );          
+    
+    XYSeriesCollection dataset = new XYSeriesCollection( );                   
+    dataset.addSeries(localDataset);
+    dataset.addSeries(InputDataset);
     return dataset;
  }
 
- public XYSeriesCollection createDataset(String hello )
+ public XYSeriesCollection createDataset(double[] inputStats, double[] localStats, int startLevel, int baseLevel)
  {      
-    final XYSeries localDataset = new XYSeries("localDataset");          
-    localDataset.add( 1.0 , 10.0 );          
-    localDataset.add( 2.0 , 22.0 );          
-    localDataset.add( 3.0 , 5.0 );        
+    final XYSeries localDataset = new XYSeries("Average Stats");  
+    for(int i = 0; i< localStats.length; i ++)
+    {
+    localDataset.add(i+baseLevel, localStats[i]);          
+    }
     
-    final XYSeries InputDataset = new XYSeries("InputDataset");          
-    InputDataset.add( 1.0 , 5.0 );          
-    InputDataset.add( 2.0 , 30.0 );          
-    InputDataset.add( 3.0 , 12.0 );        
+    final XYSeries InputDataset = new XYSeries("Your Stats");          
+    for(int i = 0; i< inputStats.length; i ++)
+    {
+    	InputDataset.add(i+startLevel,inputStats[i] );          
+    }
     
     XYSeriesCollection dataset = new XYSeriesCollection( );                   
     dataset.addSeries(localDataset);
@@ -63,11 +72,11 @@ public static GraphController getInstance() {
  {
     xylineChart = ChartFactory.createXYLineChart(
     	applicationTitle ,
-       "Level" ,
+       "" ,
        "Stat" ,
        createDataset( ),
        PlotOrientation.VERTICAL ,
-       false , false , false);
+       true , false , false);
        
     chartPanel = new ChartPanel( xylineChart );
     chartPanel.setPreferredSize( new java.awt.Dimension( 400 , 200) );
