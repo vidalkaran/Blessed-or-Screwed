@@ -47,18 +47,18 @@ public static GraphController getInstance() {
     return dataset;
  }
 
- public XYSeriesCollection createDataset(double[] inputStats, double[] localStats, int startLevel, int baseLevel)
+ public XYSeriesCollection createDataset(double[] localStats, double[] inputStats, int startLevel, int baseLevel)
  {      
-    final XYSeries localDataset = new XYSeries("Average Stats");  
-    for(int i = 0; i< localStats.length; i ++)
-    {
-    localDataset.add(i+baseLevel, localStats[i]);          
-    }
-    
     final XYSeries InputDataset = new XYSeries("Your Stats");          
     for(int i = 0; i< inputStats.length; i ++)
     {
     	InputDataset.add(i+startLevel,inputStats[i] );          
+    }
+    
+    final XYSeries localDataset = new XYSeries("Average Stats");  
+    for(int i = 0; i< localStats.length; i ++)
+    {
+    localDataset.add(i+baseLevel, localStats[i]);          
     }
     
     XYSeriesCollection dataset = new XYSeriesCollection( );                   
