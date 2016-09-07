@@ -2,6 +2,9 @@ package testing;
 
 import json.DataStorage;
 import java.util.Arrays;
+import domain.ChildCharacter;
+import domain.Unit;
+import domain.Avatar;
 
 public class BlessedOrScrewed {
 	public static void main(String[] args) {
@@ -9,12 +12,15 @@ public class BlessedOrScrewed {
 		// ALWAYS PARSE FILES FIRST BEFORE DOING ANYTHING ELSE
 		data.ParseJsonCharacters();
 		data.ParseJsonJobs();
+		/*
 		System.out.println("ALL CHARACTERS: ");
 		data.printAllCharacters();
 		System.out.println("\nALL JOBS: ");
 		data.printAllJobs();
+		*/
 		
 		// LET'S DO SOME TESTS
+		/*
 		// Characters test
 		System.out.println("\nCHARACTER TESTS");
 		
@@ -45,9 +51,12 @@ public class BlessedOrScrewed {
 		System.out.println("Peri may act like a child, but she really isn't one! : " + data.getCharacters().get("Peri").getIsChild());
 		tmp = Arrays.toString(data.getCharacters().get("Silas").getBaseStats().getRevelations());
 		System.out.println("These are all of Silas' REVELATIONS baseStats: " + tmp);
+		System.out.println();
+		*/
 		
+		/*
 		//Jobs tests
-		System.out.println("\nJOB TESTS");
+		System.out.println("JOB TESTS");
 		System.out.println("Cavalier BaseSpd should be 5: " + data.getJobs().get("Cavalier").getBaseStats()[DataStorage.JobBaseStatsEnums.SPD.ordinal()]);
 		System.out.println("Cavalier MagGrowth should be 0: " + data.getJobs().get("Cavalier").getGrowths()[DataStorage.JobGrowthsEnums.MAG.ordinal()]);
 		tmp = Arrays.toString(data.getJobs().get("Cavalier").getPromotions());
@@ -64,6 +73,43 @@ public class BlessedOrScrewed {
 		System.out.println("Great Master is genderLocked to male! : " + data.getJobs().get("Great Master").getGenderLock());
 		tmp = Arrays.toString(data.getJobs().get("Great Master").getMaxStats());
 		System.out.println("These are the Great Master's max stat caps: " + tmp);
+		System.out.println();
+		*/
 		
+		/*
+		// Test Children Math
+		System.out.println("Testing Children Math");
+		//USING ACTUAL IN-GAME DATA!
+		//ACTUAL: LEVEL: 20, HP: 26, STR: 7, MAG: 20, SKL: 12, SPD: 21, LCK: 13, DEF: 8, RES: 20
+		System.out.println("AZURA!RHAJAT");
+		ChildCharacter tempC = (ChildCharacter) data.getCharacters().get("Rhajat");
+		tempC.setStartLevel(20);
+		tempC.setVariedParent("Azura");
+		double[] fixedParentStats = {27,11,14,13,20,20,12,8};
+		double[] variedParentStats = {18,17,5,26,25,17,7,13};
+		
+		Unit tempUnit = new Unit(tempC, data.getJobs().get("Diviner"), "Birthright", fixedParentStats, data.getJobs().get("Diviner"), variedParentStats, data.getJobs().get("Songstress"));
+		tempUnit.printUnit();
+		System.out.println();
+		*/
+		
+		// Avatar Test
+		System.out.println("TEST AVATAR");
+		Avatar av = (Avatar) data.getCharacters().get("Avatar");
+		av.setBoon("Str");
+		av.setBane("Lck");
+		
+		Unit tempAvatar = new Unit(av, data.getJobs().get("Nohr Prince/ss"), "Conquest");
+		System.out.println("Boon: Str, Bane: Lck");
+		tempAvatar.printUnit();
+		
+		System.out.println();
+		
+		av.setBoon("Mag");
+		av.setBane("Def");
+		
+		tempAvatar = new Unit(av, data.getJobs().get("Nohr Prince/ss"), "Conquest");
+		System.out.println("Boon: Mag, Bane: Def");
+		tempAvatar.printUnit();
 	}
 }
