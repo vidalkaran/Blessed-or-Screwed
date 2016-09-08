@@ -416,10 +416,10 @@ public GUI()
 	listPanel.setBorder(listBorder);
 
 //Initializes Job History
-		jobHistory = new JList();
-		jobHistory.setSize(new Dimension(250,250));
-		jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
-		listPanel.add(new JScrollPane(jobHistory));
+	jobHistory = new JList();
+	jobHistory.setPreferredSize(new Dimension(250,250));
+	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+	listPanel.add(new JScrollPane(jobHistory));
 
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
@@ -525,6 +525,7 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			reclassLevelBox.setSelectedIndex(jobHistory.getSelectedIndex());
 			reclassPane.setVisible(true);
 		}
 		
@@ -817,13 +818,15 @@ public GUI()
 		{
 			possibleLevels[i] = (i+tempLevel+"");
 		}
-		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		
 		Object[] listData = unitcontroller.getClassArray();
 		jobHistory.setListData(listData);
+		jobHistory.setSelectedIndex(0);
 
+		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+	
 		//Debug print to console
 		System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 		System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
