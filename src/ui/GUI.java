@@ -92,6 +92,7 @@ public class GUI extends JFrame{
 		JComboBox graphStatBox;
 		JButton calculateButton;
 		JButton optionsButton;
+		JButton clearButton;
 		
 //Option Window
 		JDialog optionPane;
@@ -100,6 +101,7 @@ public class GUI extends JFrame{
 		JButton confirmButton;
 		JButton eternalSealButton;
 		JList jobHistory;
+		
 	//reclassWindow
 		JDialog reclassPane;
 		JLabel reclassLevel;
@@ -137,6 +139,7 @@ public static void main(String[]args)
 	new GUI();
 }
 
+//============================================================START GUI CLASS======================================================
 public GUI()
 {	
 	GraphController graphcontroller = GraphController.getInstance();
@@ -160,6 +163,7 @@ public GUI()
 		
 		inputChar = new JLabel("Char: ");
 		inputCharBox = new JComboBox(conquestCharacters);
+		inputCharBox.setPreferredSize(new Dimension(100,25));
 		CharBoxHandler CharBoxHandler = new CharBoxHandler();
 		inputCharBox.addActionListener(CharBoxHandler);
 			inputPanel1.add(inputChar);
@@ -389,11 +393,18 @@ public GUI()
 		rightSide.add(graphPanel);
 		rightSide.add(graphPanel2);
 	
-//CALCULATE BUTTON		
+//GRAPH PANEL BUTTONS==============================================
+	JPanel buttonPanel = new JPanel();
+	
+	clearButton = new JButton("Clear");	
+		ClearButtonHandler clearbuttonhandler = new ClearButtonHandler();
+	clearButton.addActionListener(clearbuttonhandler);
 	calculateButton = new JButton("Calculate!");
-	CalculateButtonHandler CalculateButtonHandler = new CalculateButtonHandler();
+		CalculateButtonHandler CalculateButtonHandler = new CalculateButtonHandler();
 	calculateButton.addActionListener(CalculateButtonHandler);
-		rightSide.add(calculateButton);
+		buttonPanel.add(clearButton);
+		buttonPanel.add(calculateButton);
+		rightSide.add(buttonPanel);
 		
 	mainPanel.add(leftSide);
 	mainPanel.add(rightSide);
@@ -415,10 +426,10 @@ public GUI()
 	listPanel.setBorder(listBorder);
 
 //Initializes Job History
-		jobHistory = new JList();
-		jobHistory.setSize(new Dimension(250,250));
-		jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
-		listPanel.add(new JScrollPane(jobHistory));
+	jobHistory = new JList();
+	jobHistory.setPreferredSize(new Dimension(250,250));
+	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+	listPanel.add(new JScrollPane(jobHistory));
 
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
@@ -499,15 +510,10 @@ public GUI()
 	graphPanel2.add(inputChart);
 	
 	this.pack();
-	
-	
-}// ENDS GUI
+}
+//=============================================================END GUI CLASS======================================================
 
 //------------------------------------------------------------ACTION LISTENERS-----------------------------------------------------
-
-//-------------------------------------------------------------GRAPH WINDOW-------------------------------------------------------
-
-
 	
 //-------------------------------------------------------------OPTION WINDOW-------------------------------------------------------
 	//OPEN OPTIONS WINDOW BUTTON
@@ -524,6 +530,7 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			reclassLevelBox.setSelectedIndex(jobHistory.getSelectedIndex());
 			reclassPane.setVisible(true);
 		}
 		
@@ -582,6 +589,52 @@ public GUI()
 
 //-------------------------------------------------------------MAIN WINDOW-------------------------------------------------------
 	//CALCULATE BUTTON
+	public class ClearButtonHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			GraphController graphcontroller = GraphController.getInstance();
+			
+			inputCharBox.setSelectedIndex(1);
+				resultHPField.setText("");
+				resultStrField.setText("");
+				resultMagField.setText("");
+				resultSpdField.setText("");
+				resultSklField.setText("");
+				resultLukField.setText("");
+				resultDefField.setText("");
+				resultResField.setText("");
+				
+				avgHPField.setText("");
+				avgStrField.setText("");
+				avgMagField.setText("");
+				avgSklField.setText("");
+				avgSpdField.setText("");
+				avgLukField.setText("");
+				avgDefField.setText("");
+				avgResField.setText("");
+				
+				resultHPDifference.setText("");
+				resultHPDifference.setBackground(Color.WHITE);
+				resultStrDifference.setText("");
+				resultStrDifference.setBackground(Color.WHITE);
+				resultMagDifference.setText("");
+				resultMagDifference.setBackground(Color.WHITE);
+				resultSklDifference.setText("");
+				resultSklDifference.setBackground(Color.WHITE);
+				resultSpdDifference.setText("");
+				resultSpdDifference.setBackground(Color.WHITE);
+				resultLukDifference.setText("");
+				resultLukDifference.setBackground(Color.WHITE);
+				resultDefDifference.setText("");
+				resultDefDifference.setBackground(Color.WHITE);
+				resultResDifference.setText("");
+				resultResDifference.setBackground(Color.WHITE);
+				
+				graphcontroller.setDataset(graphcontroller.createDataset());
+		}	
+	}
+	
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -644,10 +697,14 @@ public GUI()
 				{
 					resultHPDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[0] - localResults[0]) > 0)
-				{
-					resultHPDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[0] - localResults[0]) > 0)
+					{
+						resultHPDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultHPDifference.setBackground(Color.WHITE);
+					}
 			resultStrField.setText(formatter.format(inputResults[1]));
 			avgStrField.setText(formatter.format(localResults[1]));
 			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
@@ -655,10 +712,14 @@ public GUI()
 				{
 					resultStrDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[1] - localResults[1]) > 0)
-				{
-					resultStrDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[1] - localResults[1]) > 0)
+					{
+						resultStrDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultStrDifference.setBackground(Color.WHITE);
+					}
 			resultMagField.setText(formatter.format(inputResults[2]));
 			avgMagField.setText(formatter.format(localResults[2]));
 			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
@@ -666,10 +727,14 @@ public GUI()
 				{
 					resultMagDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[2] - localResults[2]) > 0)
-				{
-					resultMagDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[2] - localResults[2]) > 0)
+					{
+						resultMagDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultMagDifference.setBackground(Color.WHITE);
+					}
 			resultSpdField.setText(formatter.format(inputResults[3]));
 			avgSpdField.setText(formatter.format(localResults[3]));
 			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
@@ -677,10 +742,14 @@ public GUI()
 				{
 					resultSpdDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[3] - localResults[3]) > 0)
-				{
-					resultSpdDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[3] - localResults[3]) > 0)
+					{
+						resultSpdDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultSpdDifference.setBackground(Color.WHITE);
+					}
 			resultSklField.setText(formatter.format(inputResults[4]));
 			avgSklField.setText(formatter.format(localResults[4]));
 			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
@@ -688,10 +757,14 @@ public GUI()
 				{
 					resultSklDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[4] - localResults[4]) > 0)
-				{
-					resultSklDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[4] - localResults[4]) > 0)
+					{
+						resultSklDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultSklDifference.setBackground(Color.WHITE);
+					}
 			resultLukField.setText(formatter.format(inputResults[5]));
 			avgLukField.setText(formatter.format(localResults[5]));
 			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
@@ -699,10 +772,14 @@ public GUI()
 				{
 				resultLukDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[5] - localResults[5]) > 0)
-				{
-					resultLukDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[5] - localResults[5]) > 0)
+					{
+						resultLukDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultLukDifference.setBackground(Color.WHITE);
+					}
 			resultDefField.setText(formatter.format(inputResults[6]));
 			avgDefField.setText(formatter.format(localResults[6]));
 			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
@@ -710,10 +787,14 @@ public GUI()
 				{
 					resultDefDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[6] - localResults[6]) > 0)
-				{
-					resultDefDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[6] - localResults[6]) > 0)
+					{
+						resultDefDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultDefDifference.setBackground(Color.WHITE);
+					}
 			resultResField.setText(formatter.format(inputResults[7]));
 			avgResField.setText(formatter.format(localResults[7]));
 			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
@@ -721,10 +802,14 @@ public GUI()
 				{
 					resultResDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[7] - localResults[7]) > 0)
-				{
-					resultResDifference.setBackground(Color.GREEN);
-				}
+					else if ((inputResults[7] - localResults[7]) > 0)
+					{
+						resultResDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultResDifference.setBackground(Color.WHITE);
+					}
 			//Stuff for Debug
 			//unitcontroller.printLocalSheet();
 			//unitcontroller.printInputSheet();
@@ -755,15 +840,18 @@ public GUI()
 		{
 			if(inputRouteBox.getSelectedItem() == "Conquest")
 			{
-			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));	
+			    repaint();
 			}
 			else if(inputRouteBox.getSelectedItem() == "Birthright")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+			    repaint();
 			}
 			if(inputRouteBox.getSelectedItem() == "Revelations")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			    repaint();
 			}
 		}
 	}
@@ -813,13 +901,15 @@ public GUI()
 		{
 			possibleLevels[i] = (i+tempLevel+"");
 		}
-		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		
 		Object[] listData = unitcontroller.getClassArray();
 		jobHistory.setListData(listData);
+		jobHistory.setSelectedIndex(0);
 
+		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+	
 		//Debug print to console
 		System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 		System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
