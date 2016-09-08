@@ -18,6 +18,8 @@ import logic.UnitController;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
+import com.google.gson.JsonIOException;
+
 public class GUI extends JFrame{
 
 //ALL VARIABLE DECLARATIONS
@@ -588,7 +590,7 @@ public GUI()
 }
 
 //-------------------------------------------------------------MAIN WINDOW-------------------------------------------------------
-	//CALCULATE BUTTON
+	//CLEAR BUTTON
 	public class ClearButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent arg0) 
@@ -634,7 +636,7 @@ public GUI()
 				graphcontroller.setDataset(graphcontroller.createDataset());
 		}	
 	}
-	
+//Calculate BUTTON
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -864,61 +866,69 @@ public GUI()
 		UnitController unitcontroller = UnitController.getInstance();
 		
 		//Storing the Character, Job, Route, and BaseLevel
-		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
- 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
-		String tempRoute = inputRouteBox.getSelectedItem().toString();
-		int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
 		
-		//Making the class history
-		ArrayList<String> tempClassHistory = new ArrayList();
-		int levelMod = 0;
-		for(int i = tempLevel; i<=20; i++)
+		try
 		{
-			String input = tempChar.getBaseClass();
-			tempClassHistory.add(input);
-			levelMod++;
-		}
-				
-		//Update UnitController
-		unitcontroller.setCurrentChar(tempChar);
-		unitcontroller.setCurrentJob(tempJob);
-		unitcontroller.setCurrentRoute(tempRoute);
-		unitcontroller.setClassHistory(tempClassHistory);
-		
-		//Sets the stat boxes
-		inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
-		inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
-		inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
-		inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
-		inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
-		inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
-		inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
-		inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
-		
-		//This code will set the level fields and possible classes in the character option windows
-		String[] possibleLevels = new String[(20 - tempLevel + 1)];	
-		for(int i = 0; i<=(20 - tempLevel); i++)
-		{
-			possibleLevels[i] = (i+tempLevel+"");
-		}
-		
-		Object[] listData = unitcontroller.getClassArray();
-		jobHistory.setListData(listData);
-		jobHistory.setSelectedIndex(0);
-
-		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+	 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
+			String tempRoute = inputRouteBox.getSelectedItem().toString();
+			int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
+			
+			//Making the class history
+			ArrayList<String> tempClassHistory = new ArrayList();
+			int levelMod = 0;
+			for(int i = tempLevel; i<=20; i++)
+			{
+				String input = tempChar.getBaseClass();
+				tempClassHistory.add(input);
+				levelMod++;
+			}
+					
+			//Update UnitController
+			unitcontroller.setCurrentChar(tempChar);
+			unitcontroller.setCurrentJob(tempJob);
+			unitcontroller.setCurrentRoute(tempRoute);
+			unitcontroller.setClassHistory(tempClassHistory);
+			
+			//Sets the stat boxes
+			inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
+			inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
+			inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
+			inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
+			inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
+			inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
+			inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
+			inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
+			
+			//This code will set the level fields and possible classes in the character option windows
+			String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+			for(int i = 0; i<=(20 - tempLevel); i++)
+			{
+				possibleLevels[i] = (i+tempLevel+"");
+			}
+			
+			Object[] listData = unitcontroller.getClassArray();
+			jobHistory.setListData(listData);
+			jobHistory.setSelectedIndex(0);
 	
-		//Debug print to console
-		System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
-		System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
-		System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
-		System.out.println("Route: "+unitcontroller.getCurrentRoute());
-		for(int i = 0; i<tempClassHistory.size();i++)
+			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		
+			//Debug print to console
+			System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
+			System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
+			System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
+			System.out.println("Route: "+unitcontroller.getCurrentRoute());
+			for(int i = 0; i<tempClassHistory.size();i++)
+			{
+				System.out.println(tempClassHistory.get(i));
+			}	
+		}
+		catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
 		{
-			System.out.println(tempClassHistory.get(i));
-		}			
+			JOptionPane.showMessageDialog(GUI.this, "Sorry, this character is not implemented yet!", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
 
