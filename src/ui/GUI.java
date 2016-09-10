@@ -607,7 +607,7 @@ public GUI()
 		{
 			GraphController graphcontroller = GraphController.getInstance();
 			
-			inputCharBox.setSelectedIndex(1);
+			//inputCharBox.setSelectedIndex(1);
 				resultHPField.setText("");
 				resultStrField.setText("");
 				resultMagField.setText("");
