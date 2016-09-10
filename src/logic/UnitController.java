@@ -61,19 +61,29 @@ public class UnitController {
 	//BUILDS A INPUTUNITSHEET
 	public void buildInputUnitSheet(int inputLevel, double[] inputStats)
 	{
+		ArrayList<String> inputClassHistory = new ArrayList();
+		int baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
+		int levelMod = inputLevel - baseLevel;
+		
+		for(int i = 0; i< classHistory.size() - levelMod; i++)
+		{
+			inputClassHistory.add(classHistory.get(i + levelMod));
+		}
+		
 		Unit inputUnit;
 		/*
 		if(currentChar instanceof ChildCharacter)
 		{
-			localUnit = // Unit Child Constructor
+			inputUnit = // Unit Child Constructor
 		}
 		else {*/
 			inputUnit = new Unit(currentChar, currentJob, currentRoute);
 		//}
+
 		inputUnit.setLevel(inputLevel);
 		inputUnit.setBaseStats(inputStats);		
 		inputUnitSheet.clear();
-		buildSheet(inputUnit, classHistory, inputUnitSheet, 0);
+		buildSheet(inputUnit, inputClassHistory, inputUnitSheet, 0);
 	}
 
 	
