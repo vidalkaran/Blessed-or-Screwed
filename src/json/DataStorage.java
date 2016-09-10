@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -48,6 +49,10 @@ public class DataStorage implements Serializable{
 	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
 	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
 	
+	private ArrayList<String> conquestCharacters;
+	private ArrayList<String> birthrightCharacters;
+	private ArrayList<String> revelationsCharacters;
+	
 	// Arrays representing locked Marriage Options - for example, Xander and Leo cannot marry their sisters (Camilla and Elise)
 	private final String[] AVATAR_LOCKED = {"Gunter", "Shura", "Izana", "Flora", "Scarlet", "Yukimura", "Fuga", "Anna"};
 	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
@@ -77,6 +82,18 @@ public class DataStorage implements Serializable{
 	
 	public ArrayList<String> getSpecialClasses() {
 		return specialClasses;
+	}
+	
+	public ArrayList<String> getConquestCharacters() {
+		return conquestCharacters;
+	}
+
+	public ArrayList<String> getBirthrightCharacters() {
+		return birthrightCharacters;
+	}
+
+	public ArrayList<String> getRevelationsCharacters() {
+		return revelationsCharacters;
 	}
 	
 	public String[] getAVATAR_LOCKED() {
@@ -116,20 +133,60 @@ public class DataStorage implements Serializable{
 			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/kana.json"), "UTF-8");
 			kana = gson.fromJson(reader, Kana.class);
 			
-			// Implement characters map
+			// Implement characters map and route arrays
 			characters = new HashMap<String, Character>();
+			conquestCharacters = new ArrayList<String>();
+			birthrightCharacters = new ArrayList<String>();
+			revelationsCharacters = new ArrayList<String>();
 			// Place Avatar in the map
 			characters.put(avatar.getName(), avatar);
+			// Avatar is in every route
+			conquestCharacters.add(avatar.getName());
+			birthrightCharacters.add(avatar.getName());
+			revelationsCharacters.add(avatar.getName());
 			// Place all adults in the map
 			for(int i = 0; i < adults.length; i++) {
 				characters.put(adults[i].getName(), adults[i]);
+				
+				// Add adults to proper lists of characters in each route
+				if(adults[i].getRoutes()[0]) {
+					conquestCharacters.add(adults[i].getName());
+				}
+				if(adults[i].getRoutes()[1]) {
+					birthrightCharacters.add(adults[i].getName());
+				}
+				if(adults[i].getRoutes()[2]) {
+					revelationsCharacters.add(adults[i].getName());
+				}
 			}
 			// Place Kana in the map
 			characters.put(kana.getName(), kana);
+			// Kana is in every route
+			conquestCharacters.add(kana.getName());
+			birthrightCharacters.add(kana.getName());
+			revelationsCharacters.add(kana.getName());
 			// Place all of the children in the map
 			for(int i = 0; i < children.length; i++) {
 				characters.put(children[i].getName(), children[i]);
+				
+				// Add children to proper lists of characters in each route
+				if(children[i].getRoutes()[0]) {
+					conquestCharacters.add(children[i].getName());
+				}
+				if(children[i].getRoutes()[1]) {
+					birthrightCharacters.add(children[i].getName());
+				}
+				if(children[i].getRoutes()[2]) {
+					revelationsCharacters.add(children[i].getName());
+				}
 			}
+			
+			
+			// Sort arrays by name
+			Collections.sort(conquestCharacters);
+			Collections.sort(birthrightCharacters);
+			Collections.sort(revelationsCharacters);
+			
 			reader.close();
 		}
 		catch (IOException e)

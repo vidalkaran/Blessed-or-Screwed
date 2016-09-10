@@ -5,6 +5,7 @@ import java.util.Arrays;
 import domain.ChildCharacter;
 import domain.Unit;
 import domain.Avatar;
+import domain.Kana;
 
 public class BlessedOrScrewed {
 	public static void main(String[] args) {
@@ -76,7 +77,6 @@ public class BlessedOrScrewed {
 		System.out.println();
 		*/
 		
-		/*
 		// Test Children Math
 		System.out.println("Testing Children Math");
 		//USING ACTUAL IN-GAME DATA!
@@ -87,11 +87,13 @@ public class BlessedOrScrewed {
 		tempC.setVariedParent("Azura");
 		double[] fixedParentStats = {27,11,14,13,20,20,12,8};
 		double[] variedParentStats = {18,17,5,26,25,17,7,13};
+		Unit fixedParent = new Unit(data.getCharacters().get("Hayato"), data.getJobs().get("Diviner"), "Birthright");
+		Unit variedParentAzura = new Unit(data.getCharacters().get("Azura"), data.getJobs().get("Songstress"), "Birthright");
 		
-		Unit tempUnit = new Unit(tempC, data.getJobs().get("Diviner"), "Birthright", fixedParentStats, data.getJobs().get("Diviner"), variedParentStats, data.getJobs().get("Songstress"));
+		Unit tempUnit = new Unit(tempC, data.getJobs().get("Diviner"), "Birthright", fixedParentStats, fixedParent, variedParentStats, variedParentAzura);
+		Unit variedParentRhajat = tempUnit;	// This is being done for the Kana test, not for testing Rhajat
 		tempUnit.printUnit();
 		System.out.println();
-		*/
 		
 		// Avatar Test
 		System.out.println("TEST AVATAR");
@@ -111,5 +113,24 @@ public class BlessedOrScrewed {
 		tempAvatar = new Unit(av, data.getJobs().get("Nohr Prince/ss"), "Conquest");
 		System.out.println("Boon: Mag, Bane: Def");
 		tempAvatar.printUnit();
+		System.out.println();
+		
+		// Kana Test
+		System.out.println("TEST KANA");
+		Kana ka = (Kana) data.getCharacters().get("Kana");
+		ka.setStartLevel(20);
+		ka.setVariedParent("Peri");
+		Unit variedParentPeri = new Unit(data.getCharacters().get("Peri"), data.getJobs().get("Cavalier"), "Conquest");
+		double[] fixedParentStatsKana = {20,20,20,20,20,20,20,20};
+		double[] variedParentStatsKana = {20,20,20,20,20,20,20,20};
+		
+		tempUnit = new Unit(ka, data.getJobs().get("Nohr Prince/ss"), "Conquest", fixedParentStatsKana, tempAvatar, variedParentStatsKana, variedParentPeri);
+		System.out.println("Peri as mother");
+		tempUnit.printUnit();
+		System.out.println();
+		
+		System.out.println("Rhajat, who is a child character, as mother. Use values from above childCharacter test");
+		tempUnit = new Unit(ka, data.getJobs().get("Nohr Prince/ss"), "Conquest", fixedParentStatsKana, tempAvatar, variedParentStatsKana, variedParentRhajat);
+		tempUnit.printUnit();
 	}
 }
