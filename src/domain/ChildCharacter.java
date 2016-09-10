@@ -8,7 +8,6 @@ public class ChildCharacter extends Character{
 	protected ArrayList<String> possibleParents;
 	protected String fixedParent;						// Name of the child character's fixed parent
 	protected String variedParent;
-	protected int chapterAcquired;
 	protected int startLevel;
 	
 	/*
@@ -49,7 +48,7 @@ public class ChildCharacter extends Character{
 	public String getFixedParent() {
 		return fixedParent;
 	}
-
+	
 	public String getVariedParent() {
 		return variedParent;
 	}

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -116,6 +117,11 @@ public class GUI extends JFrame{
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
 
+static String[] conquestCharacters;
+static String[] birthrightCharacters;
+static String[] revelationsCharacters;
+
+/*
 static String[] conquestCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
@@ -129,7 +135,7 @@ static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "
 		"Hayato", "Oboro", "Hinata", "NORHIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
 		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
 		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
-
+*/
 static String[] jobs = {"Songstress"};
 		
 public static void main(String[]args)
@@ -144,6 +150,10 @@ public GUI()
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
 	data.ParseJsonJobs();
+	
+	conquestCharacters = data.getConquestCharacters().toArray(new String[0]);
+	birthrightCharacters = data.getBirthrightCharacters().toArray(new String[0]);
+	revelationsCharacters = data.getRevelationsCharacters().toArray(new String[0]);
 	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
@@ -491,7 +501,7 @@ public GUI()
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 	
 	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
-	inputCharBox.setSelectedIndex(1);
+	inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf("Silas"));
 
 	//THIS IS WORK IN PROGRESS FOR THE GRAPH------------------------------------------------------------------------------------------
 	graphcontroller.createGraph("");
