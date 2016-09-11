@@ -2,15 +2,14 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import domain.VariedParent;
 
 public class ChildCharacter extends Character{
 
-	protected ArrayList<String> possibleParents;
 	protected String fixedParent;						// Name of the child character's fixed parent
-	protected String variedParent;
+	protected VariedParent variedParents;
 	protected int startLevel;
 	
-
 	public int getStartLevel() {
 		return startLevel;
 	}
@@ -19,25 +18,14 @@ public class ChildCharacter extends Character{
 		this.startLevel = startLevel;
 	}
 
-	public ArrayList<String> getPossibleParents() {
-		return possibleParents;
-	}
-
-	public void setPossibleParents(ArrayList<String> possibleParents) {
-		this.possibleParents = possibleParents;
-	}
-
 	public String getFixedParent() {
 		return fixedParent;
 	}
 	
-	public String getVariedParent() {
-		return variedParent;
+	public VariedParent getVariedParents() {
+		return variedParents;
 	}
 
-	public void setVariedParent(String variedParent) {
-		this.variedParent = variedParent;
-	}
 
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);
@@ -46,7 +34,7 @@ public class ChildCharacter extends Character{
 		String allValidSpecials = Arrays.toString(validSpecials);
 		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
 				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
-				isChild + "\nfixedParent: " + fixedParent;
+				isChild + "\nfixedParent: " + fixedParent + "\nvariedParents: " + variedParents.toString();
 	}
 }
 

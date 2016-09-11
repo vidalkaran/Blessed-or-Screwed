@@ -1,16 +1,44 @@
-{
-	name : "Kana",
-	routes : [true, true, true],
-	baseClass: "Nohr Prince/ss",
-	baseStats : {
-		conquest : [10, 7, 3, 6, 8, 8, 9, 5, 5],
-		birthright : [10, 7, 3, 6, 8, 8, 9, 5, 5],
-		revelations : [10, 7, 3, 6, 8, 8, 9, 5, 5]
+[
+	{
+		name : "Kana (F)",
+		routes : [true, true, true],
+		baseClass: "Nohr Prince/ss",
+		baseStats : {
+			conquest : [10, 7, 3, 6, 8, 8, 9, 5, 5],
+			birthright : [10, 7, 3, 6, 8, 8, 9, 5, 5],
+			revelations : [10, 7, 3, 6, 8, 8, 9, 5, 5]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [30, 35, 30, 40, 45, 45, 25, 25],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
+		areYouABoy : false,
+		isChild : true,
+		fixedParent: "Avatar (M)",
+		variedParents : {
+			conquest : ["Anna", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Flora", "Midori", "Mozu", "Nina", "Nyx", "Ophelia", "Peri", "Selena", "Soleil", "Sophie", "Velouria"],
+			birthright : ["Anna", "Azura", "Caeldori", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Midori", "Mitama", "Mozu", "Oboro", "Orochi", "Reina", "Rhajat", "Rinkah", "Sakura", "Scarlet", "Selkie", "Setsuna", "Sophie"],
+			revelations : ["Anna", "Azura", "Beruka", "Caeldori", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Flora", "Hana", "Hinoka", "Kagero", "Midori", "Mitama", "Mozu", "Nina", "Nyx", "Oboro", "Ophelia", "Orochi", "Peri", "Reina", "Rhajat", "Rinkah", "Sakura", "Scarlet", "Selena", "Selkie", "Setsuna", "Soleil", "Sophie", "Velouria"]
+		}
 	},
-	maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
-	growths : [30, 35, 30, 40, 45, 45, 25, 25],
-	validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
-	areYouABoy : false,
-	isChild : true,
-	fixedParent: "Avatar"
-}
+	{
+		name : "Kana (M)",
+		routes : [true, true, true],
+		baseClass: "Nohr Prince/ss",
+		baseStats : {
+			conquest : [10, 7, 3, 6, 8, 8, 9, 5, 5],
+			birthright : [10, 7, 3, 6, 8, 8, 9, 5, 5],
+			revelations : [10, 7, 3, 6, 8, 8, 9, 5, 5]
+		},
+		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
+		growths : [30, 35, 30, 40, 45, 45, 25, 25],
+		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
+		areYouABoy : true,
+		isChild : true,
+		fixedParent: "Avatar (F)",
+		variedParents : {
+			conquest : ["Arthur", "Benny", "Dwyer", "Forrest", "Gunter", "Ignatius", "Izana", "Jakob (F)", "Jakob {M}", "Kaze", "Keaton", "Laslow", "Leo", "Niles", "Odin", "Percy", "Shigure", "Shura", "Siegbert", "Silas", "Xander"],
+			birthright : ["Asugi", "Azama", "Dwyer", "Hayato", "Hinata", "Hisame", "Izana", "Jakob (F)", "Jakob (M)", "Kaden", "Kaze", "Kiragi", "Ryouma", "Saizo", "Shigure", "Shiro", "Shura", "Silas", "Subaki", "NOHRIAN SCUM!", "Yukimura"],
+			revelations : ["Arthur", "Asugi", "Azama", "Benny", "Dwyer", "Forrest", "Fuga", "Hayato", "Hinata", "Hisame", "Ignatius", "Jakob (F)", "Jakob (M)", "Kaden", "Kaze", "Keaton", "Kiragi", "Laslow", "Leo", "Niles", "Odin", "Percy", "Ryouma", "Shigure", "Shiro", "Shura", "Siegbert", "Silas", "Subaki", "NOHRIAN SCUM!", "Xander"] 
+		}
+	}
+]

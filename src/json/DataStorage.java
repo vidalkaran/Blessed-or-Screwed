@@ -113,9 +113,9 @@ public class DataStorage implements Serializable{
 	// parsing for characters.json
 	public void ParseJsonCharacters() {
 		Character[] adults;			// Array used for parsing the adults in characters.json
-		Avatar avatar;				// Used for parsing avatar.json
+		Avatar[] avatar;				// Used for parsing avatar.json
 		ChildCharacter[] children;	// Array used for parsing children.json
-		Kana kana;					// Used for parsing kana.json
+		Kana[] kana;					// Used for parsing kana.json
 		
 		try
 		{
@@ -125,25 +125,30 @@ public class DataStorage implements Serializable{
 			adults = gson.fromJson(reader, Character[].class);
 			// Parse Avatar
 			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/avatar.json"), "UTF-8");
-			avatar = gson.fromJson(reader, Avatar.class);
+			avatar = gson.fromJson(reader, Avatar[].class);
 			// Parse children
 			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/children.json"), "UTF-8");
 			children = gson.fromJson(reader, ChildCharacter[].class);
 			// Parse Kana
 			reader = new InputStreamReader(DataStorage.class.getResourceAsStream("/resources/kana.json"), "UTF-8");
-			kana = gson.fromJson(reader, Kana.class);
+			kana = gson.fromJson(reader, Kana[].class);
 			
 			// Implement characters map and route arrays
 			characters = new HashMap<String, Character>();
 			conquestCharacters = new ArrayList<String>();
 			birthrightCharacters = new ArrayList<String>();
 			revelationsCharacters = new ArrayList<String>();
-			// Place Avatar in the map
-			characters.put(avatar.getName(), avatar);
-			// Avatar is in every route
-			conquestCharacters.add(avatar.getName());
-			birthrightCharacters.add(avatar.getName());
-			revelationsCharacters.add(avatar.getName());
+
+			// Place both Avatars in the map
+			for(int i = 0; i < avatar.length; i++) {
+				characters.put(avatar[i].getName(), avatar[i]);
+				
+				// Both Avatars are in every route
+				conquestCharacters.add(avatar[i].getName());
+				birthrightCharacters.add(avatar[i].getName());
+				revelationsCharacters.add(avatar[i].getName());
+			}
+			
 			// Place all adults in the map
 			for(int i = 0; i < adults.length; i++) {
 				characters.put(adults[i].getName(), adults[i]);
@@ -159,12 +164,17 @@ public class DataStorage implements Serializable{
 					revelationsCharacters.add(adults[i].getName());
 				}
 			}
-			// Place Kana in the map
-			characters.put(kana.getName(), kana);
-			// Kana is in every route
-			conquestCharacters.add(kana.getName());
-			birthrightCharacters.add(kana.getName());
-			revelationsCharacters.add(kana.getName());
+
+			// Place both Kana in the map
+			for(int i = 0; i < kana.length; i++) {
+				characters.put(kana[i].getName(), kana[i]);
+				
+				// Both Kana are in every route
+				conquestCharacters.add(kana[i].getName());
+				birthrightCharacters.add(kana[i].getName());
+				revelationsCharacters.add(kana[i].getName());
+			}
+			
 			// Place all of the children in the map
 			for(int i = 0; i < children.length; i++) {
 				characters.put(children[i].getName(), children[i]);

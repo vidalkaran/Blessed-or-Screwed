@@ -439,7 +439,7 @@ public GUI()
 
 //Initializes Job History
 	jobHistory = new JList();
-	jobHistory.setPreferredSize(new Dimension(250,250));
+//	jobHistory.setPreferredSize(new Dimension(250,250));
 	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
 	listPanel.add(new JScrollPane(jobHistory));
 
@@ -916,6 +916,8 @@ public GUI()
 			{
 				possibleLevels[i] = (i+tempLevel+"");
 			}
+			
+			System.out.println(tempLevel);
 			
 			Object[] listData = unitcontroller.getClassArray();
 			jobHistory.setListData(listData);
