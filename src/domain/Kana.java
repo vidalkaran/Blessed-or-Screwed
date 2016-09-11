@@ -34,6 +34,6 @@ public class Kana extends ChildCharacter{
 		String allValidSpecials = Arrays.toString(validSpecials);
 		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
 				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
-				isChild + "\nfixedParent: " + fixedParent + "\nboon: " + boon + "\nbane: " + bane;
+				isChild + "\nfixedParent: " + fixedParent + "\nvariedParents: " + variedParents.toString() + "\nboon: " + boon + "\nbane: " + bane;
 	}
 }

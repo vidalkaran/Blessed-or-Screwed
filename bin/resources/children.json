@@ -13,23 +13,33 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Azura"
+		fixedParent: "Azura",
+		variedParents : {
+			conquest : ["Arthur", "Avatar (M)", "Benny", "Jakob (F)", "Jakob {M}", "Kaze", "Keaton", "Laslow", "Leo", "Niles", "Odin", "Silas", "Xander"],
+			birthright : ["Avatar (M)", "Azama", "Hayato", "Hinata", "Jakob (F)", "Jakob (M)", "Kaden", "Kaze", "Ryouma", "Saizo", "Silas", "Subaki", "NOHRIAN SCUM!"],
+			revelations : ["Arthur", "Avatar (M)", "Azama", "Benny", "Hayato", "Hinata", "Jakob (F)", "Jakob (M)", "Kaden", "Kaze", "Keaton", "Laslow", "Leo", "Niles", "Odin", "Ryouma", "Silas", "Subaki", "NOHRIAN SCUM!", "Xander"] 
+		}
 	},
 	{
 		name : "Dwyer",
 		routes : [true, true, true],
 		baseClass: "Troubadour",
 		baseStats : {
-			conquest : [10, 8, 7, 7, 2, 6, 4, 6, 7],
-			birthright : [10, 8, 7, 7, 2, 6, 4, 6, 7],
-			revelations : [10, 8, 7, 7, 2, 6, 4, 6, 7]
+			conquest : [10, 9, 6, 1, 7, 7, 5, 8, 7],
+			birthright : [10, 9, 6, 1, 7, 7, 5, 8, 7],
+			revelations : [10, 9, 6, 1, 7, 7, 5, 8, 7]
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 45, 30, 20, 30, 30, 30, 35],
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Jakob"
+		fixedParent: "Jakob (F)",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Nyx", "Oboro", "Orochi", "Peri", "Rinkah", "Sakura", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Sophie",
@@ -45,7 +55,12 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Silas"
+		fixedParent: "Silas",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Nyx", "Oboro", "Orochi", "Peri", "Rinkah", "Sakura", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Midori",
@@ -61,7 +76,12 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Kaze"
+		fixedParent: "Kaze",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Nyx", "Oboro", "Orochi", "Peri", "Rinkah", "Sakura", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Siegbert",
@@ -76,7 +96,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Xander"
+		fixedParent: "Xander",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Charlotte", "Effie", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Charlotte", "Effie", "Felicia (F)", "Felicia (M)", "Hinoka", "Mozu", "Nyx", "Peri", "Sakura", "Selena"]
+		}
 	},
 	{
 		name : "Forrest",
@@ -91,7 +115,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Leo"
+		fixedParent: "Leo",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Charlotte", "Effie", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Charlotte", "Effie", "Felicia (F)", "Felicia (M)", "Hinoka", "Mozu", "Nyx", "Peri", "Sakura", "Selena"]
+		}
 	},
 	{
 		name : "Ignatius",
@@ -106,7 +134,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Benny"
+		fixedParent: "Benny",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Oboro", "Peri", "Rinkah", "Selena"]
+		}
 	},
 	{
 		name : "Velouria",
@@ -121,7 +153,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Keaton"
+		fixedParent: "Keaton",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Mozu", "Nyx", "Peri", "Rinkah", "Selena"]
+		}
 	},
 	{
 		name : "Percy",
@@ -136,7 +172,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Arthur"
+		fixedParent: "Arthur",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Kagero", "Mozu", "Nyx", "Peri", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Ophelia",
@@ -151,7 +191,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Odin"
+		fixedParent: "Odin",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Kagero", "Mozu", "Nyx", "Orochi", "Peri", "Selena"]
+		}
 	},
 	{
 		name : "Soleil",
@@ -166,7 +210,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Laslow"
+		fixedParent: "Laslow",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Mozu", "Nyx", "Orochi", "Peri", "Selena"]
+		}
 	},
 	{
 		name : "Nina",
@@ -181,7 +229,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Niles"
+		fixedParent: "Niles",
+		variedParents : {
+			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Oboro", "Peri", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Shiro",
@@ -196,7 +248,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Ryouma"
+		fixedParent: "Ryouma",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Camilla", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"]
+		}
 	},
 	{
 		name : "Kiragi",
@@ -211,7 +267,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "NOHRIAN SCUM!"
+		fixedParent: "NOHRIAN SCUM!",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Camilla", "Elise", "Felicia (F)", "Felicia (M)", "Hana", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"]
+		}
 	},
 	{
 		name : "Asugi",
@@ -226,7 +286,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Saizo"
+		fixedParent: "Saizo",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Charlotte", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"]
+		}
 	},
 	{
 		name : "Selkie",
@@ -241,7 +305,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Kitsune", "Nine-Tails"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Kaden"
+		fixedParent: "Kaden",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Charlotte", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Peri", "Rinkah", "Sakura", "Setsuna"]
+		}
 	},
 	{
 		name : "Hisame",
@@ -256,7 +324,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : true,
 		isChild : true,
-		fixedParent: "Hinata"
+		fixedParent: "Hinata",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Peri", "Rinkah", "Sakura", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Mitama",
@@ -271,7 +343,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Azama"
+		fixedParent: "Azama",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Beruka", "Effie", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"]
+		}
 	},
 	{
 		name : "Caeldori",
@@ -286,7 +362,11 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Subaki"
+		fixedParent: "Subaki",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Nyx", "Oboro", "Orochi", "Rinkah", "Sakura", "Selena", "Setsuna"]
+		}
 	},
 	{
 		name : "Rhajat",
@@ -301,6 +381,10 @@
 		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
 		areYouABoy : false,
 		isChild : true,
-		fixedParent: "Hayato"
+		fixedParent: "Hayato",
+		variedParents : {
+			birthright : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"],
+			revelations : ["Avatar (F)", "Azura", "Felicia (F)", "Felicia (M)", "Hana", "Hinoka", "Kagero", "Mozu", "Nyx", "Oboro", "Orochi", "Rinkah", "Sakura", "Setsuna"]
+		}
 	}
 ]
