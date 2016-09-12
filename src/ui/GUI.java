@@ -53,6 +53,8 @@ public class GUI extends JFrame{
 
 //ResultPanel
 		JComboBox resultLevelBox;
+		JLabel resultClassLabel;
+		JLabel resultClassDisplay;
 		
 		JLabel resultHP;
 		JLabel resultStr;
@@ -101,11 +103,12 @@ public class GUI extends JFrame{
 		JDialog optionPane;
 		JButton reclassButton;
 		JButton promoteButton;
+		JButton parentalUnitsButton;
 		JButton confirmButton;
 		JButton eternalSealButton;
 		JList jobHistory;
 		
-	//reclassWindow
+//reclassWindow
 		JDialog reclassPane;
 		JLabel reclassLevel;
 		JLabel reclassClass;
@@ -114,6 +117,55 @@ public class GUI extends JFrame{
 		JButton reclassConfirm;
 		JButton reclassCancel;
 		
+//ParentalUnitsPane
+		JDialog parentalUnitsPane;
+		
+		JLabel fixedParentName;
+		JLabel fixedParentNameDisplay;
+		JLabel fixedParentClass;
+		JLabel fixedParentClassDisplay;
+		JLabel fixedParentHP;
+		JLabel fixedParentStr;
+		JLabel fixedParentMag;
+		JLabel fixedParentSkl;
+		JLabel fixedParentSpd;
+		JLabel fixedParentLuk;
+		JLabel fixedParentDef;
+		JLabel fixedParentRes;
+		JTextField fixedParentHPField;
+		JTextField fixedParentStrField;
+		JTextField fixedParentMagField;
+		JTextField fixedParentSklField;
+		JTextField fixedParentSpdField;
+		JTextField fixedParentLukField;
+		JTextField fixedParentDefField;
+		JTextField fixedParentResField;
+		
+		JLabel variedParentName;
+		JComboBox variedParentNameDisplay;
+		JLabel variedParentClass;
+		JComboBox variedParentClassDisplay;
+		
+		JLabel variedParentHP;
+		JLabel variedParentStr;
+		JLabel variedParentMag;
+		JLabel variedParentSkl;
+		JLabel variedParentSpd;
+		JLabel variedParentLuk;
+		JLabel variedParentDef;
+		JLabel variedParentRes;
+		JTextField variedParentHPField;
+		JTextField variedParentStrField;
+		JTextField variedParentMagField;
+		JTextField variedParentSklField;
+		JTextField variedParentSpdField;
+		JTextField variedParentLukField;
+		JTextField variedParentDefField;
+		JTextField variedParentResField;
+		
+		JButton parentalConfirm;
+		JButton parentalCancel;
+
 		JFreeChart lineChart;
 	//promoteWindow
 	//EternalSeal window mayyybe?
@@ -125,21 +177,6 @@ static String[] conquestCharacters;
 static String[] birthrightCharacters;
 static String[] revelationsCharacters;
 
-/*
-static String[] conquestCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
-
-static String[] birthrightCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "NOHRIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
-
-static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "NORHIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
-		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
-*/
 static String[] jobs = {"Songstress"};
 		
 public static void main(String[]args)
@@ -234,8 +271,26 @@ public GUI()
 			
 	//Result Panel
 	JPanel resultPanel = new JPanel();
-	resultPanel.setLayout(new GridLayout(4,4));
+	resultPanel.setLayout(new GridLayout(5,4));
 	
+	JLabel blank1 = new JLabel("");
+	JLabel YourStats1 = new JLabel("Your Val");
+	JLabel AvgStats1 = new JLabel("Avg. Val");
+	JLabel Difference1 = new JLabel("Difference");
+		resultPanel.add(blank1);
+		resultPanel.add(YourStats1);
+		resultPanel.add(AvgStats1);
+		resultPanel.add(Difference1);
+
+	JLabel blank2 = new JLabel("");
+	JLabel YourStats2 = new JLabel("Your Val");
+	JLabel AvgStats2 = new JLabel("Avg. Val");
+	JLabel Difference2 = new JLabel("Difference");
+		resultPanel.add(blank2);
+		resultPanel.add(YourStats2);
+		resultPanel.add(AvgStats2);
+		resultPanel.add(Difference2);
+		
 		resultHP = new JLabel("HP: ");
 		resultHPField = new JTextField(" ");
 		resultHPField.setEditable(false);
@@ -392,9 +447,14 @@ public GUI()
 		optionsButton.addActionListener(OptionButtonHandler);
 			optionsButtonPanel.add(optionsButton);
 		resultLevelBox = new JComboBox();
+		resultLevelBox.setEnabled(false);
 			ResultLevelBoxHandler resultlevelboxhandler = new ResultLevelBoxHandler();
 			resultLevelBox.addActionListener(resultlevelboxhandler);
+		resultClassLabel = new JLabel("Class: ");
+		resultClassDisplay = new JLabel("Error");
 			optionsButtonPanel.add(resultLevelBox);
+			optionsButtonPanel.add(resultClassLabel);
+			optionsButtonPanel.add(resultClassDisplay);
 		leftSide.add(optionsButtonPanel);
 		leftSide.add(resultPanel);
 	
@@ -460,6 +520,11 @@ public GUI()
 		EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
 		eternalSealButton.addActionListener(EternalSealButtonHandler);
 			modPanel.add(eternalSealButton);
+	parentalUnitsButton = new JButton("Parents");
+	ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
+		parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
+			modPanel.add(parentalUnitsButton);
+
 	confirmButton = new JButton("Confirm");
 		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
 		confirmButton.addActionListener(CloseOptionButtonHandler);
@@ -501,6 +566,156 @@ public GUI()
 	reclassPane.setResizable(true);
 	reclassPane.setSize(300,300);
 	reclassPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+	
+//PARENTAL UNITS PANEL
+	parentalUnitsPane  = new JDialog(optionPane, true);
+	JPanel parentalUnitsPanel = new JPanel();
+	
+//These panels are for fixed parent
+	JPanel fixedParentPanelMain = new JPanel();
+	Border fixedParentPanelBorder = BorderFactory.createTitledBorder("Fixed Parent");
+	fixedParentPanelMain.setBorder(fixedParentPanelBorder);
+	fixedParentPanelMain.setLayout(new BoxLayout(fixedParentPanelMain, BoxLayout.PAGE_AXIS));
+	
+	//This panel has the name and class
+	JPanel fixedParentPanel1 = new JPanel();
+		fixedParentName = new JLabel("Name: ");
+		fixedParentNameDisplay = new JLabel();
+		fixedParentClass= new JLabel("Class: ");
+		fixedParentClassDisplay = new JLabel();
+			fixedParentPanel1.add(fixedParentName);
+			fixedParentPanel1.add(fixedParentNameDisplay);
+			fixedParentPanel1.add(fixedParentClass);
+			fixedParentPanel1.add(fixedParentClassDisplay);
+			
+	//this panel has the stats
+		JPanel fixedParentPanel2 = new JPanel();
+		fixedParentPanel2.setLayout(new GridLayout(4,4));
+		
+			fixedParentHP = new JLabel("HP: ");
+			fixedParentHPField = new JTextField(" ", 4);
+			fixedParentPanel2.add(fixedParentHP);
+			fixedParentPanel2.add(fixedParentHPField);	
+		
+			fixedParentSpd = new JLabel("Spd: ");
+			fixedParentSpdField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentSpd);
+			fixedParentPanel2.add(fixedParentSpdField);		
+				
+			fixedParentStr = new JLabel("Str: ");
+			fixedParentStrField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentStr);
+			fixedParentPanel2.add(fixedParentStrField);	
+				
+			fixedParentLuk = new JLabel("Luk: ");
+			fixedParentLukField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentLuk);
+			fixedParentPanel2.add(fixedParentLukField);				
+				
+			fixedParentMag = new JLabel("Mag: ");
+			fixedParentMagField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentMag);
+			fixedParentPanel2.add(fixedParentMagField);
+				
+			fixedParentDef = new JLabel("Def: ");
+			fixedParentDefField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentDef);
+			fixedParentPanel2.add(fixedParentDefField);			
+				
+			fixedParentSkl = new JLabel("Skl: ");
+			fixedParentSklField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentSkl);
+			fixedParentPanel2.add(fixedParentSklField);	
+				
+			fixedParentRes = new JLabel("Res: ");
+			fixedParentResField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentRes);
+			fixedParentPanel2.add(fixedParentResField);	
+	
+//These panels are for the varied parent
+	JPanel variedParentPanelMain = new JPanel();
+	Border variedParentPanelBorder = BorderFactory.createTitledBorder("Varied Parent");
+	variedParentPanelMain.setBorder(variedParentPanelBorder);
+	variedParentPanelMain.setLayout(new BoxLayout(variedParentPanelMain, BoxLayout.PAGE_AXIS));
+
+	//This panel has the name and class
+	JPanel variedParentPanel1 = new JPanel();
+		variedParentName = new JLabel("Name: ");
+		variedParentNameDisplay = new JComboBox();
+		variedParentClass= new JLabel("Class: ");
+		variedParentClassDisplay = new JComboBox();
+			variedParentPanel1.add(variedParentName);
+			variedParentPanel1.add(variedParentNameDisplay);
+			variedParentPanel1.add(variedParentClass);
+			variedParentPanel1.add(variedParentClassDisplay);
+	
+			//this panel has the stats
+		JPanel variedParentPanel2 = new JPanel();
+		variedParentPanel2.setLayout(new GridLayout(4,4));
+		
+		variedParentHP = new JLabel("HP: ");
+		variedParentHPField = new JTextField(" ", 4);
+		variedParentPanel2.add(variedParentHP);
+		variedParentPanel2.add(variedParentHPField);	
+		
+		variedParentSpd = new JLabel("Spd: ");
+		variedParentSpdField = new JTextField(" ");
+		variedParentPanel2.add(variedParentSpd);
+		variedParentPanel2.add(variedParentSpdField);		
+				
+		variedParentStr = new JLabel("Str: ");
+		variedParentStrField = new JTextField(" ");
+		variedParentPanel2.add(variedParentStr);
+		variedParentPanel2.add(variedParentStrField);	
+				
+		variedParentLuk = new JLabel("Luk: ");
+		variedParentLukField = new JTextField(" ");
+		variedParentPanel2.add(variedParentLuk);
+		variedParentPanel2.add(variedParentLukField);				
+				
+		variedParentMag = new JLabel("Mag: ");
+		variedParentMagField = new JTextField(" ");
+		variedParentPanel2.add(variedParentMag);
+		variedParentPanel2.add(variedParentMagField);
+				
+		variedParentDef = new JLabel("Def: ");
+		variedParentDefField = new JTextField(" ");
+		variedParentPanel2.add(variedParentDef);
+		variedParentPanel2.add(variedParentDefField);			
+				
+		variedParentSkl = new JLabel("Skl: ");
+		variedParentSklField = new JTextField(" ");
+		variedParentPanel2.add(variedParentSkl);
+		variedParentPanel2.add(variedParentSklField);	
+				
+		variedParentRes = new JLabel("Res: ");
+		variedParentResField = new JTextField(" ");
+		variedParentPanel2.add(variedParentRes);
+		variedParentPanel2.add(variedParentResField);	
+		
+		parentalConfirm = new JButton("Confirm");
+			ParentalConfirmButtonHandler parentalconfirmbuttonhandler = new ParentalConfirmButtonHandler();
+			parentalConfirm.addActionListener(parentalconfirmbuttonhandler);
+		parentalCancel = new JButton("Cancel");
+			ParentalCancelButtonHandler parentalcancelbuttonhandler = new ParentalCancelButtonHandler();
+			parentalCancel.addActionListener(parentalcancelbuttonhandler);
+		
+	//Adding all components
+	fixedParentPanelMain.add(fixedParentPanel1);
+	fixedParentPanelMain.add(fixedParentPanel2);
+	variedParentPanelMain.add(variedParentPanel1);
+	variedParentPanelMain.add(variedParentPanel2);
+	parentalUnitsPanel.add(fixedParentPanelMain);
+	parentalUnitsPanel.add(variedParentPanelMain);
+	parentalUnitsPanel.add(parentalConfirm);
+	parentalUnitsPanel.add(parentalCancel);
+
+	//Finalizing Panel
+	parentalUnitsPane.add(parentalUnitsPanel);
+	parentalUnitsPane.setTitle("Parents");
+	parentalUnitsPane.setResizable(true);
+	parentalUnitsPane.setSize(300,375);
+	parentalUnitsPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
 
 	//Add all Components
 	optionPane.setLayout(new FlowLayout());
@@ -528,7 +743,7 @@ public GUI()
 //------------------------------------------------------------ACTION LISTENERS-----------------------------------------------------
 	
 //-------------------------------------------------------------OPTION WINDOW-------------------------------------------------------
-	//OPEN OPTIONS WINDOW BUTTON
+	//This handles the button that opens the option window from the main window
 	public class OpenOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -537,7 +752,7 @@ public GUI()
 		}
 		
 	}
-	//RECLASS OPTIONS WINDOW BUTTON
+	//This handles the button that opens the reclass window from the options window
 	public class ReclassOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -547,7 +762,7 @@ public GUI()
 		}
 		
 	}
-		//Reclass Confirm
+		//This handles the confirm button in the reclass window
 			public class ReClassConfirmButtonHandler implements ActionListener
 			{
 				public void actionPerformed(ActionEvent e)
@@ -565,7 +780,7 @@ public GUI()
 					reclassPane.dispose();
 				}
 			}
-		//Reclass Close
+		//This handles the close button in the reclass window
 			public class ReClassCancelButtonHandler implements ActionListener
 			{
 				public void actionPerformed(ActionEvent e)
@@ -573,7 +788,7 @@ public GUI()
 					reclassPane.dispose();
 				}
 			}
-	//PROMOTE OPTIONS WINDOW BUTTON
+	//This handles the promote button in the options window (NOT IMPLEMENTED YET)
 	public class PromoteOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -581,7 +796,7 @@ public GUI()
 		}
 		
 	}
-	//ETERNAL SEAL OPTIONS WINDOW BUTTON
+	////This handles the Eternal Seal button in the options window (NOT IMPLEMENTED YET)
 	public class EternalSealButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -589,7 +804,32 @@ public GUI()
 		}
 		
 	}
-	//CLOSE OPTIONS WINDOW BUTTON
+	//This handles the parents button in the options window (ALMOST IMPLEMENTED)
+	public class ParentalUnitsButtonHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			parentalUnitsPane.setVisible(true);
+		}
+		
+	}
+		//This handles the confirm button in the parental units window
+			public class ParentalConfirmButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					parentalUnitsPane.dispose();
+				}
+			}
+		//This handles the close button in the parental units window
+			public class ParentalCancelButtonHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			parentalUnitsPane.dispose();
+		}
+	}
+	//This handles the button that closes the options window
 	public class CloseOptionButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
@@ -600,7 +840,7 @@ public GUI()
 }
 
 //-------------------------------------------------------------MAIN WINDOW-------------------------------------------------------
-	//CLEAR BUTTON
+	//This clears all data
 	public class ClearButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent arg0) 
@@ -646,7 +886,7 @@ public GUI()
 				graphcontroller.setDataset(graphcontroller.createDataset());
 		}	
 	}
-//Calculate BUTTON
+	//This generates the unitSheet and populates the result fields and graph
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -662,7 +902,7 @@ public GUI()
 			
 			UnitController unitcontroller = UnitController.getInstance();
 			GraphController graphcontroller = GraphController.getInstance();
-
+			
 			try
 			{
 				HP = Integer.parseInt(inputHPField.getText());
@@ -701,6 +941,7 @@ public GUI()
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
 			
 			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			resultLevelBox.setEnabled(true);
 			
 			resultHPField.setText(formatter.format(inputResults[0]));
 			avgHPField.setText(formatter.format(localResults[0]));
@@ -828,7 +1069,7 @@ public GUI()
 		}
 		
 	}
-	//Handles the stat combobox in the graphPanel
+	//This allows you to change the data visualized on the graph using the stat combo box
 	public class graphBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -845,7 +1086,7 @@ public GUI()
 			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
 		}
 	}
-	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
+	//This handler allows a user to select a route and adjusts data in the logic based on route.
 	public class ComboBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -867,7 +1108,7 @@ public GUI()
 			}
 		}
 	}
-	//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
+	//This handler allows a user to select the character and adjusts data accordingly
 	public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
@@ -926,6 +1167,7 @@ public GUI()
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
 		
 			//Debug print to console
 			System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
@@ -943,7 +1185,6 @@ public GUI()
 		}
 	}
 }
-
 	//This handler populates the resultLevel box based on whats in the level box
 	public class InputLevelBoxHandler implements ActionListener
 	{
@@ -959,8 +1200,7 @@ public GUI()
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}
 	}
-	
-	//This panel updates the result panel based on the inputted level
+	//This handler  updates the result panel based on the input level
 	public class ResultLevelBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -974,6 +1214,7 @@ public GUI()
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
 			
 			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
 
 			resultHPField.setText(formatter.format(inputResults[0]));
 			avgHPField.setText(formatter.format(localResults[0]));
