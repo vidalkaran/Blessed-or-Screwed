@@ -7,20 +7,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import domain.Unit;
 import json.DataStorage;
 import domain.Character;
+import domain.ChildCharacter;
 import domain.Job;
 
 public class UnitController {
 
 	private static UnitController instance = null;	// DataStorage singleton instance	
 	DataStorage data = DataStorage.getInstance(); //This is the data
-	ArrayList<Unit> localUnitSheet = new ArrayList(); //this unitSheet is calculated to compare the input one against.
-	ArrayList<Unit> inputUnitSheet = new ArrayList(); //this is unitSheet that users will input. This is compared against localUnitSheet.
+	ArrayList<Unit> localUnitSheet = new ArrayList<Unit>(); //this unitSheet is calculated to compare the input one against.
+	ArrayList<Unit> inputUnitSheet = new ArrayList<Unit>(); //this is unitSheet that users will input. This is compared against localUnitSheet.
 	
 	//THIS IS WHERE THE CURRENT CHARACTER AND JOB ARE DEFINED AS PER THE GUI.
 	public Character currentChar;
@@ -44,7 +44,15 @@ public class UnitController {
 	//BUILDS A LOCALUNITSHEET
 	public void buildLocalUnitSheet()
 	{		
-		Unit localUnit = new Unit(currentChar, currentJob, currentRoute);
+		Unit localUnit;
+		/*
+		if(currentChar instanceof ChildCharacter)
+		{
+			localUnit = // Unit Child Constructor
+		}
+		else {*/
+			localUnit = new Unit(currentChar, currentJob, currentRoute);
+		//}
 		addBaseClassMods(localUnit);
 		localUnitSheet.clear();
 		buildSheet(localUnit, classHistory, localUnitSheet, 0);
@@ -53,15 +61,33 @@ public class UnitController {
 	//BUILDS A INPUTUNITSHEET
 	public void buildInputUnitSheet(int inputLevel, double[] inputStats)
 	{
-		Unit inputUnit = new Unit(currentChar, currentJob, currentRoute);
+		ArrayList<String> inputClassHistory = new ArrayList();
+		int baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
+		int levelMod = inputLevel - baseLevel;
+		
+		for(int i = 0; i< classHistory.size() - levelMod; i++)
+		{
+			inputClassHistory.add(classHistory.get(i + levelMod));
+		}
+		
+		Unit inputUnit;
+		/*
+		if(currentChar instanceof ChildCharacter)
+		{
+			inputUnit = // Unit Child Constructor
+		}
+		else {*/
+			inputUnit = new Unit(currentChar, currentJob, currentRoute);
+		//}
+
 		inputUnit.setLevel(inputLevel);
 		inputUnit.setBaseStats(inputStats);		
 		inputUnitSheet.clear();
-		buildSheet(inputUnit, classHistory, inputUnitSheet, 0);
+		buildSheet(inputUnit, inputClassHistory, inputUnitSheet, 0);
 	}
 
 	
-//THIS IS THE MATH ZONE. BEWARE
+//=================================================================THIS IS THE MATH ZONE. BEWARE
 	
 	//RECURSION WHAT :O
 	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i)
@@ -160,6 +186,46 @@ public class UnitController {
 	    }
 	}
 	
+//===========================================================STUFF FOR GUI AND TESTING
+	
+	//Method for reclassing, only affects jobHistory
+	public void reclass(String newJob, int changeLevel)
+	{
+		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
+		
+		for(int i = 0; i<(classHistory.size()-levelVector); i++)
+		{
+			classHistory.set((levelVector+i), newJob);
+		}
+	}
+
+	//This returns an of stats from the local sheet
+	//REFERENCE: 0=HP, 1=STR, 2=MAG, 3=SPD, 4=SKL, 5=LUK, 6=DEF, 7=RES 
+	public double[] getLocalStatSpread(int stat)
+	{
+		double[] output = new double[localUnitSheet.size()];
+		
+			for(int i = 0; i<localUnitSheet.size();i++)
+			{
+				double[] tempArray = localUnitSheet.get(i).getBaseStats();
+				output[i] = tempArray[stat];
+			}	
+			
+		return output;
+	}
+	
+	public double[] getInputStatSpread(int stat)
+	{
+		double[] output = new double[inputUnitSheet.size()];
+		
+			for(int i = 0; i<inputUnitSheet.size();i++)
+			{
+				double[] tempArray = inputUnitSheet.get(i).getBaseStats();
+				output[i] = tempArray[stat];
+			}	
+			
+		return output;
+	}
 	//PRINTER METHOD FOR TESTING 
 	public void printLocalSheet()
 	{
@@ -172,6 +238,7 @@ public class UnitController {
 		
 	}
 	
+	//PRINTER METHOD FOR TESTING 
 	public void printInputSheet()
 	{
 		for(int i = 0; i<inputUnitSheet.size();i++)
@@ -181,17 +248,6 @@ public class UnitController {
 			inputUnitSheet.get(i).printUnit();	
 		}
 		
-	}
-	
-	//Method for reclassing, only affects jobHistory
-	public void reclass(String newJob, int changeLevel)
-	{
-		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
-		
-		for(int i = 0; i<(classHistory.size()-levelVector); i++)
-		{
-			classHistory.set((levelVector+i), newJob);
-		}
 	}
 	
 //ALL GETTERS/SETTERS

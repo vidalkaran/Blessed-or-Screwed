@@ -6,13 +6,20 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-
 import json.DataStorage;
+import logic.GraphController;
 import logic.UnitController;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+
+import com.google.gson.JsonIOException;
 
 public class GUI extends JFrame{
 
@@ -45,6 +52,10 @@ public class GUI extends JFrame{
 		JTextField inputResField;
 
 //ResultPanel
+		JComboBox resultLevelBox;
+		JLabel resultClassLabel;
+		JLabel resultClassDisplay;
+		
 		JLabel resultHP;
 		JLabel resultStr;
 		JLabel resultMag;
@@ -54,7 +65,6 @@ public class GUI extends JFrame{
 		JLabel resultDef;
 		JLabel resultRes;
 		
-		JTextField resultLevelField;
 		JTextField resultHPField;
 		JTextField resultStrField;
 		JTextField resultMagField;
@@ -63,8 +73,16 @@ public class GUI extends JFrame{
 		JTextField resultLukField;
 		JTextField resultDefField;
 		JTextField resultResField;
+
+		JTextField avgHPField;
+		JTextField avgStrField;
+		JTextField avgMagField;
+		JTextField avgSklField;
+		JTextField avgSpdField;
+		JTextField avgLukField;
+		JTextField avgDefField;
+		JTextField avgResField;
 		
-		JTextField resultLevelDifference;
 		JTextField resultHPDifference;
 		JTextField resultStrDifference;
 		JTextField resultMagDifference;
@@ -75,21 +93,22 @@ public class GUI extends JFrame{
 		JTextField resultResDifference;
 		
 //GraphPanel
-		JLabel graphLevel;
 		JLabel graphStat;
-		JComboBox graphLevelBox;
 		JComboBox graphStatBox;
 		JButton calculateButton;
 		JButton optionsButton;
+		JButton clearButton;
 		
 //Option Window
 		JDialog optionPane;
 		JButton reclassButton;
 		JButton promoteButton;
+		JButton parentalUnitsButton;
 		JButton confirmButton;
 		JButton eternalSealButton;
 		JList jobHistory;
-	//reclassWindow
+		
+//reclassWindow
 		JDialog reclassPane;
 		JLabel reclassLevel;
 		JLabel reclassClass;
@@ -97,25 +116,66 @@ public class GUI extends JFrame{
 		JList reclassClasses;
 		JButton reclassConfirm;
 		JButton reclassCancel;
+		
+//ParentalUnitsPane
+		JDialog parentalUnitsPane;
+		
+		JLabel fixedParentName;
+		JLabel fixedParentNameDisplay;
+		JLabel fixedParentClass;
+		JLabel fixedParentClassDisplay;
+		JLabel fixedParentHP;
+		JLabel fixedParentStr;
+		JLabel fixedParentMag;
+		JLabel fixedParentSkl;
+		JLabel fixedParentSpd;
+		JLabel fixedParentLuk;
+		JLabel fixedParentDef;
+		JLabel fixedParentRes;
+		JTextField fixedParentHPField;
+		JTextField fixedParentStrField;
+		JTextField fixedParentMagField;
+		JTextField fixedParentSklField;
+		JTextField fixedParentSpdField;
+		JTextField fixedParentLukField;
+		JTextField fixedParentDefField;
+		JTextField fixedParentResField;
+		
+		JLabel variedParentName;
+		JComboBox variedParentNameDisplay;
+		JLabel variedParentClass;
+		JComboBox variedParentClassDisplay;
+		
+		JLabel variedParentHP;
+		JLabel variedParentStr;
+		JLabel variedParentMag;
+		JLabel variedParentSkl;
+		JLabel variedParentSpd;
+		JLabel variedParentLuk;
+		JLabel variedParentDef;
+		JLabel variedParentRes;
+		JTextField variedParentHPField;
+		JTextField variedParentStrField;
+		JTextField variedParentMagField;
+		JTextField variedParentSklField;
+		JTextField variedParentSpdField;
+		JTextField variedParentLukField;
+		JTextField variedParentDefField;
+		JTextField variedParentResField;
+		
+		JButton parentalConfirm;
+		JButton parentalCancel;
+
+		JFreeChart lineChart;
 	//promoteWindow
 	//EternalSeal window mayyybe?
 		
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
 
-static String[] conquestCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
-
-static String[] birthrightCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "NOHRIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
-
-static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "NORHIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
-		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
+static String[] conquestCharacters;
+static String[] birthrightCharacters;
+static String[] revelationsCharacters;
 
 static String[] jobs = {"Songstress"};
 		
@@ -124,12 +184,18 @@ public static void main(String[]args)
 	new GUI();
 }
 
+//============================================================START GUI CLASS======================================================
 public GUI()
 {	
-	UnitController unitController = UnitController.getInstance();
+	GraphController graphcontroller = GraphController.getInstance();
+	UnitController unitcontroller = UnitController.getInstance();
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
 	data.ParseJsonJobs();
+	
+	conquestCharacters = data.getConquestCharacters().toArray(new String[0]);
+	birthrightCharacters = data.getBirthrightCharacters().toArray(new String[0]);
+	revelationsCharacters = data.getRevelationsCharacters().toArray(new String[0]);
 	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
@@ -146,6 +212,7 @@ public GUI()
 		
 		inputChar = new JLabel("Char: ");
 		inputCharBox = new JComboBox(conquestCharacters);
+		inputCharBox.setPreferredSize(new Dimension(100,25));
 		CharBoxHandler CharBoxHandler = new CharBoxHandler();
 		inputCharBox.addActionListener(CharBoxHandler);
 			inputPanel1.add(inputChar);
@@ -153,8 +220,8 @@ public GUI()
 								
 		inputLevel = new JLabel("Level: ");
 		inputLevelBox = new JComboBox();
-		LevelBoxHandler LevelBoxHandler = new LevelBoxHandler();
-		inputLevelBox.addActionListener(LevelBoxHandler);
+		InputLevelBoxHandler inputlevelboxhandler = new InputLevelBoxHandler();
+		inputLevelBox.addActionListener(inputlevelboxhandler);
 			inputPanel1.add(inputLevel);
 			inputPanel1.add(inputLevelBox);
 
@@ -204,62 +271,144 @@ public GUI()
 			
 	//Result Panel
 	JPanel resultPanel = new JPanel();
-	resultPanel.setLayout(new GridLayout(4,4));
+	resultPanel.setLayout(new GridLayout(5,4));
 	
+	JLabel blank1 = new JLabel("");
+	JLabel YourStats1 = new JLabel("Your Val");
+	JLabel AvgStats1 = new JLabel("Avg. Val");
+	JLabel Difference1 = new JLabel("Difference");
+		resultPanel.add(blank1);
+		resultPanel.add(YourStats1);
+		resultPanel.add(AvgStats1);
+		resultPanel.add(Difference1);
+
+	JLabel blank2 = new JLabel("");
+	JLabel YourStats2 = new JLabel("Your Val");
+	JLabel AvgStats2 = new JLabel("Avg. Val");
+	JLabel Difference2 = new JLabel("Difference");
+		resultPanel.add(blank2);
+		resultPanel.add(YourStats2);
+		resultPanel.add(AvgStats2);
+		resultPanel.add(Difference2);
+		
 		resultHP = new JLabel("HP: ");
-		resultHPField = new JTextField(" ", 2);
-		resultHPDifference = new JTextField(" ", 2);
+		resultHPField = new JTextField(" ");
+		resultHPField.setEditable(false);
+		avgHPField = new JTextField(" ");
+		avgHPField.setEditable(false);
+		resultHPDifference = new JTextField(" ");
+		resultHPDifference.setEditable(false);
+			resultHPField.setBackground(Color.WHITE);
+			avgHPField.setBackground(Color.WHITE);
+			resultHPDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultHP);
 			resultPanel.add(resultHPField);	
+			resultPanel.add(avgHPField);	
 			resultPanel.add(resultHPDifference);
 		
 		resultSpd = new JLabel("Spd: ");
-		resultSpdField = new JTextField(" ", 2);
-		resultSpdDifference = new JTextField(" ", 2);
+		resultSpdField = new JTextField(" ");
+		resultSpdField.setEditable(false);
+		avgSpdField = new JTextField(" ");
+		avgSpdField.setEditable(false);
+		resultSpdDifference = new JTextField(" ");
+		resultSpdDifference.setEditable(false);
+			resultSpdField.setBackground(Color.WHITE);
+			avgSpdField.setBackground(Color.WHITE);
+			resultSpdDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultSpd);
 			resultPanel.add(resultSpdField);	
+			resultPanel.add(avgSpdField);	
 			resultPanel.add(resultSpdDifference);
 		
 		resultStr = new JLabel("Str: ");
-		resultStrField = new JTextField(" ", 2);
-		resultStrDifference = new JTextField(" ", 2);
+		resultStrField = new JTextField(" ");
+		resultStrField.setEditable(false);
+		avgStrField = new JTextField(" ");
+		avgStrField.setEditable(false);
+		resultStrDifference = new JTextField(" ");
+		resultStrDifference.setEditable(false);
+			resultStrField.setBackground(Color.WHITE);
+			avgStrField.setBackground(Color.WHITE);
+			resultStrDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultStr);
 			resultPanel.add(resultStrField);	
+			resultPanel.add(avgStrField);	
 			resultPanel.add(resultStrDifference);
 
 		resultLuk = new JLabel("Luk: ");
-		resultLukField = new JTextField(" ", 2);
-		resultLukDifference = new JTextField(" ", 2);
+		resultLukField = new JTextField(" ");
+		resultLukField.setEditable(false);
+		avgLukField = new JTextField(" ");
+		avgLukField.setEditable(false);
+		resultLukDifference = new JTextField(" ");
+		resultLukDifference.setEditable(false);
+			resultLukField.setBackground(Color.WHITE);
+			avgLukField.setBackground(Color.WHITE);
+			resultLukDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultLuk);
 			resultPanel.add(resultLukField);	
+			resultPanel.add(avgLukField);	
 			resultPanel.add(resultLukDifference);			
 		
 		resultMag = new JLabel("Mag: ");
-		resultMagField = new JTextField(" ", 2);
-		resultMagDifference = new JTextField(" ", 2);
+		resultMagField = new JTextField(" ");
+		resultMagField.setEditable(false);
+		avgMagField = new JTextField(" ");
+		avgMagField.setEditable(false);
+		resultMagDifference = new JTextField(" ");
+		resultMagDifference.setEditable(false);
+			resultMagField.setBackground(Color.WHITE);
+			avgMagField.setBackground(Color.WHITE);
+			resultMagDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultMag);
 			resultPanel.add(resultMagField);	
+			resultPanel.add(avgMagField);	
 			resultPanel.add(resultMagDifference);			
 		
 		resultDef = new JLabel("Def: ");
-		resultDefField = new JTextField(" ", 2);
-		resultDefDifference = new JTextField(" ", 2);
+		resultDefField = new JTextField(" ");
+		resultDefField.setEditable(false);
+		avgDefField = new JTextField(" ");
+		avgDefField.setEditable(false);
+		resultDefDifference = new JTextField(" ");
+		resultDefDifference.setEditable(false);
+			resultDefField.setBackground(Color.WHITE);
+			avgDefField.setBackground(Color.WHITE);
+			resultDefDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultDef);
 			resultPanel.add(resultDefField);	
+			resultPanel.add(avgDefField);	
 			resultPanel.add(resultDefDifference);				
 
 		resultSkl= new JLabel("Skl: ");
-		resultSklField = new JTextField(" ", 2);
-		resultSklDifference = new JTextField(" ", 2);
+		resultSklField = new JTextField(" ");
+		resultSklField.setEditable(false);
+		avgSklField = new JTextField(" ");
+		avgSklField.setEditable(false);
+		resultSklDifference = new JTextField(" ");
+		resultSklDifference.setEditable(false);
+			resultSklField.setBackground(Color.WHITE);
+			avgSklField.setBackground(Color.WHITE);
+			resultSklDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultSkl);
 			resultPanel.add(resultSklField);	
+			resultPanel.add(avgSklField);	
 			resultPanel.add(resultSklDifference);	
 			
 		resultRes= new JLabel("Res: ");
-		resultResField = new JTextField(" ", 2);
-		resultResDifference = new JTextField(" ", 2);
+		resultResField = new JTextField(" ");
+		resultResField.setEditable(false);
+		avgResField = new JTextField(" ");
+		avgResField.setEditable(false);
+		resultResDifference = new JTextField(" ");
+		resultResDifference.setEditable(false);
+			resultResField.setBackground(Color.WHITE);
+			avgResField.setBackground(Color.WHITE);
+			resultResDifference.setBackground(Color.WHITE);
 			resultPanel.add(resultRes);
 			resultPanel.add(resultResField);	
+			resultPanel.add(avgResField);	
 			resultPanel.add(resultResDifference);	
 	
 	//GRAPH PANEL 1
@@ -267,13 +416,10 @@ public GUI()
 		graphStat = new JLabel("Stat: ");
 		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Luk", "Def", "Res"};
 		graphStatBox = new JComboBox(statArray);
+		graphBoxHandler graphboxhandler = new graphBoxHandler();
+		graphStatBox.addActionListener(graphboxhandler);
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
-		//note level array is temporary
-		graphLevel= new JLabel("Level: ");
-		graphLevelBox = new JComboBox();
-			graphPanel.add(graphLevel);
-			graphPanel.add(graphLevelBox);
 	
 	//GRAPH PANEL 2
 	JPanel graphPanel2 = new JPanel();
@@ -300,6 +446,15 @@ public GUI()
 		OpenOptionButtonHandler OptionButtonHandler = new OpenOptionButtonHandler();
 		optionsButton.addActionListener(OptionButtonHandler);
 			optionsButtonPanel.add(optionsButton);
+		resultLevelBox = new JComboBox();
+		resultLevelBox.setEnabled(false);
+			ResultLevelBoxHandler resultlevelboxhandler = new ResultLevelBoxHandler();
+			resultLevelBox.addActionListener(resultlevelboxhandler);
+		resultClassLabel = new JLabel("Class: ");
+		resultClassDisplay = new JLabel("Error");
+			optionsButtonPanel.add(resultLevelBox);
+			optionsButtonPanel.add(resultClassLabel);
+			optionsButtonPanel.add(resultClassDisplay);
 		leftSide.add(optionsButtonPanel);
 		leftSide.add(resultPanel);
 	
@@ -310,19 +465,26 @@ public GUI()
 		rightSide.add(graphPanel);
 		rightSide.add(graphPanel2);
 	
-//CALCULATE BUTTON		
+//GRAPH PANEL BUTTONS==============================================
+	JPanel buttonPanel = new JPanel();
+	
+	clearButton = new JButton("Clear");	
+		ClearButtonHandler clearbuttonhandler = new ClearButtonHandler();
+	clearButton.addActionListener(clearbuttonhandler);
 	calculateButton = new JButton("Calculate!");
-	CalculateButtonHandler CalculateButtonHandler = new CalculateButtonHandler();
+		CalculateButtonHandler CalculateButtonHandler = new CalculateButtonHandler();
 	calculateButton.addActionListener(CalculateButtonHandler);
-		rightSide.add(calculateButton);
+		buttonPanel.add(clearButton);
+		buttonPanel.add(calculateButton);
+		rightSide.add(buttonPanel);
 		
 	mainPanel.add(leftSide);
 	mainPanel.add(rightSide);
 	
 	//Main Window
-	this.setSize(650,325);
+	this.setSize(500,800);
 	this.setTitle("Blessed or Screwed!");
-	this.setResizable(false);
+	this.setResizable(true);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.add(mainPanel);
 	this.setVisible(true);
@@ -336,10 +498,10 @@ public GUI()
 	listPanel.setBorder(listBorder);
 
 //Initializes Job History
-		jobHistory = new JList();
-		jobHistory.setSize(new Dimension(250,250));
-		jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
-		listPanel.add(new JScrollPane(jobHistory));
+	jobHistory = new JList();
+//	jobHistory.setPreferredSize(new Dimension(250,250));
+	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+	listPanel.add(new JScrollPane(jobHistory));
 
 	//ModifierPanel
 	JPanel modPanel = new JPanel();
@@ -358,6 +520,11 @@ public GUI()
 		EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
 		eternalSealButton.addActionListener(EternalSealButtonHandler);
 			modPanel.add(eternalSealButton);
+	parentalUnitsButton = new JButton("Parents");
+	ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
+		parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
+			modPanel.add(parentalUnitsButton);
+
 	confirmButton = new JButton("Confirm");
 		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
 		confirmButton.addActionListener(CloseOptionButtonHandler);
@@ -399,6 +566,156 @@ public GUI()
 	reclassPane.setResizable(true);
 	reclassPane.setSize(300,300);
 	reclassPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+	
+//PARENTAL UNITS PANEL
+	parentalUnitsPane  = new JDialog(optionPane, true);
+	JPanel parentalUnitsPanel = new JPanel();
+	
+//These panels are for fixed parent
+	JPanel fixedParentPanelMain = new JPanel();
+	Border fixedParentPanelBorder = BorderFactory.createTitledBorder("Fixed Parent");
+	fixedParentPanelMain.setBorder(fixedParentPanelBorder);
+	fixedParentPanelMain.setLayout(new BoxLayout(fixedParentPanelMain, BoxLayout.PAGE_AXIS));
+	
+	//This panel has the name and class
+	JPanel fixedParentPanel1 = new JPanel();
+		fixedParentName = new JLabel("Name: ");
+		fixedParentNameDisplay = new JLabel();
+		fixedParentClass= new JLabel("Class: ");
+		fixedParentClassDisplay = new JLabel();
+			fixedParentPanel1.add(fixedParentName);
+			fixedParentPanel1.add(fixedParentNameDisplay);
+			fixedParentPanel1.add(fixedParentClass);
+			fixedParentPanel1.add(fixedParentClassDisplay);
+			
+	//this panel has the stats
+		JPanel fixedParentPanel2 = new JPanel();
+		fixedParentPanel2.setLayout(new GridLayout(4,4));
+		
+			fixedParentHP = new JLabel("HP: ");
+			fixedParentHPField = new JTextField(" ", 4);
+			fixedParentPanel2.add(fixedParentHP);
+			fixedParentPanel2.add(fixedParentHPField);	
+		
+			fixedParentSpd = new JLabel("Spd: ");
+			fixedParentSpdField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentSpd);
+			fixedParentPanel2.add(fixedParentSpdField);		
+				
+			fixedParentStr = new JLabel("Str: ");
+			fixedParentStrField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentStr);
+			fixedParentPanel2.add(fixedParentStrField);	
+				
+			fixedParentLuk = new JLabel("Luk: ");
+			fixedParentLukField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentLuk);
+			fixedParentPanel2.add(fixedParentLukField);				
+				
+			fixedParentMag = new JLabel("Mag: ");
+			fixedParentMagField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentMag);
+			fixedParentPanel2.add(fixedParentMagField);
+				
+			fixedParentDef = new JLabel("Def: ");
+			fixedParentDefField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentDef);
+			fixedParentPanel2.add(fixedParentDefField);			
+				
+			fixedParentSkl = new JLabel("Skl: ");
+			fixedParentSklField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentSkl);
+			fixedParentPanel2.add(fixedParentSklField);	
+				
+			fixedParentRes = new JLabel("Res: ");
+			fixedParentResField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentRes);
+			fixedParentPanel2.add(fixedParentResField);	
+	
+//These panels are for the varied parent
+	JPanel variedParentPanelMain = new JPanel();
+	Border variedParentPanelBorder = BorderFactory.createTitledBorder("Varied Parent");
+	variedParentPanelMain.setBorder(variedParentPanelBorder);
+	variedParentPanelMain.setLayout(new BoxLayout(variedParentPanelMain, BoxLayout.PAGE_AXIS));
+
+	//This panel has the name and class
+	JPanel variedParentPanel1 = new JPanel();
+		variedParentName = new JLabel("Name: ");
+		variedParentNameDisplay = new JComboBox();
+		variedParentClass= new JLabel("Class: ");
+		variedParentClassDisplay = new JComboBox();
+			variedParentPanel1.add(variedParentName);
+			variedParentPanel1.add(variedParentNameDisplay);
+			variedParentPanel1.add(variedParentClass);
+			variedParentPanel1.add(variedParentClassDisplay);
+	
+			//this panel has the stats
+		JPanel variedParentPanel2 = new JPanel();
+		variedParentPanel2.setLayout(new GridLayout(4,4));
+		
+		variedParentHP = new JLabel("HP: ");
+		variedParentHPField = new JTextField(" ", 4);
+		variedParentPanel2.add(variedParentHP);
+		variedParentPanel2.add(variedParentHPField);	
+		
+		variedParentSpd = new JLabel("Spd: ");
+		variedParentSpdField = new JTextField(" ");
+		variedParentPanel2.add(variedParentSpd);
+		variedParentPanel2.add(variedParentSpdField);		
+				
+		variedParentStr = new JLabel("Str: ");
+		variedParentStrField = new JTextField(" ");
+		variedParentPanel2.add(variedParentStr);
+		variedParentPanel2.add(variedParentStrField);	
+				
+		variedParentLuk = new JLabel("Luk: ");
+		variedParentLukField = new JTextField(" ");
+		variedParentPanel2.add(variedParentLuk);
+		variedParentPanel2.add(variedParentLukField);				
+				
+		variedParentMag = new JLabel("Mag: ");
+		variedParentMagField = new JTextField(" ");
+		variedParentPanel2.add(variedParentMag);
+		variedParentPanel2.add(variedParentMagField);
+				
+		variedParentDef = new JLabel("Def: ");
+		variedParentDefField = new JTextField(" ");
+		variedParentPanel2.add(variedParentDef);
+		variedParentPanel2.add(variedParentDefField);			
+				
+		variedParentSkl = new JLabel("Skl: ");
+		variedParentSklField = new JTextField(" ");
+		variedParentPanel2.add(variedParentSkl);
+		variedParentPanel2.add(variedParentSklField);	
+				
+		variedParentRes = new JLabel("Res: ");
+		variedParentResField = new JTextField(" ");
+		variedParentPanel2.add(variedParentRes);
+		variedParentPanel2.add(variedParentResField);	
+		
+		parentalConfirm = new JButton("Confirm");
+			ParentalConfirmButtonHandler parentalconfirmbuttonhandler = new ParentalConfirmButtonHandler();
+			parentalConfirm.addActionListener(parentalconfirmbuttonhandler);
+		parentalCancel = new JButton("Cancel");
+			ParentalCancelButtonHandler parentalcancelbuttonhandler = new ParentalCancelButtonHandler();
+			parentalCancel.addActionListener(parentalcancelbuttonhandler);
+		
+	//Adding all components
+	fixedParentPanelMain.add(fixedParentPanel1);
+	fixedParentPanelMain.add(fixedParentPanel2);
+	variedParentPanelMain.add(variedParentPanel1);
+	variedParentPanelMain.add(variedParentPanel2);
+	parentalUnitsPanel.add(fixedParentPanelMain);
+	parentalUnitsPanel.add(variedParentPanelMain);
+	parentalUnitsPanel.add(parentalConfirm);
+	parentalUnitsPanel.add(parentalCancel);
+
+	//Finalizing Panel
+	parentalUnitsPane.add(parentalUnitsPanel);
+	parentalUnitsPane.setTitle("Parents");
+	parentalUnitsPane.setResizable(true);
+	parentalUnitsPane.setSize(300,375);
+	parentalUnitsPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
 
 	//Add all Components
 	optionPane.setLayout(new FlowLayout());
@@ -412,14 +729,21 @@ public GUI()
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 	
 	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
-	inputCharBox.setSelectedIndex(1);
+	inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf("Silas"));
 
+	//THIS IS WORK IN PROGRESS FOR THE GRAPH------------------------------------------------------------------------------------------
+	graphcontroller.createGraph("");
+	ChartPanel inputChart = graphcontroller.getChartPanel();
+	graphPanel2.add(inputChart);
+	
+	this.pack();
 }
+//=============================================================END GUI CLASS======================================================
 
-//ALL THE BUTTON HANDLERS
-
-//OPTIONWINDOW HANDLERS
-	//OPEN OPTIONS WINDOW BUTTON
+//------------------------------------------------------------ACTION LISTENERS-----------------------------------------------------
+	
+//-------------------------------------------------------------OPTION WINDOW-------------------------------------------------------
+	//This handles the button that opens the option window from the main window
 	public class OpenOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -428,16 +752,17 @@ public GUI()
 		}
 		
 	}
-	//RECLASS OPTIONS WINDOW BUTTON
+	//This handles the button that opens the reclass window from the options window
 	public class ReclassOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			reclassLevelBox.setSelectedIndex(jobHistory.getSelectedIndex());
 			reclassPane.setVisible(true);
 		}
 		
 	}
-		//Reclass Confirm
+		//This handles the confirm button in the reclass window
 			public class ReClassConfirmButtonHandler implements ActionListener
 			{
 				public void actionPerformed(ActionEvent e)
@@ -455,7 +780,7 @@ public GUI()
 					reclassPane.dispose();
 				}
 			}
-		//Reclass Close
+		//This handles the close button in the reclass window
 			public class ReClassCancelButtonHandler implements ActionListener
 			{
 				public void actionPerformed(ActionEvent e)
@@ -463,7 +788,7 @@ public GUI()
 					reclassPane.dispose();
 				}
 			}
-	//PROMOTE OPTIONS WINDOW BUTTON
+	//This handles the promote button in the options window (NOT IMPLEMENTED YET)
 	public class PromoteOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -471,7 +796,7 @@ public GUI()
 		}
 		
 	}
-	//ETERNAL SEAL OPTIONS WINDOW BUTTON
+	////This handles the Eternal Seal button in the options window (NOT IMPLEMENTED YET)
 	public class EternalSealButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -479,7 +804,32 @@ public GUI()
 		}
 		
 	}
-	//CLOSE OPTIONS WINDOW BUTTON
+	//This handles the parents button in the options window (ALMOST IMPLEMENTED)
+	public class ParentalUnitsButtonHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			parentalUnitsPane.setVisible(true);
+		}
+		
+	}
+		//This handles the confirm button in the parental units window
+			public class ParentalConfirmButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					parentalUnitsPane.dispose();
+				}
+			}
+		//This handles the close button in the parental units window
+			public class ParentalCancelButtonHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			parentalUnitsPane.dispose();
+		}
+	}
+	//This handles the button that closes the options window
 	public class CloseOptionButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
@@ -489,12 +839,58 @@ public GUI()
 	
 }
 
-//MAIN WINDOW HANDLERS
-	//CALCULATE BUTTON
+//-------------------------------------------------------------MAIN WINDOW-------------------------------------------------------
+	//This clears all data
+	public class ClearButtonHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			GraphController graphcontroller = GraphController.getInstance();
+			
+			//inputCharBox.setSelectedIndex(1);
+				resultHPField.setText("");
+				resultStrField.setText("");
+				resultMagField.setText("");
+				resultSpdField.setText("");
+				resultSklField.setText("");
+				resultLukField.setText("");
+				resultDefField.setText("");
+				resultResField.setText("");
+				
+				avgHPField.setText("");
+				avgStrField.setText("");
+				avgMagField.setText("");
+				avgSklField.setText("");
+				avgSpdField.setText("");
+				avgLukField.setText("");
+				avgDefField.setText("");
+				avgResField.setText("");
+				
+				resultHPDifference.setText("");
+				resultHPDifference.setBackground(Color.WHITE);
+				resultStrDifference.setText("");
+				resultStrDifference.setBackground(Color.WHITE);
+				resultMagDifference.setText("");
+				resultMagDifference.setBackground(Color.WHITE);
+				resultSklDifference.setText("");
+				resultSklDifference.setBackground(Color.WHITE);
+				resultSpdDifference.setText("");
+				resultSpdDifference.setBackground(Color.WHITE);
+				resultLukDifference.setText("");
+				resultLukDifference.setBackground(Color.WHITE);
+				resultDefDifference.setText("");
+				resultDefDifference.setBackground(Color.WHITE);
+				resultResDifference.setText("");
+				resultResDifference.setBackground(Color.WHITE);
+				
+				graphcontroller.setDataset(graphcontroller.createDataset());
+		}	
+	}
+	//This generates the unitSheet and populates the result fields and graph
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
-		{
+		{			
 			int HP = 0;
 			int Str = 0;
 			int Mag = 0;
@@ -505,6 +901,7 @@ public GUI()
 			int Res = 0;
 			
 			UnitController unitcontroller = UnitController.getInstance();
+			GraphController graphcontroller = GraphController.getInstance();
 			
 			try
 			{
@@ -528,40 +925,190 @@ public GUI()
 			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
 			unitcontroller.buildLocalUnitSheet();
 			
-			unitcontroller.printLocalSheet();
-			System.out.println("==================================");
-			unitcontroller.printInputSheet();
+			//UPDATES GRAPH
+			int stat = graphStatBox.getSelectedIndex();
+			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+
+			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
+			
+			//UPDATES BOXES			
+			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+
+			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+			
+			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			resultLevelBox.setEnabled(true);
+			
+			resultHPField.setText(formatter.format(inputResults[0]));
+			avgHPField.setText(formatter.format(localResults[0]));
+			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
+				if((inputResults[0] - localResults[0]) < 0)
+				{
+					resultHPDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[0] - localResults[0]) > 0)
+					{
+						resultHPDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultHPDifference.setBackground(Color.WHITE);
+					}
+			resultStrField.setText(formatter.format(inputResults[1]));
+			avgStrField.setText(formatter.format(localResults[1]));
+			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
+				if((inputResults[1] - localResults[1]) < 0)
+				{
+					resultStrDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[1] - localResults[1]) > 0)
+					{
+						resultStrDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultStrDifference.setBackground(Color.WHITE);
+					}
+			resultMagField.setText(formatter.format(inputResults[2]));
+			avgMagField.setText(formatter.format(localResults[2]));
+			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
+				if((inputResults[2] - localResults[2]) < 0)
+				{
+					resultMagDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[2] - localResults[2]) > 0)
+					{
+						resultMagDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultMagDifference.setBackground(Color.WHITE);
+					}
+			resultSpdField.setText(formatter.format(inputResults[3]));
+			avgSpdField.setText(formatter.format(localResults[3]));
+			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+				if((inputResults[3] - localResults[3]) < 0)
+				{
+					resultSpdDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[3] - localResults[3]) > 0)
+					{
+						resultSpdDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultSpdDifference.setBackground(Color.WHITE);
+					}
+			resultSklField.setText(formatter.format(inputResults[4]));
+			avgSklField.setText(formatter.format(localResults[4]));
+			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+				if((inputResults[4] - localResults[4]) < 0)
+				{
+					resultSklDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[4] - localResults[4]) > 0)
+					{
+						resultSklDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultSklDifference.setBackground(Color.WHITE);
+					}
+			resultLukField.setText(formatter.format(inputResults[5]));
+			avgLukField.setText(formatter.format(localResults[5]));
+			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+			if((inputResults[5] - localResults[5]) < 0)
+				{
+				resultLukDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[5] - localResults[5]) > 0)
+					{
+						resultLukDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultLukDifference.setBackground(Color.WHITE);
+					}
+			resultDefField.setText(formatter.format(inputResults[6]));
+			avgDefField.setText(formatter.format(localResults[6]));
+			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
+				if((inputResults[6] - localResults[6]) < 0)
+				{
+					resultDefDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[6] - localResults[6]) > 0)
+					{
+						resultDefDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultDefDifference.setBackground(Color.WHITE);
+					}
+			resultResField.setText(formatter.format(inputResults[7]));
+			avgResField.setText(formatter.format(localResults[7]));
+			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
+				if((inputResults[7] - localResults[7]) < 0)
+				{
+					resultResDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[7] - localResults[7]) > 0)
+					{
+						resultResDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultResDifference.setBackground(Color.WHITE);
+					}
+			//Stuff for Debug
+			//unitcontroller.printLocalSheet();
+			//unitcontroller.printInputSheet();
 		}
 		
 	}
-	//THIS HANDLER CHANGES THE LEVEL IN UNITCONTROLLER
-	public class LevelBoxHandler implements ActionListener
+	//This allows you to change the data visualized on the graph using the stat combo box
+	public class graphBoxHandler implements ActionListener
 	{
-		public void actionPerformed(ActionEvent e)
+		public void actionPerformed(ActionEvent e) 
 		{
-			graphLevelBox.setModel(inputLevelBox.getModel());
+			UnitController unitcontroller = UnitController.getInstance();
+			GraphController graphcontroller = GraphController.getInstance();
+			
+			int stat = graphStatBox.getSelectedIndex();
+			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+
+			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
 		}
 	}
-	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
+	//This handler allows a user to select a route and adjusts data in the logic based on route.
 	public class ComboBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
 			if(inputRouteBox.getSelectedItem() == "Conquest")
 			{
-			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));	
+			    repaint();
 			}
 			else if(inputRouteBox.getSelectedItem() == "Birthright")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+			    repaint();
 			}
 			if(inputRouteBox.getSelectedItem() == "Revelations")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			    repaint();
 			}
 		}
 	}
-	//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
+	//This handler allows a user to select the character and adjusts data accordingly
 	public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
@@ -570,59 +1117,137 @@ public GUI()
 		UnitController unitcontroller = UnitController.getInstance();
 		
 		//Storing the Character, Job, Route, and BaseLevel
-		domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
- 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
-		String tempRoute = inputRouteBox.getSelectedItem().toString();
-		int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
 		
-		//Making the class history
-		ArrayList<String> tempClassHistory = new ArrayList();
-		int levelMod = 0;
-		for(int i = tempLevel; i<=20; i++)
+		try
 		{
-			String input = tempChar.getBaseClass();
-			tempClassHistory.add(input);
-			levelMod++;
+			domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+	 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
+			String tempRoute = inputRouteBox.getSelectedItem().toString();
+			int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
+			
+			//Making the class history
+			ArrayList<String> tempClassHistory = new ArrayList();
+			int levelMod = 0;
+			for(int i = tempLevel; i<=20; i++)
+			{
+				String input = tempChar.getBaseClass();
+				tempClassHistory.add(input);
+				levelMod++;
+			}
+					
+			//Update UnitController
+			unitcontroller.setCurrentChar(tempChar);
+			unitcontroller.setCurrentJob(tempJob);
+			unitcontroller.setCurrentRoute(tempRoute);
+			unitcontroller.setClassHistory(tempClassHistory);
+			
+			//Sets the stat boxes
+			inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
+			inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
+			inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
+			inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
+			inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
+			inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
+			inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
+			inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
+			
+			//This code will set the level fields and possible classes in the character option windows
+			String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+			for(int i = 0; i<=(20 - tempLevel); i++)
+			{
+				possibleLevels[i] = (i+tempLevel+"");
+			}
+			
+			System.out.println(tempLevel);
+			
+			Object[] listData = unitcontroller.getClassArray();
+			jobHistory.setListData(listData);
+			jobHistory.setSelectedIndex(0);
+	
+			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
+		
+			//Debug print to console
+			System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
+			System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
+			System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
+			System.out.println("Route: "+unitcontroller.getCurrentRoute());
+			for(int i = 0; i<tempClassHistory.size();i++)
+			{
+				System.out.println(tempClassHistory.get(i));
+			}	
 		}
-				
-		//Update UnitController
-		unitcontroller.setCurrentChar(tempChar);
-		unitcontroller.setCurrentJob(tempJob);
-		unitcontroller.setCurrentRoute(tempRoute);
-		unitcontroller.setClassHistory(tempClassHistory);
-		
-		//Sets the stat boxes
-		inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
-		inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
-		inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
-		inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
-		inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
-		inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
-		inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
-		inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
-		
-		//This code will set the level fields and possible classes in the character option windows
-		String[] possibleLevels = new String[(20 - tempLevel + 1)];	
-		for(int i = 0; i<=(20 - tempLevel); i++)
+		catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
 		{
-			possibleLevels[i] = (i+tempLevel+"");
+			JOptionPane.showMessageDialog(GUI.this, "Sorry, this character is not implemented yet!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		graphLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-		
-		Object[] listData = unitcontroller.getClassArray();
-		jobHistory.setListData(listData);
-
-		//Debug print to console
-		System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
-		System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
-		System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
-		System.out.println("Route: "+unitcontroller.getCurrentRoute());
-		for(int i = 0; i<tempClassHistory.size();i++)
-		{
-			System.out.println(tempClassHistory.get(i));
-		}			
 	}
 }
+	//This handler populates the resultLevel box based on whats in the level box
+	public class InputLevelBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			String[] possibleLevels = new String[(20 - inputLevel + 1)];	
+			for(int i = 0; i<=(20 - inputLevel); i++)
+			{
+				possibleLevels[i] = (i+inputLevel+"");
+			}
+
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+		}
+	}
+	//This handler  updates the result panel based on the input level
+	public class ResultLevelBoxHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			UnitController unitcontroller = UnitController.getInstance();
+			
+			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+
+			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+			
+			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
+
+			resultHPField.setText(formatter.format(inputResults[0]));
+			avgHPField.setText(formatter.format(localResults[0]));
+			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
+			
+			resultStrField.setText(formatter.format(inputResults[1]));
+			avgStrField.setText(formatter.format(localResults[1]));
+			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
+
+			resultMagField.setText(formatter.format(inputResults[2]));
+			avgMagField.setText(formatter.format(localResults[2]));
+			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
+
+			resultSpdField.setText(formatter.format(inputResults[3]));
+			avgSpdField.setText(formatter.format(localResults[3]));
+			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+			
+			resultSklField.setText(formatter.format(inputResults[4]));
+			avgSklField.setText(formatter.format(localResults[4]));
+			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+			
+			resultLukField.setText(formatter.format(inputResults[5]));
+			avgLukField.setText(formatter.format(localResults[5]));
+			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+			
+			resultDefField.setText(formatter.format(inputResults[6]));
+			avgDefField.setText(formatter.format(localResults[6]));
+			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
+
+			resultResField.setText(formatter.format(inputResults[7]));
+			avgResField.setText(formatter.format(localResults[7]));
+			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));			
+		}
+	}
+
 }

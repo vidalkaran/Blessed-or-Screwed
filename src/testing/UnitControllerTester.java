@@ -28,9 +28,9 @@ public static void main(String[]args)
 	ClassHistory.add("Cavalier");// level 10
 	ClassHistory.add("Cavalier");// level 11
 	ClassHistory.add("Cavalier");// level 12
-	ClassHistory.add("Cavalier");// level 13
-	ClassHistory.add("Cavalier");// level 14
-	ClassHistory.add("Cavalier");// level 15
+	ClassHistory.add("Songstress");// level 13
+	ClassHistory.add("Songstress");// level 14
+	ClassHistory.add("Songstress");// level 15
 
 	UnitController unitController = UnitController.getInstance();
 	
@@ -50,6 +50,13 @@ public static void main(String[]args)
 	unitController.buildInputUnitSheet(10, inputStats);
 	unitController.printInputSheet();
 
+	//THIS TESTS GETINPUTSTATSPREAD
+	double[] healthOverTime = unitController.getInputStatSpread(0);
+	
+	for(int i = 0; i < healthOverTime.length; i++)
+	{
+		System.out.println("HEALTH: "+healthOverTime[i]);
+	}
 	}
 	
 
