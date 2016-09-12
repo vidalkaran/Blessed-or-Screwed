@@ -53,6 +53,8 @@ public class GUI extends JFrame{
 
 //ResultPanel
 		JComboBox resultLevelBox;
+		JLabel resultClassLabel;
+		JLabel resultClassDisplay;
 		
 		JLabel resultHP;
 		JLabel resultStr;
@@ -125,21 +127,6 @@ static String[] conquestCharacters;
 static String[] birthrightCharacters;
 static String[] revelationsCharacters;
 
-/*
-static String[] conquestCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora"};
-
-static String[] birthrightCharacters = {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "NOHRIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura"};
-
-static String[] revelationsCharacters= {"Avatar", "Silas", "Azura", "Felicia", "Jacob", "Kaze", "Mozu", "Shura", "Izana",
-		"Rinkah", "Sakura", "Hana", "Subaki", "Saizo", "Orochi", "Hinoka", "Azama", "Setsuna",
-		"Hayato", "Oboro", "Hinata", "NORHIAN SCUM!", "Kagero", "Reina", "Kaden", "Ryoma", "Scarlet", "Yukimura",
-		"Elise", "Arthur", "Effie", "Odin", "Niles", "Nyx", "Camilla", "Selena", "Beruka", "Laslow",
-		"Best Girl", "Benny", "Charlotte", "Leo", "Keaton", "Xander", "Flora", "Fuga"};
-*/
 static String[] jobs = {"Songstress"};
 		
 public static void main(String[]args)
@@ -234,8 +221,26 @@ public GUI()
 			
 	//Result Panel
 	JPanel resultPanel = new JPanel();
-	resultPanel.setLayout(new GridLayout(4,4));
+	resultPanel.setLayout(new GridLayout(5,4));
 	
+	JLabel blank1 = new JLabel("");
+	JLabel YourStats1 = new JLabel("Your Val");
+	JLabel AvgStats1 = new JLabel("Avg. Val");
+	JLabel Difference1 = new JLabel("Difference");
+		resultPanel.add(blank1);
+		resultPanel.add(YourStats1);
+		resultPanel.add(AvgStats1);
+		resultPanel.add(Difference1);
+
+	JLabel blank2 = new JLabel("");
+	JLabel YourStats2 = new JLabel("Your Val");
+	JLabel AvgStats2 = new JLabel("Avg. Val");
+	JLabel Difference2 = new JLabel("Difference");
+		resultPanel.add(blank2);
+		resultPanel.add(YourStats2);
+		resultPanel.add(AvgStats2);
+		resultPanel.add(Difference2);
+		
 		resultHP = new JLabel("HP: ");
 		resultHPField = new JTextField(" ");
 		resultHPField.setEditable(false);
@@ -392,9 +397,14 @@ public GUI()
 		optionsButton.addActionListener(OptionButtonHandler);
 			optionsButtonPanel.add(optionsButton);
 		resultLevelBox = new JComboBox();
+		resultLevelBox.setEnabled(false);
 			ResultLevelBoxHandler resultlevelboxhandler = new ResultLevelBoxHandler();
 			resultLevelBox.addActionListener(resultlevelboxhandler);
+		resultClassLabel = new JLabel("Class: ");
+		resultClassDisplay = new JLabel("Error");
 			optionsButtonPanel.add(resultLevelBox);
+			optionsButtonPanel.add(resultClassLabel);
+			optionsButtonPanel.add(resultClassDisplay);
 		leftSide.add(optionsButtonPanel);
 		leftSide.add(resultPanel);
 	
@@ -528,7 +538,7 @@ public GUI()
 //------------------------------------------------------------ACTION LISTENERS-----------------------------------------------------
 	
 //-------------------------------------------------------------OPTION WINDOW-------------------------------------------------------
-	//OPEN OPTIONS WINDOW BUTTON
+	//This handles the button that opens the option window from the main window
 	public class OpenOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -537,7 +547,7 @@ public GUI()
 		}
 		
 	}
-	//RECLASS OPTIONS WINDOW BUTTON
+	//This handles the button that opens the reclass window from the options window
 	public class ReclassOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -547,7 +557,7 @@ public GUI()
 		}
 		
 	}
-		//Reclass Confirm
+		//This handles the confirm button in the reclass window
 			public class ReClassConfirmButtonHandler implements ActionListener
 			{
 				public void actionPerformed(ActionEvent e)
@@ -565,7 +575,7 @@ public GUI()
 					reclassPane.dispose();
 				}
 			}
-		//Reclass Close
+		//This handles the close button in the reclass window
 			public class ReClassCancelButtonHandler implements ActionListener
 			{
 				public void actionPerformed(ActionEvent e)
@@ -573,7 +583,7 @@ public GUI()
 					reclassPane.dispose();
 				}
 			}
-	//PROMOTE OPTIONS WINDOW BUTTON
+	//This handles the promote button in the options window (NOT IMPLEMENTED YET)
 	public class PromoteOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -581,7 +591,7 @@ public GUI()
 		}
 		
 	}
-	//ETERNAL SEAL OPTIONS WINDOW BUTTON
+	////This handles the Eternal Seal button in the options window (NOT IMPLEMENTED YET)
 	public class EternalSealButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -589,7 +599,7 @@ public GUI()
 		}
 		
 	}
-	//CLOSE OPTIONS WINDOW BUTTON
+	//This handles the button that closes the options window
 	public class CloseOptionButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
@@ -600,7 +610,7 @@ public GUI()
 }
 
 //-------------------------------------------------------------MAIN WINDOW-------------------------------------------------------
-	//CLEAR BUTTON
+	//This clears all data
 	public class ClearButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent arg0) 
@@ -646,7 +656,7 @@ public GUI()
 				graphcontroller.setDataset(graphcontroller.createDataset());
 		}	
 	}
-//Calculate BUTTON
+	//This generates the unitSheet and populates the result fields and graph
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -701,6 +711,7 @@ public GUI()
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
 			
 			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			resultLevelBox.setEnabled(true);
 			
 			resultHPField.setText(formatter.format(inputResults[0]));
 			avgHPField.setText(formatter.format(localResults[0]));
@@ -828,7 +839,7 @@ public GUI()
 		}
 		
 	}
-	//Handles the stat combobox in the graphPanel
+	//This allows you to change the data visualized on the graph using the stat combo box
 	public class graphBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -845,7 +856,7 @@ public GUI()
 			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
 		}
 	}
-	//THIS HANDLER CHANGES THE CHARACTERS IN THE CHARACTER COMBO BOX BASED ON WHATS IN THE ROUTE BOX.
+	//This handler allows a user to select a route and adjusts data in the logic based on route.
 	public class ComboBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -867,7 +878,7 @@ public GUI()
 			}
 		}
 	}
-	//THIS HANDLER SHOULD SET THE INTERNAL CHARACTER 
+	//This handler allows a user to select the character and adjusts data accordingly
 	public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
@@ -926,6 +937,7 @@ public GUI()
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
 		
 			//Debug print to console
 			System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
@@ -943,7 +955,6 @@ public GUI()
 		}
 	}
 }
-
 	//This handler populates the resultLevel box based on whats in the level box
 	public class InputLevelBoxHandler implements ActionListener
 	{
@@ -959,8 +970,7 @@ public GUI()
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}
 	}
-	
-	//This panel updates the result panel based on the inputted level
+	//This handler  updates the result panel based on the input level
 	public class ResultLevelBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -974,6 +984,7 @@ public GUI()
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
 			
 			DecimalFormat formatter = new DecimalFormat( "##.##" );
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
 
 			resultHPField.setText(formatter.format(inputResults[0]));
 			avgHPField.setText(formatter.format(localResults[0]));
