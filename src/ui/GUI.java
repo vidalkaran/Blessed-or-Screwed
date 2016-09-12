@@ -163,6 +163,10 @@ public class GUI extends JFrame{
 		JTextField variedParentDefField;
 		JTextField variedParentResField;
 		
+		JLabel boonLabel;
+		JLabel baneLabel;
+		JComboBox boonBox;
+		JComboBox baneBox;
 		JButton parentalConfirm;
 		JButton parentalCancel;
 
@@ -420,7 +424,8 @@ public GUI()
 		graphStatBox.addActionListener(graphboxhandler);
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
-	
+		graphStatBox.setEnabled(false);
+
 	//GRAPH PANEL 2
 	JPanel graphPanel2 = new JPanel();
 	Border graphBorder2 = BorderFactory.createTitledBorder("Graph");
@@ -465,7 +470,7 @@ public GUI()
 		rightSide.add(graphPanel);
 		rightSide.add(graphPanel2);
 	
-//GRAPH PANEL BUTTONS==============================================
+//GRAPH PANEL BUTTONS
 	JPanel buttonPanel = new JPanel();
 	
 	clearButton = new JButton("Clear");	
@@ -692,14 +697,31 @@ public GUI()
 		variedParentResField = new JTextField(" ");
 		variedParentPanel2.add(variedParentRes);
 		variedParentPanel2.add(variedParentResField);	
-		
-		parentalConfirm = new JButton("Confirm");
-			ParentalConfirmButtonHandler parentalconfirmbuttonhandler = new ParentalConfirmButtonHandler();
-			parentalConfirm.addActionListener(parentalconfirmbuttonhandler);
-		parentalCancel = new JButton("Cancel");
-			ParentalCancelButtonHandler parentalcancelbuttonhandler = new ParentalCancelButtonHandler();
-			parentalCancel.addActionListener(parentalcancelbuttonhandler);
-		
+
+//This panel handles banes and boones
+	JPanel baneboonPanel = new JPanel();
+	boonLabel = new JLabel("Boon: ");
+	boonBox = new JComboBox();
+		boonBox.setEnabled(false);
+	baneLabel = new JLabel("Bane: ");
+	baneBox = new JComboBox();
+		baneBox.setEnabled(false);
+		baneboonPanel.add(boonLabel);
+		baneboonPanel.add(boonBox);
+		baneboonPanel.add(baneLabel);
+		baneboonPanel.add(baneBox);
+
+//This panel handles the buttons
+	JPanel parentalButtonPanel = new JPanel();
+	parentalConfirm = new JButton("Confirm");
+		ParentalConfirmButtonHandler parentalconfirmbuttonhandler = new ParentalConfirmButtonHandler();
+		parentalConfirm.addActionListener(parentalconfirmbuttonhandler);
+			parentalButtonPanel.add(parentalConfirm);
+	parentalCancel = new JButton("Cancel");
+		ParentalCancelButtonHandler parentalcancelbuttonhandler = new ParentalCancelButtonHandler();
+		parentalCancel.addActionListener(parentalcancelbuttonhandler);
+			parentalButtonPanel.add(parentalCancel);
+
 	//Adding all components
 	fixedParentPanelMain.add(fixedParentPanel1);
 	fixedParentPanelMain.add(fixedParentPanel2);
@@ -707,14 +729,14 @@ public GUI()
 	variedParentPanelMain.add(variedParentPanel2);
 	parentalUnitsPanel.add(fixedParentPanelMain);
 	parentalUnitsPanel.add(variedParentPanelMain);
-	parentalUnitsPanel.add(parentalConfirm);
-	parentalUnitsPanel.add(parentalCancel);
+	parentalUnitsPanel.add(baneboonPanel);
+	parentalUnitsPanel.add(parentalButtonPanel);
 
 	//Finalizing Panel
 	parentalUnitsPane.add(parentalUnitsPanel);
 	parentalUnitsPane.setTitle("Parents");
 	parentalUnitsPane.setResizable(true);
-	parentalUnitsPane.setSize(300,375);
+	parentalUnitsPane.setSize(300,400);
 	parentalUnitsPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
 
 	//Add all Components
@@ -731,7 +753,7 @@ public GUI()
 	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
 	inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf("Silas"));
 
-	//THIS IS WORK IN PROGRESS FOR THE GRAPH------------------------------------------------------------------------------------------
+	//THIS IS WORK IN PROGRESS FOR THE GRAPH
 	graphcontroller.createGraph("");
 	ChartPanel inputChart = graphcontroller.getChartPanel();
 	graphPanel2.add(inputChart);
@@ -884,6 +906,8 @@ public GUI()
 				resultResDifference.setBackground(Color.WHITE);
 				
 				graphcontroller.setDataset(graphcontroller.createDataset());
+				resultLevelBox.setEnabled(false);
+				graphStatBox.setEnabled(false);
 		}	
 	}
 	//This generates the unitSheet and populates the result fields and graph
@@ -933,6 +957,7 @@ public GUI()
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
 			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
+			graphStatBox.setEnabled(true);
 			
 			//UPDATES BOXES			
 			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
@@ -1115,9 +1140,8 @@ public GUI()
 	{
 		DataStorage data = DataStorage.getInstance();		
 		UnitController unitcontroller = UnitController.getInstance();
-		
+
 		//Storing the Character, Job, Route, and BaseLevel
-		
 		try
 		{
 			domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
@@ -1178,6 +1202,12 @@ public GUI()
 			{
 				System.out.println(tempClassHistory.get(i));
 			}	
+			
+			if(tempChar.getIsChild() == true)
+			{
+				JOptionPane.showMessageDialog(null, "Please input parents' stats");
+				parentalUnitsPane.setVisible(true);
+			}
 		}
 		catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
 		{
