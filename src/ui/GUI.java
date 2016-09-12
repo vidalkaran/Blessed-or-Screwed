@@ -101,21 +101,21 @@ public class GUI extends JFrame{
 		
 //Option Window
 		JDialog optionPane;
-		JButton reclassButton;
 		JButton promoteButton;
 		JButton parentalUnitsButton;
 		JButton confirmButton;
 		JButton eternalSealButton;
+		
 		JList jobHistory;
 		
-//reclassWindow
-		JDialog reclassPane;
-		JLabel reclassLevel;
-		JLabel reclassClass;
-		JComboBox reclassLevelBox;
-		JList reclassClasses;
-		JButton reclassConfirm;
-		JButton reclassCancel;
+		JLabel avatarBoonLabel;
+		JLabel avatarBaneLabel;
+		JComboBox avatarBoonBox;
+		JComboBox avatarBaneBox;
+		
+		JLabel reclassLabel;
+		JComboBox reclassBox;
+		JButton reclassButton;
 		
 //ParentalUnitsPane
 		JDialog parentalUnitsPane;
@@ -181,7 +181,7 @@ static String[] conquestCharacters;
 static String[] birthrightCharacters;
 static String[] revelationsCharacters;
 
-static String[] jobs = {"Songstress"};
+static String[] jobs = {"Cavalier", "Songstress"};
 		
 public static void main(String[]args)
 {
@@ -504,76 +504,67 @@ public GUI()
 
 //Initializes Job History
 	jobHistory = new JList();
-//	jobHistory.setPreferredSize(new Dimension(250,250));
+	jobHistory.setFixedCellWidth(150);
 	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
 	listPanel.add(new JScrollPane(jobHistory));
 
-	//ModifierPanel
+//ModifierPanel
 	JPanel modPanel = new JPanel();
 	Border modBorder = BorderFactory.createTitledBorder("Options");
 		modPanel.setBorder(modBorder);
 	modPanel.setLayout(new BoxLayout(modPanel, BoxLayout.PAGE_AXIS));
+
+//Boon and Bane Panel
+	JPanel avatarBoonBanePanel = new JPanel();
+	avatarBoonLabel = new JLabel("Boons:");
+	avatarBoonBox= new JComboBox();
+	avatarBaneLabel = new JLabel("Banes:");
+	avatarBaneBox= new JComboBox();
+		avatarBoonBanePanel.add(avatarBoonLabel);
+		avatarBoonBanePanel.add(avatarBoonBox);
+		avatarBoonBanePanel.add(avatarBaneLabel);
+		avatarBoonBanePanel.add(avatarBaneBox);
+			modPanel.add(avatarBoonBanePanel);
+			
+//Reclass Panel	
+	JPanel reclassPanel = new JPanel();
+	reclassLabel = new JLabel("Reclass:");
+		reclassPanel.add(reclassLabel);
+	reclassBox = new JComboBox();
+	reclassBox.setModel(new DefaultComboBoxModel(jobs));
+		reclassPanel.add(reclassBox);		
 	reclassButton = new JButton("Reclass");
 		ReclassOptionButtonHandler ReclassOptionButtonHandler = new ReclassOptionButtonHandler();
 		reclassButton.addActionListener(ReclassOptionButtonHandler);
-			modPanel.add(reclassButton);	
-	promoteButton = new JButton("Promote");
-		PromoteOptionButtonHandler PromoteOptionButtonHandler = new PromoteOptionButtonHandler();
-		promoteButton.addActionListener(PromoteOptionButtonHandler);
-			modPanel.add(promoteButton);
-	eternalSealButton = new JButton("EternalSeal");
-		EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
-		eternalSealButton.addActionListener(EternalSealButtonHandler);
-			modPanel.add(eternalSealButton);
-	parentalUnitsButton = new JButton("Parents");
-	ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
-		parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
-			modPanel.add(parentalUnitsButton);
+			reclassPanel.add(reclassButton);	
+	modPanel.add(reclassPanel);
 
-	confirmButton = new JButton("Confirm");
-		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
-		confirmButton.addActionListener(CloseOptionButtonHandler);
-			modPanel.add(confirmButton);
-	
-//RECLASS PANEL
-	reclassPane  = new JDialog(optionPane, true);
-	JPanel reClassPanel = new JPanel();
-	
-	JPanel ReClassLevelPanel = new JPanel();
-		reclassLevel = new JLabel("Level:");
-		reclassLevelBox = new JComboBox();
-		ReClassLevelPanel.add(reclassLevel);
-		ReClassLevelPanel.add(reclassLevelBox);
-	JPanel ReClassClassPanel = new JPanel();
-		reclassClass = new JLabel("Class: ");
-		//TEMPORARY, THE CHRACTER OPTION BOX SHOULD HANDLE THIS SOMEHOW...
-		Object[] reclassJobs= jobs;
-		reclassClasses = new JList(reclassJobs);
-		reclassClasses.setSelectedIndex(0);
-		ReClassClassPanel.add(reclassClass);
-		ReClassClassPanel.add(new JScrollPane(reclassClasses));
-	JPanel ReClassButtonPanel = new JPanel();
-		reclassConfirm = new JButton("Confirm");
-		ReClassConfirmButtonHandler ReClassConfirmButtonHandler = new ReClassConfirmButtonHandler();
-		reclassConfirm.addActionListener(ReClassConfirmButtonHandler);
-		ReClassButtonPanel.add(reclassConfirm);
-		reclassCancel = new JButton("Cancel");
-		ReClassCancelButtonHandler ReClassCancelButtonHandler = new ReClassCancelButtonHandler();
-		reclassCancel.addActionListener(ReClassCancelButtonHandler);
-		ReClassButtonPanel.add(reclassCancel);
-		
-	reClassPanel.add(ReClassLevelPanel);
-	reClassPanel.add(ReClassClassPanel);
-	reClassPanel.add(ReClassButtonPanel);
-	reClassPanel.setLayout(new BoxLayout(reClassPanel, BoxLayout.PAGE_AXIS));
-	reclassPane.add(reClassPanel);
-	reclassPane.setTitle("Reclass");
-	reclassPane.setResizable(true);
-	reclassPane.setSize(300,300);
-	reclassPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+//Button Panel
+	JPanel buttonOptionsPanel = new JPanel();
+	buttonOptionsPanel.setLayout(new GridLayout(2,2));
+		promoteButton = new JButton("Promote");
+			PromoteOptionButtonHandler PromoteOptionButtonHandler = new PromoteOptionButtonHandler();
+			promoteButton.addActionListener(PromoteOptionButtonHandler);
+			buttonOptionsPanel.add(promoteButton);
+				promoteButton.setEnabled(false);
+		eternalSealButton = new JButton("EternalSeal");
+			EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
+			eternalSealButton.addActionListener(EternalSealButtonHandler);
+			buttonOptionsPanel.add(eternalSealButton);
+				eternalSealButton.setEnabled(false);
+		parentalUnitsButton = new JButton("Parents");
+		ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
+			parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
+			buttonOptionsPanel.add(parentalUnitsButton);
+				parentalUnitsButton.setEnabled(false);
+		confirmButton = new JButton("Confirm");
+			CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
+			confirmButton.addActionListener(CloseOptionButtonHandler);
+			buttonOptionsPanel.add(confirmButton);
+	modPanel.add(buttonOptionsPanel);
 	
 //PARENTAL UNITS PANEL
-	parentalUnitsPane  = new JDialog(optionPane, true);
+	parentalUnitsPane  = new JDialog(this, true);
 	JPanel parentalUnitsPanel = new JPanel();
 	
 //These panels are for fixed parent
@@ -747,7 +738,7 @@ public GUI()
 	//Window
 	optionPane.setTitle("Character Options");
 	optionPane.setResizable(true);
-	optionPane.setSize(600,300);
+	optionPane.setSize(500,250);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 	
 	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
@@ -779,37 +770,17 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
-			reclassLevelBox.setSelectedIndex(jobHistory.getSelectedIndex());
-			reclassPane.setVisible(true);
+			UnitController unitcontroller = UnitController.getInstance();
+			int newLevel = (jobHistory.getSelectedIndex() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
+			String newJob = reclassBox.getSelectedItem().toString();
+
+			unitcontroller.reclass(newJob, newLevel);
+			
+			Object[] listData = unitcontroller.getClassArray();
+			jobHistory.setListData(listData);
 		}
 		
 	}
-		//This handles the confirm button in the reclass window
-			public class ReClassConfirmButtonHandler implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					UnitController unitcontroller = UnitController.getInstance();
-					int newLevel = Integer.parseInt(reclassLevelBox.getSelectedItem().toString()) ;
-					String newJob = reclassClasses.getSelectedValue().toString();
-
-					unitcontroller.reclass(newJob, newLevel);
-					
-					Object[] listData = unitcontroller.getClassArray();
-					jobHistory.setListData(listData);
-					
-					reclassLevelBox.setBackground(Color.WHITE);
-					reclassPane.dispose();
-				}
-			}
-		//This handles the close button in the reclass window
-			public class ReClassCancelButtonHandler implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					reclassPane.dispose();
-				}
-			}
 	//This handles the promote button in the options window (NOT IMPLEMENTED YET)
 	public class PromoteOptionButtonHandler implements ActionListener
 	{
@@ -1149,6 +1120,15 @@ public GUI()
 			String tempRoute = inputRouteBox.getSelectedItem().toString();
 			int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
 			
+			//Checks for children and adjusts GUI as necessary
+			if(tempChar.getIsChild() == true)
+			{
+				parentalUnitsButton.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "Please input parents' stats");
+				parentalUnitsPane.setVisible(true);
+				parentalUnitsPane.setEnabled(true);
+			}
+
 			//Making the class history
 			ArrayList<String> tempClassHistory = new ArrayList();
 			int levelMod = 0;
@@ -1189,7 +1169,6 @@ public GUI()
 			jobHistory.setSelectedIndex(0);
 	
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-			reclassLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
 		
@@ -1202,12 +1181,6 @@ public GUI()
 			{
 				System.out.println(tempClassHistory.get(i));
 			}	
-			
-			if(tempChar.getIsChild() == true)
-			{
-				JOptionPane.showMessageDialog(null, "Please input parents' stats");
-				parentalUnitsPane.setVisible(true);
-			}
 		}
 		catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
 		{
