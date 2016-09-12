@@ -1,9 +1,6 @@
-/ui/
-<<<<<<< HEAD
-=======
-/testing/
 /logic/
 /json/
+/ui/
 /domain/
+/testing/
 /resources/
->>>>>>> refs/remotes/origin/master

@@ -7,20 +7,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import domain.Unit;
 import json.DataStorage;
 import domain.Character;
+import domain.ChildCharacter;
 import domain.Job;
 
 public class UnitController {
 
 	private static UnitController instance = null;	// DataStorage singleton instance	
 	DataStorage data = DataStorage.getInstance(); //This is the data
-	ArrayList<Unit> localUnitSheet = new ArrayList(); //this unitSheet is calculated to compare the input one against.
-	ArrayList<Unit> inputUnitSheet = new ArrayList(); //this is unitSheet that users will input. This is compared against localUnitSheet.
+	ArrayList<Unit> localUnitSheet = new ArrayList<Unit>(); //this unitSheet is calculated to compare the input one against.
+	ArrayList<Unit> inputUnitSheet = new ArrayList<Unit>(); //this is unitSheet that users will input. This is compared against localUnitSheet.
 	
 	//THIS IS WHERE THE CURRENT CHARACTER AND JOB ARE DEFINED AS PER THE GUI.
 	public Character currentChar;
@@ -44,7 +44,15 @@ public class UnitController {
 	//BUILDS A LOCALUNITSHEET
 	public void buildLocalUnitSheet()
 	{		
-		Unit localUnit = new Unit(currentChar, currentJob, currentRoute);
+		Unit localUnit;
+		/*
+		if(currentChar instanceof ChildCharacter)
+		{
+			localUnit = // Unit Child Constructor
+		}
+		else {*/
+			localUnit = new Unit(currentChar, currentJob, currentRoute);
+		//}
 		addBaseClassMods(localUnit);
 		localUnitSheet.clear();
 		buildSheet(localUnit, classHistory, localUnitSheet, 0);
@@ -62,7 +70,16 @@ public class UnitController {
 			inputClassHistory.add(classHistory.get(i + levelMod));
 		}
 		
-		Unit inputUnit = new Unit(currentChar, currentJob, currentRoute);
+		Unit inputUnit;
+		/*
+		if(currentChar instanceof ChildCharacter)
+		{
+			inputUnit = // Unit Child Constructor
+		}
+		else {*/
+			inputUnit = new Unit(currentChar, currentJob, currentRoute);
+		//}
+
 		inputUnit.setLevel(inputLevel);
 		inputUnit.setBaseStats(inputStats);		
 		inputUnitSheet.clear();
