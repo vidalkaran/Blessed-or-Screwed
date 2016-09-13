@@ -230,13 +230,14 @@ public GUI()
 		inputLevelBox.addActionListener(inputlevelboxhandler);
 			inputPanel1.add(inputLevel);
 			inputPanel1.add(inputLevelBox);
-				inputLevelBox.setEnabled(false);
-			
-		parentalUnitsButton = new JButton("Parents");
+				inputLevel.setVisible(false);
+				inputLevelBox.setVisible(false);
+
+		parentalUnitsButton = new JButton("Child Options");
 		ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
 			parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
 			inputPanel1.add(parentalUnitsButton);
-				parentalUnitsButton.setEnabled(false);
+				parentalUnitsButton.setVisible(false);
 
 	//Input Panel 2 (Contains all the stat mods)
 	JPanel inputPanel2 = new JPanel();
@@ -1250,8 +1251,9 @@ public GUI()
 			//Checks for children and adjusts GUI as necessary
 			if(tempChar.getIsChild() == true)
 			{
-				parentalUnitsButton.setEnabled(true);
-				inputLevelBox.setEnabled(false);
+				inputLevel.setVisible(false);
+				inputLevelBox.setVisible(false);
+				parentalUnitsButton.setVisible(true);
 				
 				JOptionPane.showMessageDialog(null, "Please input parents' stats");
 				
@@ -1292,7 +1294,9 @@ public GUI()
 			}
 			else
 			{
-				inputLevelBox.setEnabled(true);
+				parentalUnitsButton.setVisible(false);
+				inputLevel.setVisible(true);
+				inputLevelBox.setVisible(true);
 				
 				//Making the class history
 				ArrayList<String> tempClassHistory = new ArrayList();
