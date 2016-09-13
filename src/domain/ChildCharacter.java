@@ -7,16 +7,7 @@ import domain.VariedParent;
 public class ChildCharacter extends Character{
 
 	protected String fixedParent;						// Name of the child character's fixed parent
-	protected VariedParent variedParents;
-	protected int startLevel;
-	
-	public int getStartLevel() {
-		return startLevel;
-	}
-
-	public void setStartLevel(int startLevel) {
-		this.startLevel = startLevel;
-	}
+	protected VariedParent variedParents;				// Object to hold the arrays of the child's varied parents
 
 	public String getFixedParent() {
 		return fixedParent;
@@ -25,7 +16,6 @@ public class ChildCharacter extends Character{
 	public VariedParent getVariedParents() {
 		return variedParents;
 	}
-
 
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);

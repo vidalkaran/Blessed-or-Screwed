@@ -13,6 +13,7 @@ public class BlessedOrScrewed {
 		// ALWAYS PARSE FILES FIRST BEFORE DOING ANYTHING ELSE
 		data.ParseJsonCharacters();
 		data.ParseJsonJobs();
+		data.InitializeBoonsAndBanes();
 		
 		System.out.println("ALL CHARACTERS: ");
 		data.printAllCharacters();
@@ -99,20 +100,20 @@ public class BlessedOrScrewed {
 		// Avatar Test
 		System.out.println("TEST AVATAR");
 		Avatar av = (Avatar) data.getCharacters().get("Avatar");
-		av.setBoon("Str");
-		av.setBane("Lck");
+		av.setBoon(data.getBoons()[1]);
+		av.setBane(data.getBanes()[5]);
 		
 		Unit tempAvatar = new Unit(av, data.getJobs().get("Nohr Prince/ss"), "Conquest");
-		System.out.println("Boon: Str, Bane: Lck");
+		System.out.println("Boon: " + data.getBoons()[1] + ", Bane: " + data.getBanes()[5]);
 		tempAvatar.printUnit();
 		
 		System.out.println();
 		
-		av.setBoon("Mag");
-		av.setBane("Def");
+		av.setBoon(data.getBoons()[2]);
+		av.setBane(data.getBanes()[6]);
 		
 		tempAvatar = new Unit(av, data.getJobs().get("Nohr Prince/ss"), "Conquest");
-		System.out.println("Boon: Mag, Bane: Def");
+		System.out.println("Boon: " + data.getBoons()[2] + ", Bane: " + data.getBanes()[6]);
 		tempAvatar.printUnit();
 		System.out.println();
 		
