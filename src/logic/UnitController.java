@@ -9,6 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.util.ArrayList;
+
+import com.rits.cloning.Cloner;
+
 import domain.Unit;
 import json.DataStorage;
 import domain.Character;
@@ -111,7 +114,8 @@ public class UnitController {
 	//RECURSION WHAT :O
 	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i)
 	{
-		Unit newUnit = (Unit)deepClone(unit); //this is the deep clone.
+		Cloner cloner = new Cloner();
+		Unit newUnit = cloner.deepClone(unit); //this is the deep clone.
 		
 		if(i == inputClassHistory.size()) //ends recursion
 		{
@@ -181,23 +185,6 @@ public class UnitController {
 
 	}
 
-	//Code for performing a deep clone
-	public static Object deepClone(Object object) 
-	{
-	    try {
-	      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	      ObjectOutputStream oos = new ObjectOutputStream(baos);
-	      oos.writeObject(object);
-	      ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-	      ObjectInputStream ois = new ObjectInputStream(bais);
-	      return ois.readObject();
-	    }
-	    catch (Exception e) {
-	      e.printStackTrace();
-	      return null;
-	    }
-	}
-	
 	//Method for reclassing, only affects jobHistory
 	public void reclass(String newJob, int changeLevel)
 	{

@@ -1,12 +1,10 @@
 package domain;
 
-import java.io.Serializable;
-
 import json.DataStorage;
 
 // note: two uses of unit, one for player input and one for auto generation.
 
-public class Unit implements Serializable{
+public class Unit {
 	
 	private Character myCharacter;
 	private Job myJob;
