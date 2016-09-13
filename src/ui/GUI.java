@@ -34,7 +34,7 @@ public class GUI extends JFrame{
 		JLabel inputMag;
 		JLabel inputSkl;
 		JLabel inputSpd;
-		JLabel inputLuk;
+		JLabel inputLck;
 		JLabel inputDef;
 		JLabel inputRes;
 	
@@ -47,7 +47,7 @@ public class GUI extends JFrame{
 		JTextField inputMagField;
 		JTextField inputSklField;
 		JTextField inputSpdField;
-		JTextField inputLukField;
+		JTextField inputLckField;
 		JTextField inputDefField;
 		JTextField inputResField;
 
@@ -61,7 +61,7 @@ public class GUI extends JFrame{
 		JLabel resultMag;
 		JLabel resultSkl;
 		JLabel resultSpd;
-		JLabel resultLuk;
+		JLabel resultLck;
 		JLabel resultDef;
 		JLabel resultRes;
 		
@@ -70,7 +70,7 @@ public class GUI extends JFrame{
 		JTextField resultMagField;
 		JTextField resultSklField;
 		JTextField resultSpdField;
-		JTextField resultLukField;
+		JTextField resultLckField;
 		JTextField resultDefField;
 		JTextField resultResField;
 
@@ -79,7 +79,7 @@ public class GUI extends JFrame{
 		JTextField avgMagField;
 		JTextField avgSklField;
 		JTextField avgSpdField;
-		JTextField avgLukField;
+		JTextField avgLckField;
 		JTextField avgDefField;
 		JTextField avgResField;
 		
@@ -88,7 +88,7 @@ public class GUI extends JFrame{
 		JTextField resultMagDifference;
 		JTextField resultSklDifference;
 		JTextField resultSpdDifference;
-		JTextField resultLukDifference;
+		JTextField resultLckDifference;
 		JTextField resultDefDifference;
 		JTextField resultResDifference;
 		
@@ -123,13 +123,13 @@ public class GUI extends JFrame{
 		JLabel fixedParentName;
 		JLabel fixedParentNameDisplay;
 		JLabel fixedParentClass;
-		JLabel fixedParentClassDisplay;
+		JComboBox fixedParentClassDisplay;
 		JLabel fixedParentHP;
 		JLabel fixedParentStr;
 		JLabel fixedParentMag;
 		JLabel fixedParentSkl;
 		JLabel fixedParentSpd;
-		JLabel fixedParentLuk;
+		JLabel fixedParentLck;
 		JLabel fixedParentDef;
 		JLabel fixedParentRes;
 		JTextField fixedParentHPField;
@@ -137,7 +137,7 @@ public class GUI extends JFrame{
 		JTextField fixedParentMagField;
 		JTextField fixedParentSklField;
 		JTextField fixedParentSpdField;
-		JTextField fixedParentLukField;
+		JTextField fixedParentLckField;
 		JTextField fixedParentDefField;
 		JTextField fixedParentResField;
 		
@@ -151,7 +151,7 @@ public class GUI extends JFrame{
 		JLabel variedParentMag;
 		JLabel variedParentSkl;
 		JLabel variedParentSpd;
-		JLabel variedParentLuk;
+		JLabel variedParentLck;
 		JLabel variedParentDef;
 		JLabel variedParentRes;
 		JTextField variedParentHPField;
@@ -159,7 +159,7 @@ public class GUI extends JFrame{
 		JTextField variedParentMagField;
 		JTextField variedParentSklField;
 		JTextField variedParentSpdField;
-		JTextField variedParentLukField;
+		JTextField variedParentLckField;
 		JTextField variedParentDefField;
 		JTextField variedParentResField;
 		
@@ -181,8 +181,8 @@ static String[] conquestCharacters;
 static String[] birthrightCharacters;
 static String[] revelationsCharacters;
 
-static String[] jobs = {"Cavalier", "Songstress"};
-		
+static String[] jobs = {"Cavalier", "Dark Mage", "Diviner", "Songstress"};
+
 public static void main(String[]args)
 {
 	new GUI();
@@ -196,6 +196,7 @@ public GUI()
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
 	data.ParseJsonJobs();
+	data.InitializeBoonsAndBanes();
 	
 	conquestCharacters = data.getConquestCharacters().toArray(new String[0]);
 	birthrightCharacters = data.getBirthrightCharacters().toArray(new String[0]);
@@ -208,14 +209,14 @@ public GUI()
 	JPanel inputPanel1 = new JPanel();
 	
 		inputRoute = new JLabel("Route: ");
-		inputRouteBox = new JComboBox(routes);
+		inputRouteBox = new JComboBox<String>(routes);
 		ComboBoxHandler ComboBoxHandler = new ComboBoxHandler();
 		inputRouteBox.addActionListener(ComboBoxHandler);
 			inputPanel1.add(inputRoute);
 			inputPanel1.add(inputRouteBox);
 		
 		inputChar = new JLabel("Char: ");
-		inputCharBox = new JComboBox(conquestCharacters);
+		inputCharBox = new JComboBox<String>(conquestCharacters);
 		inputCharBox.setPreferredSize(new Dimension(100,25));
 		CharBoxHandler CharBoxHandler = new CharBoxHandler();
 		inputCharBox.addActionListener(CharBoxHandler);
@@ -223,7 +224,7 @@ public GUI()
 			inputPanel1.add(inputCharBox);
 								
 		inputLevel = new JLabel("Level: ");
-		inputLevelBox = new JComboBox();
+		inputLevelBox = new JComboBox<Integer>();
 		InputLevelBoxHandler inputlevelboxhandler = new InputLevelBoxHandler();
 		inputLevelBox.addActionListener(inputlevelboxhandler);
 			inputPanel1.add(inputLevel);
@@ -248,10 +249,10 @@ public GUI()
 			inputPanel2.add(inputStr);
 			inputPanel2.add(inputStrField);	
 			
-		inputLuk = new JLabel("Luk: ");
-		inputLukField = new JTextField(" ");
-			inputPanel2.add(inputLuk);
-			inputPanel2.add(inputLukField);				
+		inputLck = new JLabel("Lck: ");
+		inputLckField = new JTextField(" ");
+			inputPanel2.add(inputLck);
+			inputPanel2.add(inputLckField);				
 			
 		inputMag = new JLabel("Mag: ");
 		inputMagField = new JTextField(" ");
@@ -340,20 +341,20 @@ public GUI()
 			resultPanel.add(avgStrField);	
 			resultPanel.add(resultStrDifference);
 
-		resultLuk = new JLabel("Luk: ");
-		resultLukField = new JTextField(" ");
-		resultLukField.setEditable(false);
-		avgLukField = new JTextField(" ");
-		avgLukField.setEditable(false);
-		resultLukDifference = new JTextField(" ");
-		resultLukDifference.setEditable(false);
-			resultLukField.setBackground(Color.WHITE);
-			avgLukField.setBackground(Color.WHITE);
-			resultLukDifference.setBackground(Color.WHITE);
-			resultPanel.add(resultLuk);
-			resultPanel.add(resultLukField);	
-			resultPanel.add(avgLukField);	
-			resultPanel.add(resultLukDifference);			
+		resultLck = new JLabel("Lck: ");
+		resultLckField = new JTextField(" ");
+		resultLckField.setEditable(false);
+		avgLckField = new JTextField(" ");
+		avgLckField.setEditable(false);
+		resultLckDifference = new JTextField(" ");
+		resultLckDifference.setEditable(false);
+			resultLckField.setBackground(Color.WHITE);
+			avgLckField.setBackground(Color.WHITE);
+			resultLckDifference.setBackground(Color.WHITE);
+			resultPanel.add(resultLck);
+			resultPanel.add(resultLckField);	
+			resultPanel.add(avgLckField);	
+			resultPanel.add(resultLckDifference);			
 		
 		resultMag = new JLabel("Mag: ");
 		resultMagField = new JTextField(" ");
@@ -418,7 +419,7 @@ public GUI()
 	//GRAPH PANEL 1
 	JPanel graphPanel = new JPanel();
 		graphStat = new JLabel("Stat: ");
-		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Luk", "Def", "Res"};
+		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Lck", "Def", "Res"};
 		graphStatBox = new JComboBox(statArray);
 		graphBoxHandler graphboxhandler = new graphBoxHandler();
 		graphStatBox.addActionListener(graphboxhandler);
@@ -517,9 +518,11 @@ public GUI()
 //Boon and Bane Panel
 	JPanel avatarBoonBanePanel = new JPanel();
 	avatarBoonLabel = new JLabel("Boons:");
-	avatarBoonBox= new JComboBox();
+	avatarBoonBox= new JComboBox(new DefaultComboBoxModel(data.getBoons()));
+		avatarBoonBox.setSelectedIndex(Arrays.asList(data.getBoons()).indexOf("Strong (Str)"));
 	avatarBaneLabel = new JLabel("Banes:");
-	avatarBaneBox= new JComboBox();
+	avatarBaneBox= new JComboBox(new DefaultComboBoxModel(data.getBanes()));
+		avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBanes()).indexOf("Fragile (Def)"));
 		avatarBoonBanePanel.add(avatarBoonLabel);
 		avatarBoonBanePanel.add(avatarBoonBox);
 		avatarBoonBanePanel.add(avatarBaneLabel);
@@ -572,13 +575,13 @@ public GUI()
 	Border fixedParentPanelBorder = BorderFactory.createTitledBorder("Fixed Parent");
 	fixedParentPanelMain.setBorder(fixedParentPanelBorder);
 	fixedParentPanelMain.setLayout(new BoxLayout(fixedParentPanelMain, BoxLayout.PAGE_AXIS));
-	
+
 	//This panel has the name and class
 	JPanel fixedParentPanel1 = new JPanel();
 		fixedParentName = new JLabel("Name: ");
 		fixedParentNameDisplay = new JLabel();
 		fixedParentClass= new JLabel("Class: ");
-		fixedParentClassDisplay = new JLabel();
+		fixedParentClassDisplay = new JComboBox(jobs);
 			fixedParentPanel1.add(fixedParentName);
 			fixedParentPanel1.add(fixedParentNameDisplay);
 			fixedParentPanel1.add(fixedParentClass);
@@ -603,10 +606,10 @@ public GUI()
 			fixedParentPanel2.add(fixedParentStr);
 			fixedParentPanel2.add(fixedParentStrField);	
 				
-			fixedParentLuk = new JLabel("Luk: ");
-			fixedParentLukField = new JTextField(" ");
-			fixedParentPanel2.add(fixedParentLuk);
-			fixedParentPanel2.add(fixedParentLukField);				
+			fixedParentLck = new JLabel("Lck: ");
+			fixedParentLckField = new JTextField(" ");
+			fixedParentPanel2.add(fixedParentLck);
+			fixedParentPanel2.add(fixedParentLckField);				
 				
 			fixedParentMag = new JLabel("Mag: ");
 			fixedParentMagField = new JTextField(" ");
@@ -638,6 +641,8 @@ public GUI()
 	JPanel variedParentPanel1 = new JPanel();
 		variedParentName = new JLabel("Name: ");
 		variedParentNameDisplay = new JComboBox();
+			VariedParentBoxHandler variedparentboxhandler = new VariedParentBoxHandler();
+			variedParentNameDisplay.addActionListener(variedparentboxhandler);
 		variedParentClass= new JLabel("Class: ");
 		variedParentClassDisplay = new JComboBox();
 			variedParentPanel1.add(variedParentName);
@@ -664,10 +669,10 @@ public GUI()
 		variedParentPanel2.add(variedParentStr);
 		variedParentPanel2.add(variedParentStrField);	
 				
-		variedParentLuk = new JLabel("Luk: ");
-		variedParentLukField = new JTextField(" ");
-		variedParentPanel2.add(variedParentLuk);
-		variedParentPanel2.add(variedParentLukField);				
+		variedParentLck = new JLabel("Lck: ");
+		variedParentLckField = new JTextField(" ");
+		variedParentPanel2.add(variedParentLck);
+		variedParentPanel2.add(variedParentLckField);				
 				
 		variedParentMag = new JLabel("Mag: ");
 		variedParentMagField = new JTextField(" ");
@@ -691,11 +696,14 @@ public GUI()
 
 //This panel handles banes and boones
 	JPanel baneboonPanel = new JPanel();
+	baneboonPanel.setLayout(new GridLayout(2,1));
 	boonLabel = new JLabel("Boon: ");
-	boonBox = new JComboBox();
+	boonBox = new JComboBox(new DefaultComboBoxModel(data.getBoons()));
+		boonBox.setSelectedIndex(Arrays.asList(data.getBoons()).indexOf("Quick (Spd)"));
 		boonBox.setEnabled(false);
 	baneLabel = new JLabel("Bane: ");
-	baneBox = new JComboBox();
+	baneBox = new JComboBox(new DefaultComboBoxModel(data.getBanes()));
+		baneBox.setSelectedIndex(Arrays.asList(data.getBanes()).indexOf("Unlucky (Lck)"));
 		baneBox.setEnabled(false);
 		baneboonPanel.add(boonLabel);
 		baneboonPanel.add(boonBox);
@@ -727,7 +735,7 @@ public GUI()
 	parentalUnitsPane.add(parentalUnitsPanel);
 	parentalUnitsPane.setTitle("Parents");
 	parentalUnitsPane.setResizable(true);
-	parentalUnitsPane.setSize(300,400);
+	parentalUnitsPane.setSize(300,450);
 	parentalUnitsPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
 
 	//Add all Components
@@ -738,7 +746,7 @@ public GUI()
 	//Window
 	optionPane.setTitle("Character Options");
 	optionPane.setResizable(true);
-	optionPane.setSize(500,250);
+	optionPane.setSize(600,250);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 	
 	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
@@ -801,7 +809,7 @@ public GUI()
 	public class ParentalUnitsButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
-		{
+		{	
 			parentalUnitsPane.setVisible(true);
 		}
 		
@@ -811,15 +819,122 @@ public GUI()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
+					
+					DataStorage data = DataStorage.getInstance();		
+					UnitController unitcontroller = UnitController.getInstance();
+					//Storing the Character, Job, Route, and BaseLevel
+					try
+					{
+						domain.ChildCharacter tempChildChar = (domain.ChildCharacter) data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+				 		domain.Job tempJob = data.getJobs().get(tempChildChar.getBaseClass());
+						String tempRoute = inputRouteBox.getSelectedItem().toString();
+						int tempLevel = tempChildChar.getBaseStats().getStats(tempRoute, 0);
+						
+						domain.Unit tempFixedParent = new domain.Unit((domain.Character) data.getCharacters().get(fixedParentNameDisplay.getText()), (domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
+						domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()), (domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
+						double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()), Double.parseDouble(fixedParentStrField.getText()), Double.parseDouble(fixedParentMagField.getText()), Double.parseDouble(fixedParentSklField.getText()), Double.parseDouble(fixedParentSpdField.getText()), Double.parseDouble(fixedParentLckField.getText()), Double.parseDouble(fixedParentDefField.getText()), Double.parseDouble(fixedParentResField.getText())};
+						double[] tempVariedParentStats = new double[] {Double.parseDouble(variedParentHPField.getText()), Double.parseDouble(variedParentStrField.getText()), Double.parseDouble(variedParentMagField.getText()), Double.parseDouble(variedParentSklField.getText()), Double.parseDouble(variedParentSpdField.getText()), Double.parseDouble(variedParentLckField.getText()), Double.parseDouble(variedParentDefField.getText()), Double.parseDouble(variedParentResField.getText())};
+						
+						//Making the class history
+						ArrayList<String> tempClassHistory = new ArrayList();
+						int levelMod = 0;
+						for(int i = tempLevel; i<=20; i++)
+						{
+							String input = tempChildChar.getBaseClass();
+							tempClassHistory.add(input);
+							levelMod++;
+						}
+								
+						//Update UnitController
+						unitcontroller.setCurrentChar(tempChildChar);
+						unitcontroller.setCurrentJob(tempJob);
+						unitcontroller.setCurrentRoute(tempRoute);
+						unitcontroller.setClassHistory(tempClassHistory);
+						unitcontroller.setFixedParent(tempFixedParent);
+						unitcontroller.setVariedParent(tempVariedParent);
+						unitcontroller.setFixedParentInputStats(tempFixedParentStats);
+						unitcontroller.setVariedParentInputStats(tempVariedParentStats);
+						
+						domain.Unit tempChildUnit = new domain.Unit(tempChildChar, tempJob, tempRoute, tempFixedParentStats, tempFixedParent, tempVariedParentStats, tempVariedParent);
+						
+						//Sets the stat boxes
+						inputHPField.setText(""+(int)tempChildUnit.getBaseStats()[0]);
+						inputStrField.setText(""+(int)tempChildUnit.getBaseStats()[1]);
+						inputMagField.setText(""+(int)tempChildUnit.getBaseStats()[2]);
+						inputSklField.setText(""+(int)tempChildUnit.getBaseStats()[3]);
+						inputSpdField.setText(""+(int)tempChildUnit.getBaseStats()[4]);
+						inputLckField.setText(""+(int)tempChildUnit.getBaseStats()[5]);
+						inputDefField.setText(""+(int)tempChildUnit.getBaseStats()[6]);
+						inputResField.setText(""+(int)tempChildUnit.getBaseStats()[7]);
+						
+						//This code will set the level fields and possible classes in the character option windows
+						String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+						for(int i = 0; i<=(20 - tempLevel); i++)
+						{
+							possibleLevels[i] = (i+tempLevel+"");
+						}
+						
+						System.out.println(tempLevel);
+						
+						Object[] listData = unitcontroller.getClassArray();
+						jobHistory.setListData(listData);
+						jobHistory.setSelectedIndex(0);
+				
+						inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+						resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+						resultClassDisplay.setText("Lvl. "+tempChildChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChildChar.getBaseClass());
+					
+						//Debug print to console
+						System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
+						System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
+						System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
+						System.out.println("Route: "+unitcontroller.getCurrentRoute());
+						for(int i = 0; i<tempClassHistory.size();i++)
+						{
+							System.out.println(tempClassHistory.get(i));
+						}	
+					}
+					catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
+					{
+						JOptionPane.showMessageDialog(GUI.this, "Sorry, this character is not implemented yet!", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 					parentalUnitsPane.dispose();
 				}
 			}
 		//This handles the close button in the parental units window
 			public class ParentalCancelButtonHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					parentalUnitsPane.dispose();
+				}
+			}
+	// This handles creating the list of jobs based on the variedParent chosen in the parental units window
+	public class VariedParentBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			parentalUnitsPane.dispose();
+			if(parentalUnitsPane.isVisible())
+			{
+				DataStorage data = DataStorage.getInstance();
+				domain.Character tempVariedParent = data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString());
+				domain.Job tempVariedParentJob = data.getJobs().get(tempVariedParent.getBaseClass());
+				String tempRoute = inputRouteBox.getSelectedItem().toString();
+				
+				// Set up jobs list
+				variedParentClassDisplay.setModel(new DefaultComboBoxModel(jobs));
+				variedParentClassDisplay.setSelectedIndex(Arrays.asList(jobs).indexOf(tempVariedParentJob.getName()));
+				
+				// Set fields with base stats
+				variedParentHPField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 1));
+				variedParentStrField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 2));
+				variedParentMagField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 3));
+				variedParentSklField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 4));
+				variedParentSpdField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 5));
+				variedParentLckField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 6));
+				variedParentDefField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 7));
+				variedParentResField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 8));
+			}
 		}
 	}
 	//This handles the button that closes the options window
@@ -846,7 +961,7 @@ public GUI()
 				resultMagField.setText("");
 				resultSpdField.setText("");
 				resultSklField.setText("");
-				resultLukField.setText("");
+				resultLckField.setText("");
 				resultDefField.setText("");
 				resultResField.setText("");
 				
@@ -855,7 +970,7 @@ public GUI()
 				avgMagField.setText("");
 				avgSklField.setText("");
 				avgSpdField.setText("");
-				avgLukField.setText("");
+				avgLckField.setText("");
 				avgDefField.setText("");
 				avgResField.setText("");
 				
@@ -869,8 +984,8 @@ public GUI()
 				resultSklDifference.setBackground(Color.WHITE);
 				resultSpdDifference.setText("");
 				resultSpdDifference.setBackground(Color.WHITE);
-				resultLukDifference.setText("");
-				resultLukDifference.setBackground(Color.WHITE);
+				resultLckDifference.setText("");
+				resultLckDifference.setBackground(Color.WHITE);
 				resultDefDifference.setText("");
 				resultDefDifference.setBackground(Color.WHITE);
 				resultResDifference.setText("");
@@ -891,7 +1006,7 @@ public GUI()
 			int Mag = 0;
 			int Skl = 0;
 			int Spd = 0;
-			int Luk = 0;
+			int Lck = 0;
 			int Def = 0;
 			int Res = 0;
 			
@@ -905,7 +1020,7 @@ public GUI()
 				Mag = Integer.parseInt(inputMagField.getText());
 				Skl = Integer.parseInt(inputSklField.getText());
 				Spd = Integer.parseInt(inputSpdField.getText());
-				Luk = Integer.parseInt(inputLukField.getText());
+				Lck = Integer.parseInt(inputLckField.getText());
 				Def = Integer.parseInt(inputDefField.getText());
 				Res = Integer.parseInt(inputResField.getText());
 			}
@@ -915,7 +1030,7 @@ public GUI()
 			}
 			
 			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()) ;
-			double[]inputStats = {HP, Str, Mag, Skl, Spd, Luk, Def,Res};
+			double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
 			
 			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
 			unitcontroller.buildLocalUnitSheet();
@@ -1014,20 +1129,20 @@ public GUI()
 					{
 						resultSklDifference.setBackground(Color.WHITE);
 					}
-			resultLukField.setText(formatter.format(inputResults[5]));
-			avgLukField.setText(formatter.format(localResults[5]));
-			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+			resultLckField.setText(formatter.format(inputResults[5]));
+			avgLckField.setText(formatter.format(localResults[5]));
+			resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
 			if((inputResults[5] - localResults[5]) < 0)
 				{
-				resultLukDifference.setBackground(Color.RED);
+				resultLckDifference.setBackground(Color.RED);
 				}
 					else if ((inputResults[5] - localResults[5]) > 0)
 					{
-						resultLukDifference.setBackground(Color.GREEN);
+						resultLckDifference.setBackground(Color.GREEN);
 					}
 					else 
 					{
-						resultLukDifference.setBackground(Color.WHITE);
+						resultLckDifference.setBackground(Color.WHITE);
 					}
 			resultDefField.setText(formatter.format(inputResults[6]));
 			avgDefField.setText(formatter.format(localResults[6]));
@@ -1125,62 +1240,89 @@ public GUI()
 			{
 				parentalUnitsButton.setEnabled(true);
 				JOptionPane.showMessageDialog(null, "Please input parents' stats");
+				
+				// temp variable for the child
+				domain.ChildCharacter tempChildChar = (domain.ChildCharacter)data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+				
+				// Set up the default fixedParent
+				// temp variable for the fixedParent
+				domain.Character tempFixedParent = data.getCharacters().get(tempChildChar.getFixedParent());
+				// Set the name and class (among the list of classes)
+				fixedParentNameDisplay.setText(tempChildChar.getFixedParent());
+				fixedParentClassDisplay.setSelectedIndex(Arrays.asList(jobs).indexOf(tempFixedParent.getBaseClass()));
+				
+				// Set fields with base stats
+				fixedParentHPField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 1));
+				fixedParentStrField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 2));
+				fixedParentMagField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 3));
+				fixedParentSklField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 4));
+				fixedParentSpdField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 5));
+				fixedParentLckField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 6));
+				fixedParentDefField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 7));
+				fixedParentResField.setText(""+tempFixedParent.getBaseStats().getStats(tempRoute, 8));
+				
+				// Set up variedParents
+				variedParentNameDisplay.setModel(new DefaultComboBoxModel(tempChildChar.getVariedParents().getVariedParentsList(tempRoute)));
+				variedParentNameDisplay.setSelectedIndex(-1);
+				
 				parentalUnitsPane.setVisible(true);
 				parentalUnitsPane.setEnabled(true);
 			}
-
-			//Making the class history
-			ArrayList<String> tempClassHistory = new ArrayList();
-			int levelMod = 0;
-			for(int i = tempLevel; i<=20; i++)
+			else
 			{
-				String input = tempChar.getBaseClass();
-				tempClassHistory.add(input);
-				levelMod++;
-			}
-					
-			//Update UnitController
-			unitcontroller.setCurrentChar(tempChar);
-			unitcontroller.setCurrentJob(tempJob);
-			unitcontroller.setCurrentRoute(tempRoute);
-			unitcontroller.setClassHistory(tempClassHistory);
-			
-			//Sets the stat boxes
-			inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
-			inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
-			inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
-			inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
-			inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
-			inputLukField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
-			inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
-			inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
-			
-			//This code will set the level fields and possible classes in the character option windows
-			String[] possibleLevels = new String[(20 - tempLevel + 1)];	
-			for(int i = 0; i<=(20 - tempLevel); i++)
-			{
-				possibleLevels[i] = (i+tempLevel+"");
-			}
-			
-			System.out.println(tempLevel);
-			
-			Object[] listData = unitcontroller.getClassArray();
-			jobHistory.setListData(listData);
-			jobHistory.setSelectedIndex(0);
-	
-			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-			resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
+				//Making the class history
+				ArrayList<String> tempClassHistory = new ArrayList();
+				int levelMod = 0;
+				for(int i = tempLevel; i<=20; i++)
+				{
+					String input = tempChar.getBaseClass();
+					tempClassHistory.add(input);
+					levelMod++;
+				}
+						
+				//Update UnitController
+				unitcontroller.setCurrentChar(tempChar);
+				unitcontroller.setCurrentJob(tempJob);
+				unitcontroller.setCurrentRoute(tempRoute);
+				unitcontroller.setClassHistory(tempClassHistory);
+				
+				//Sets the stat boxes
+				inputHPField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 1));
+				inputStrField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 2));
+				inputMagField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 3));
+				inputSklField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 4));
+				inputSpdField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 5));
+				inputLckField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 6));
+				inputDefField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 7));
+				inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
+				
+				//This code will set the level fields and possible classes in the character option windows
+				String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+				for(int i = 0; i<=(20 - tempLevel); i++)
+				{
+					possibleLevels[i] = (i+tempLevel+"");
+				}
+				
+				System.out.println(tempLevel);
+				
+				Object[] listData = unitcontroller.getClassArray();
+				jobHistory.setListData(listData);
+				jobHistory.setSelectedIndex(0);
 		
-			//Debug print to console
-			System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
-			System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
-			System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
-			System.out.println("Route: "+unitcontroller.getCurrentRoute());
-			for(int i = 0; i<tempClassHistory.size();i++)
-			{
-				System.out.println(tempClassHistory.get(i));
-			}	
+				inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+				resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+				resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
+			
+				//Debug print to console
+				System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
+				System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
+				System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
+				System.out.println("Route: "+unitcontroller.getCurrentRoute());
+				for(int i = 0; i<tempClassHistory.size();i++)
+				{
+					System.out.println(tempClassHistory.get(i));
+				}	
+			}
 		}
 		catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
 		{
@@ -1239,9 +1381,9 @@ public GUI()
 			avgSklField.setText(formatter.format(localResults[4]));
 			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
 			
-			resultLukField.setText(formatter.format(inputResults[5]));
-			avgLukField.setText(formatter.format(localResults[5]));
-			resultLukDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+			resultLckField.setText(formatter.format(inputResults[5]));
+			avgLckField.setText(formatter.format(localResults[5]));
+			resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
 			
 			resultDefField.setText(formatter.format(inputResults[6]));
 			avgDefField.setText(formatter.format(localResults[6]));

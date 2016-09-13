@@ -20,24 +20,24 @@ public class VariedParent implements Serializable{
 			return revelations;
 		}
 		
-		public int getVariedParents(String route, String variedParent)
+		public String[] getVariedParentsList(String route)
 		{
-			int output = 0;
+			String[] output = new String[0];
 			switch(route.toLowerCase())
 			{
 				case "conquest":
 				{
-					output = Arrays.asList(conquest).indexOf(variedParent);
+					output = conquest;
 					break;
 				}
 				case "birthright":
 				{
-					output = Arrays.asList(birthright).indexOf(variedParent);
+					output = birthright;
 					break;
 				}
 				case "revelations":
 				{
-					output = Arrays.asList(revelations).indexOf(variedParent);
+					output = revelations;
 					break;
 				}
 			}
