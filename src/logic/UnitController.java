@@ -31,6 +31,7 @@ public class UnitController {
 	public Unit variedParent;
 	public double[] fixedParentInputStats;
 	public double[] variedParentInputStats;
+	public int startLevel;
 
 	// prevents instantiation
 	private UnitController() {
@@ -51,7 +52,7 @@ public class UnitController {
 		Unit localUnit;
 		if(currentChar instanceof ChildCharacter)
 		{
-			localUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent);
+			localUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
 		}
 		else {
 			localUnit = new Unit(currentChar, currentJob, currentRoute);
@@ -65,7 +66,13 @@ public class UnitController {
 	public void buildInputUnitSheet(int inputLevel, double[] inputStats)
 	{
 		ArrayList<String> inputClassHistory = new ArrayList();
-		int baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
+		int baseLevel;
+		if(currentChar.getIsChild()) {
+			baseLevel = startLevel;
+		}
+		else {
+			baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
+		}
 		int levelMod = inputLevel - baseLevel;
 		
 		for(int i = 0; i< classHistory.size() - levelMod; i++)
@@ -76,7 +83,7 @@ public class UnitController {
 		Unit inputUnit;
 		if(currentChar instanceof ChildCharacter)
 		{
-			inputUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent);
+			inputUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
 		}
 		else {
 			inputUnit = new Unit(currentChar, currentJob, currentRoute);
@@ -108,9 +115,13 @@ public class UnitController {
 		}
 		else //this does the fun stuff!
 		{
+			// do we need to reclass
 			checkJob(newUnit, inputClassHistory, i);
+			// calculate the average stat for the correct level
 			CalculateAverageStats(newUnit, (newUnit.getLevel()+1));
 			inputSheet.add(newUnit);
+			// increase the level of the unit by 1 so we can map out each level
+			newUnit.setLevel(newUnit.getLevel()+1);
 			i++;
 			buildSheet(newUnit, inputClassHistory, inputSheet, i);
 		}
@@ -135,15 +146,24 @@ public class UnitController {
 	{
 		int levelDifference = (inputLevel - inputUnit.getLevel());
 		
-		for(int i = 0; i< inputUnit.getBaseStats().length; i++)
+		if(levelDifference < 0)
 		{
-			double[] tempBaseStats = inputUnit.getBaseStats();
-			double[] tempGrowths = inputUnit.getGrowths();
-			
-			tempBaseStats[i] = (((tempGrowths[i]/100) * levelDifference) +  tempBaseStats[i]);
+			levelDifference = 0;
 		}
 		
-		inputUnit.setLevel(inputLevel);
+		double[] tempBaseStats = inputUnit.getBaseStats();
+		
+		for(int q = 0; q < tempBaseStats.length; q++)
+		{
+			System.out.println(tempBaseStats[q]);
+		}
+		double[] tempGrowths = inputUnit.getGrowths();
+		
+		for(int i = 0; i< inputUnit.getBaseStats().length; i++)
+		{
+			tempBaseStats[i] += ((tempGrowths[i]/100) * levelDifference);
+		}
+
 	}
 	
 	//this checks the job, and adjusts base, growths, and maxes accordingly.
@@ -151,11 +171,8 @@ public class UnitController {
 	{
 		if(inputClassHistory.get(i).equals(unit.getMyJob().getName()) != true)
 		{
-			Job newJob = new Job();
-			Job oldJob = new Job();
-
-			newJob = data.getJobs().get(inputClassHistory.get(i));
-			oldJob = unit.getMyJob();
+			Job newJob = data.getJobs().get(inputClassHistory.get(i));
+			Job oldJob = unit.getMyJob();
 			
 			int[] newStatMods = newJob.getBaseStats();
 			int[] oldStatMods = oldJob.getBaseStats();
@@ -194,6 +211,12 @@ public class UnitController {
 	public void reclass(String newJob, int changeLevel)
 	{
 		int levelVector = changeLevel-currentChar.getBaseStats().getStats(currentRoute, 0);
+		
+		// we cannot have a negative level difference
+		if(levelVector < 0)
+		{
+			levelVector = 0;
+		}
 		
 		for(int i = 0; i<(classHistory.size()-levelVector); i++)
 		{
@@ -289,11 +312,11 @@ public class UnitController {
 		return classHistory;
 	}
 
-	public String[] getClassArray() {
+	public String[] getClassArray(int baseLevel) {
 		String[] newClassHistory = new String[classHistory.size()];
 			for(int i = 0; i< classHistory.size();i++)
 			{
-				newClassHistory[i] = "Lvl "+(currentChar.getBaseStats().getStats(currentRoute, 0)+i)+". "+classHistory.get(i);
+				newClassHistory[i] = "Lvl "+(baseLevel+i)+". "+classHistory.get(i);
 			}
 		return newClassHistory;
 	}
@@ -315,6 +338,10 @@ public class UnitController {
 
 	public void setVariedParentInputStats(double[] variedParentInputStats) {
 		this.variedParentInputStats = variedParentInputStats;
+	}
+	
+	public void setStartLevel(int startLevel) {
+		this.startLevel = startLevel;
 	}
 }
 
