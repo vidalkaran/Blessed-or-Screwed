@@ -1061,6 +1061,9 @@ public GUI()
 			UnitController unitcontroller = UnitController.getInstance();
 			GraphController graphcontroller = GraphController.getInstance();
 			
+			int inputLevel; // User input
+			int baseLevel;  // Starting level of unit
+			
 			try
 			{
 				HP = Integer.parseInt(inputHPField.getText());
@@ -1076,46 +1079,46 @@ public GUI()
 			{
 				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
 			}
-			
-			int inputLevel;
+// WHY IS THIS GIVING THE WRONG VALUE?!				
 			// if the character being checked is a child, then the input level is from the level box in the child options
-			if(unitcontroller.getCurrentChar().getIsChild())
-			{
-				inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-			}
-			else {
-				inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()) ;
-			}
-			double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
-			
-			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
-			unitcontroller.buildLocalUnitSheet();
-			
-			//UPDATES GRAPH
-			int stat = graphStatBox.getSelectedIndex();
-			//int startLevel = inputLevel;//Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-			int baseLevel;
+				if(unitcontroller.getCurrentChar().getIsChild())
+				{
+					inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+				}
+				else
+				{
+					inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+				}
+				
 			// if the character being checked is a child, then the base level what the user inputed in child options
-			if(unitcontroller.getCurrentChar().getIsChild()) {
-				baseLevel = inputLevel;
-			}
-			// otherwise the base level is the character's natural base level
-			else {
-				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
-			}
+				if(unitcontroller.getCurrentChar().getIsChild())
+				{
+					baseLevel = inputLevel;
+				}
+				// otherwise the base level is the character's natural base level
+				else {
+					baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+				}
+
+			double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
+			int inputJobIndex = inputLevel = baseLevel;
+			
+			unitcontroller.buildInputUnitSheet(inputLevel, inputStats, inputJobIndex);
+			unitcontroller.buildLocalUnitSheet(inputJobIndex);
+			
+		//UPDATES GRAPH
+			int stat = graphStatBox.getSelectedIndex();
 
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);
-			if(unitcontroller.getCurrentChar().getIsChild())
-			{
-				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
-			}
-			else {
-				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
-			}
+		
+	System.out.println("INPUT LEVEL" + inputLevel);
+	System.out.println("GRAPH IS DISPLAYING:" +(inputLevel)+" - "+(baseLevel));
+			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
+
 			graphStatBox.setEnabled(true);
 			
-			//UPDATES BOXES			
+		//UPDATES BOXES			
 			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
 
 			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
@@ -1247,7 +1250,7 @@ public GUI()
 			//Stuff for Debug
 			//unitcontroller.printLocalSheet();
 			//unitcontroller.printInputSheet();
-		}
+						}
 		
 	}
 	//This allows you to change the data visualized on the graph using the stat combo box
@@ -1261,16 +1264,21 @@ public GUI()
 			int stat = graphStatBox.getSelectedIndex();
 			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
 			int baseLevel;
-			if(unitcontroller.getCurrentChar().getIsChild()) {
+			if(unitcontroller.getCurrentChar().getIsChild())
+			{
 				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 			}
-			else {
+			else 
+			{
 				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
 			}
 
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
 			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
+			System.out.println("INPUT LEVEL" + startLevel);
+			System.out.println("GRAPH IS DISPLAYING:" +(startLevel)+" - "+(baseLevel));
+
 		}
 	}
 	//This handler allows a user to select a route and adjusts data in the logic based on route.

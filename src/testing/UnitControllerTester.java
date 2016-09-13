@@ -38,7 +38,7 @@ public static void main(String[]args)
 //	unitController.reclass("Dancer", 10);
 	
 	//TESTING CALCULATIONS
-	unitController.buildLocalUnitSheet();
+	unitController.buildLocalUnitSheet(0);
 	unitController.printLocalSheet();
 	
 	//TESTING CALCULATIONS
