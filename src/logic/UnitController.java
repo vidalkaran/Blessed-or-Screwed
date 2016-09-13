@@ -26,7 +26,7 @@ public class UnitController {
 	public Character currentChar;
 	public Job currentJob;
 	public String currentRoute;
-	public ArrayList<String> classHistory; //the class history, this is shared between the localUnitSheet and inputUnitSheet.
+	public ArrayList<String> classHistory; //this is shared between the localUnitSheet and inputUnitSheet.
 	public Unit fixedParent;
 	public Unit variedParent;
 	public double[] fixedParentInputStats;
@@ -49,15 +49,16 @@ public class UnitController {
 	//BUILDS A LOCALUNITSHEET
 	public void buildLocalUnitSheet()
 	{		
+		//Creating the unit
 		Unit localUnit;
-		if(currentChar instanceof ChildCharacter)
-		{
-			localUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
-		}
-		else {
-			localUnit = new Unit(currentChar, currentJob, currentRoute);
-		}
-		addBaseClassMods(localUnit);
+			if(currentChar instanceof ChildCharacter)
+			{
+				localUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
+			}
+			else {
+				localUnit = new Unit(currentChar, currentJob, currentRoute);
+			}
+		//Making the unitSheet
 		localUnitSheet.clear();
 		buildSheet(localUnit, classHistory, localUnitSheet, 0);
 	}
@@ -66,31 +67,40 @@ public class UnitController {
 	public void buildInputUnitSheet(int inputLevel, double[] inputStats)
 	{
 		ArrayList<String> inputClassHistory = new ArrayList();
+		
+		//setting the base level 
 		int baseLevel;
-		if(currentChar.getIsChild()) {
-			baseLevel = startLevel;
-		}
-		else {
-			baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
-		}
+			if(currentChar.getIsChild())
+			{
+				baseLevel = startLevel;
+			}
+			else 
+			{
+				baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
+			}
+		
+		//Creating a temporary job history array to match the level of the inputUnit(Ignoring the previous levels)
 		int levelMod = inputLevel - baseLevel;
+			for(int i = 0; i< classHistory.size() - levelMod; i++)
+			{
+				inputClassHistory.add(classHistory.get(i + levelMod));
+			}
 		
-		for(int i = 0; i< classHistory.size() - levelMod; i++)
-		{
-			inputClassHistory.add(classHistory.get(i + levelMod));
-		}
-		
+		//Making the unit
 		Unit inputUnit;
-		if(currentChar instanceof ChildCharacter)
-		{
-			inputUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
-		}
-		else {
-			inputUnit = new Unit(currentChar, currentJob, currentRoute);
-		}
+			if(currentChar instanceof ChildCharacter)
+			{
+				inputUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
+			}
+			else {
+				inputUnit = new Unit(currentChar, currentJob, currentRoute);
+			}
 
+		//Correcting the unit's stats in accordance to input
 		inputUnit.setLevel(inputLevel);
 		inputUnit.setBaseStats(inputStats);		
+		
+		//Making the unitSheet
 		inputUnitSheet.clear();
 		buildSheet(inputUnit, inputClassHistory, inputUnitSheet, 0);
 	}
@@ -101,7 +111,7 @@ public class UnitController {
 	//RECURSION WHAT :O
 	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i)
 	{
-		Unit newUnit = (Unit)deepClone(unit); //this is the deep clone. Very important!!
+		Unit newUnit = (Unit)deepClone(unit); //this is the deep clone.
 		
 		if(i == inputClassHistory.size()) //ends recursion
 		{
@@ -113,13 +123,18 @@ public class UnitController {
 			i++;
 			buildSheet(newUnit, inputClassHistory, inputSheet, i);
 		}
-		else //this does the fun stuff!
+		else // Leveling up the new Unit
 		{
-			// do we need to reclass
-			checkJob(newUnit, inputClassHistory, i);
-			// calculate the average stat for the correct level
+			//Handle reclassing
+			if(inputClassHistory.get(i).equals(unit.getMyJob().getName()) != true)
+			{
+				newUnit.reclass(data.getJobs().get(inputClassHistory.get(i)));
+			}
+			
+			//Calculate the average stat for the correct level
 			CalculateAverageStats(newUnit, (newUnit.getLevel()+1));
 			inputSheet.add(newUnit);
+			
 			// increase the level of the unit by 1 so we can map out each level
 			newUnit.setLevel(newUnit.getLevel()+1);
 			i++;
@@ -165,28 +180,6 @@ public class UnitController {
 		}
 
 	}
-	
-	//this checks the job, and adjusts base, growths, and maxes accordingly.
-	public void checkJob(Unit unit, ArrayList<String> inputClassHistory, int i)
-	{
-		if(inputClassHistory.get(i).equals(unit.getMyJob().getName()) != true)
-		{
-			Job newJob = data.getJobs().get(inputClassHistory.get(i));
-			Job oldJob = unit.getMyJob();
-			
-			int[] newStatMods = newJob.getBaseStats();
-			int[] oldStatMods = oldJob.getBaseStats();
-			
-			double[] unitBaseStats = unit.getBaseStats();
-			
-			for(int j = 0; j < newStatMods.length; j++)
-			{
-				newStatMods[j]-=oldStatMods[j];
-				unitBaseStats[j]+=newStatMods[j];
-			}
-			unit.reClass(newJob);
-		}
-	}
 
 	//Code for performing a deep clone
 	public static Object deepClone(Object object) 
@@ -205,8 +198,6 @@ public class UnitController {
 	    }
 	}
 	
-//===========================================================STUFF FOR GUI AND TESTING
-	
 	//Method for reclassing, only affects jobHistory
 	public void reclass(String newJob, int changeLevel)
 	{
@@ -224,6 +215,9 @@ public class UnitController {
 		}
 	}
 
+	
+//===========================================================STUFF FOR GUI AND TESTING
+	
 	//This returns an of stats from the local sheet
 	//REFERENCE: 0=HP, 1=STR, 2=MAG, 3=SPD, 4=SKL, 5=LUK, 6=DEF, 7=RES 
 	public double[] getLocalStatSpread(int stat)
