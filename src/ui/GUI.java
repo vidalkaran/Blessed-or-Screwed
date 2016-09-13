@@ -145,6 +145,7 @@ public class GUI extends JFrame{
 		JComboBox variedParentNameDisplay;
 		JLabel variedParentClass;
 		JComboBox variedParentClassDisplay;
+		JComboBox childStartingLevelBox;
 		
 		JLabel variedParentHP;
 		JLabel variedParentStr;
@@ -229,6 +230,13 @@ public GUI()
 		inputLevelBox.addActionListener(inputlevelboxhandler);
 			inputPanel1.add(inputLevel);
 			inputPanel1.add(inputLevelBox);
+				inputLevelBox.setEnabled(false);
+			
+		parentalUnitsButton = new JButton("Parents");
+		ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
+			parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
+			inputPanel1.add(parentalUnitsButton);
+				parentalUnitsButton.setEnabled(false);
 
 	//Input Panel 2 (Contains all the stat mods)
 	JPanel inputPanel2 = new JPanel();
@@ -523,6 +531,8 @@ public GUI()
 	avatarBaneLabel = new JLabel("Banes:");
 	avatarBaneBox= new JComboBox(new DefaultComboBoxModel(data.getBanes()));
 		avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBanes()).indexOf("Fragile (Def)"));
+		avatarBoonBox.setEnabled(false);
+		avatarBaneBox.setEnabled(false);
 		avatarBoonBanePanel.add(avatarBoonLabel);
 		avatarBoonBanePanel.add(avatarBoonBox);
 		avatarBoonBanePanel.add(avatarBaneLabel);
@@ -555,15 +565,11 @@ public GUI()
 			eternalSealButton.addActionListener(EternalSealButtonHandler);
 			buttonOptionsPanel.add(eternalSealButton);
 				eternalSealButton.setEnabled(false);
-		parentalUnitsButton = new JButton("Parents");
-		ParentalUnitsButtonHandler parentalUnitsButtonHandler = new ParentalUnitsButtonHandler();
-			parentalUnitsButton.addActionListener(parentalUnitsButtonHandler);
-			buttonOptionsPanel.add(parentalUnitsButton);
-				parentalUnitsButton.setEnabled(false);
 		confirmButton = new JButton("Confirm");
 			CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
 			confirmButton.addActionListener(CloseOptionButtonHandler);
 			buttonOptionsPanel.add(confirmButton);
+			
 	modPanel.add(buttonOptionsPanel);
 	
 //PARENTAL UNITS PANEL
@@ -575,6 +581,11 @@ public GUI()
 	Border fixedParentPanelBorder = BorderFactory.createTitledBorder("Fixed Parent");
 	fixedParentPanelMain.setBorder(fixedParentPanelBorder);
 	fixedParentPanelMain.setLayout(new BoxLayout(fixedParentPanelMain, BoxLayout.PAGE_AXIS));
+	
+	JLabel childStartingLevelLabel = new JLabel("Child Starting Level:");
+	childStartingLevelBox = new JComboBox();
+		parentalUnitsPanel.add(childStartingLevelLabel);
+		parentalUnitsPanel.add(childStartingLevelBox);
 
 	//This panel has the name and class
 	JPanel fixedParentPanel1 = new JPanel();
@@ -814,6 +825,14 @@ public GUI()
 		}
 		
 	}
+		//This handles the child starting level box in
+			public class childStartingLevelHandler implements ActionListener
+			{
+				public void actionPerformed(ActionEvent arg0)
+				{
+					inputLevelBox.setSelectedIndex(childStartingLevelBox.getSelectedIndex());
+				}			
+			}
 		//This handles the confirm button in the parental units window
 			public class ParentalConfirmButtonHandler implements ActionListener
 			{
@@ -867,21 +886,14 @@ public GUI()
 						inputDefField.setText(""+(int)tempChildUnit.getBaseStats()[6]);
 						inputResField.setText(""+(int)tempChildUnit.getBaseStats()[7]);
 						
-						//This code will set the level fields and possible classes in the character option windows
-						String[] possibleLevels = new String[(20 - tempLevel + 1)];	
-						for(int i = 0; i<=(20 - tempLevel); i++)
-						{
-							possibleLevels[i] = (i+tempLevel+"");
-						}
-						
 						System.out.println(tempLevel);
 						
 						Object[] listData = unitcontroller.getClassArray();
 						jobHistory.setListData(listData);
 						jobHistory.setSelectedIndex(0);
 				
-						inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-						resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+						inputLevelBox.setModel(childStartingLevelBox.getModel());
+						resultLevelBox.setModel(childStartingLevelBox.getModel());
 						resultClassDisplay.setText("Lvl. "+tempChildChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChildChar.getBaseClass());
 					
 						//Debug print to console
@@ -909,8 +921,8 @@ public GUI()
 					parentalUnitsPane.dispose();
 				}
 			}
-	// This handles creating the list of jobs based on the variedParent chosen in the parental units window
-	public class VariedParentBoxHandler implements ActionListener
+		// This handles creating the list of jobs based on the variedParent chosen in the parental units window
+			public class VariedParentBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
@@ -1239,6 +1251,8 @@ public GUI()
 			if(tempChar.getIsChild() == true)
 			{
 				parentalUnitsButton.setEnabled(true);
+				inputLevelBox.setEnabled(false);
+				
 				JOptionPane.showMessageDialog(null, "Please input parents' stats");
 				
 				// temp variable for the child
@@ -1265,11 +1279,21 @@ public GUI()
 				variedParentNameDisplay.setModel(new DefaultComboBoxModel(tempChildChar.getVariedParents().getVariedParentsList(tempRoute)));
 				variedParentNameDisplay.setSelectedIndex(-1);
 				
+				//setting up child level box
+				String[] possibleLevels = new String[(20 - tempLevel + 1)];	
+				for(int i = 0; i<=(20 - tempLevel); i++)
+				{
+					possibleLevels[i] = (i+tempLevel+"");
+				}
+				childStartingLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+				
 				parentalUnitsPane.setVisible(true);
 				parentalUnitsPane.setEnabled(true);
 			}
 			else
 			{
+				inputLevelBox.setEnabled(true);
+				
 				//Making the class history
 				ArrayList<String> tempClassHistory = new ArrayList();
 				int levelMod = 0;
