@@ -49,10 +49,14 @@ public class DataStorage implements Serializable{
 	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
 	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
 	
-	private ArrayList<String> conquestCharacters;
-	private ArrayList<String> birthrightCharacters;
-	private ArrayList<String> revelationsCharacters;
+	private ArrayList<String> conquestCharacters;		// ArrayList to hold all characters in the Conquest route
+	private ArrayList<String> birthrightCharacters;		// ArrayList to hold all characters in the Birthright route
+	private ArrayList<String> revelationsCharacters;	// ArrayList to hold all characters in the Revelations route
 	
+	private String[] boons;	// Array to hold the names of all of the possible boons
+	private String[] banes; // Array to hold the names of all of the possible banes
+	
+	// OUTDATED
 	// Arrays representing locked Marriage Options - for example, Xander and Leo cannot marry their sisters (Camilla and Elise)
 	private final String[] AVATAR_LOCKED = {"Gunter", "Shura", "Izana", "Flora", "Scarlet", "Yukimura", "Fuga", "Anna"};
 	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
@@ -94,6 +98,14 @@ public class DataStorage implements Serializable{
 
 	public ArrayList<String> getRevelationsCharacters() {
 		return revelationsCharacters;
+	}
+	
+	public String[] getBoons() {
+		return boons;
+	}
+
+	public String[] getBanes() {
+		return banes;
 	}
 	
 	public String[] getAVATAR_LOCKED() {
@@ -226,6 +238,12 @@ public class DataStorage implements Serializable{
 		{
 			System.err.println("Caught IOException: " + e.getMessage());
 		}
+	}
+	
+	// sets up boons and banes
+	public void InitializeBoonsAndBanes() {
+		boons = new String[] {"Robust (HP)", "Strong (Str)", "Clever (Mag)", "Deft (Skl)", "Quick (Spd)", "Lucky (Lck)", "Sturdy (Def)", "Calm (Res)"}; 
+		banes = new String[] {"Sickly (HP)", "Weak  (Str)", "Dull (Mag)", "Clumsy (Skl)", "Slow (Spd)", "Unlucky (Lck)", "Fragile (Def)", "Excitable (Res)"}; 
 	}
 	
 	// Printing methods for testing purposes

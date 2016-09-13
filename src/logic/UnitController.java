@@ -27,6 +27,10 @@ public class UnitController {
 	public Job currentJob;
 	public String currentRoute;
 	public ArrayList<String> classHistory; //the class history, this is shared between the localUnitSheet and inputUnitSheet.
+	public Unit fixedParent;
+	public Unit variedParent;
+	public double[] fixedParentInputStats;
+	public double[] variedParentInputStats;
 
 	// prevents instantiation
 	private UnitController() {
@@ -45,14 +49,13 @@ public class UnitController {
 	public void buildLocalUnitSheet()
 	{		
 		Unit localUnit;
-		/*
 		if(currentChar instanceof ChildCharacter)
 		{
-			localUnit = // Unit Child Constructor
+			localUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent);
 		}
-		else {*/
+		else {
 			localUnit = new Unit(currentChar, currentJob, currentRoute);
-		//}
+		}
 		addBaseClassMods(localUnit);
 		localUnitSheet.clear();
 		buildSheet(localUnit, classHistory, localUnitSheet, 0);
@@ -71,14 +74,13 @@ public class UnitController {
 		}
 		
 		Unit inputUnit;
-		/*
 		if(currentChar instanceof ChildCharacter)
 		{
-			inputUnit = // Unit Child Constructor
+			inputUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent);
 		}
-		else {*/
+		else {
 			inputUnit = new Unit(currentChar, currentJob, currentRoute);
-		//}
+		}
 
 		inputUnit.setLevel(inputLevel);
 		inputUnit.setBaseStats(inputStats);		
@@ -297,6 +299,22 @@ public class UnitController {
 	}
 	public void setClassHistory(ArrayList<String> classHistory) {
 		this.classHistory = classHistory;
+	}
+	
+	public void setFixedParent(Unit fixedParent) {
+		this.fixedParent = fixedParent;
+	}
+
+	public void setVariedParent(Unit variedParent) {
+		this.variedParent = variedParent;
+	}
+
+	public void setFixedParentInputStats(double[] fixedParentInputStats) {
+		this.fixedParentInputStats = fixedParentInputStats;
+	}
+
+	public void setVariedParentInputStats(double[] variedParentInputStats) {
+		this.variedParentInputStats = variedParentInputStats;
 	}
 }
 
