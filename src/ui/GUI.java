@@ -796,7 +796,15 @@ public GUI()
 
 			unitcontroller.reclass(newJob, newLevel);
 			
-			Object[] listData = unitcontroller.getClassArray();
+			int baseLevel;
+			if(unitcontroller.getCurrentChar().getIsChild()) {
+				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			}
+			else {
+				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
+			}
+			
+			Object[] listData = unitcontroller.getClassArray(baseLevel);
 			jobHistory.setListData(listData);
 		}
 		
@@ -842,7 +850,7 @@ public GUI()
 					
 					DataStorage data = DataStorage.getInstance();		
 					UnitController unitcontroller = UnitController.getInstance();
-					//Storing the Character, Job, Route, and BaseLevel
+					//Storing the ChildCharacter, Job, Route, and BaseLevel
 					try
 					{
 						domain.ChildCharacter tempChildChar = (domain.ChildCharacter) data.getCharacters().get(inputCharBox.getSelectedItem().toString());
@@ -854,18 +862,19 @@ public GUI()
 						domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()), (domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
 						double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()), Double.parseDouble(fixedParentStrField.getText()), Double.parseDouble(fixedParentMagField.getText()), Double.parseDouble(fixedParentSklField.getText()), Double.parseDouble(fixedParentSpdField.getText()), Double.parseDouble(fixedParentLckField.getText()), Double.parseDouble(fixedParentDefField.getText()), Double.parseDouble(fixedParentResField.getText())};
 						double[] tempVariedParentStats = new double[] {Double.parseDouble(variedParentHPField.getText()), Double.parseDouble(variedParentStrField.getText()), Double.parseDouble(variedParentMagField.getText()), Double.parseDouble(variedParentSklField.getText()), Double.parseDouble(variedParentSpdField.getText()), Double.parseDouble(variedParentLckField.getText()), Double.parseDouble(variedParentDefField.getText()), Double.parseDouble(variedParentResField.getText())};
+						int tempStartLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 						
 						//Making the class history
 						ArrayList<String> tempClassHistory = new ArrayList();
 						int levelMod = 0;
-						for(int i = tempLevel; i<=20; i++)
+						for(int i = tempStartLevel; i<=tempJob.getMaxStats(0); i++)
 						{
 							String input = tempChildChar.getBaseClass();
 							tempClassHistory.add(input);
 							levelMod++;
 						}
 								
-						//Update UnitController
+						//Update UnitController for a child
 						unitcontroller.setCurrentChar(tempChildChar);
 						unitcontroller.setCurrentJob(tempJob);
 						unitcontroller.setCurrentRoute(tempRoute);
@@ -874,8 +883,10 @@ public GUI()
 						unitcontroller.setVariedParent(tempVariedParent);
 						unitcontroller.setFixedParentInputStats(tempFixedParentStats);
 						unitcontroller.setVariedParentInputStats(tempVariedParentStats);
+						unitcontroller.setStartLevel(tempStartLevel);
 						
-						domain.Unit tempChildUnit = new domain.Unit(tempChildChar, tempJob, tempRoute, tempFixedParentStats, tempFixedParent, tempVariedParentStats, tempVariedParent);
+						// Make a temporary child unit to get the base stat data
+						domain.Unit tempChildUnit = new domain.Unit(tempChildChar, tempJob, tempRoute, tempFixedParentStats, tempFixedParent, tempVariedParentStats, tempVariedParent, tempStartLevel);
 						
 						//Sets the stat boxes
 						inputHPField.setText(""+(int)tempChildUnit.getBaseStats()[0]);
@@ -889,14 +900,25 @@ public GUI()
 						
 						System.out.println(tempLevel);
 						
-						Object[] listData = unitcontroller.getClassArray();
+						Object[] listData = unitcontroller.getClassArray(tempStartLevel);
 						jobHistory.setListData(listData);
 						jobHistory.setSelectedIndex(0);
 				
 						inputLevelBox.setModel(childStartingLevelBox.getModel());
-						resultLevelBox.setModel(childStartingLevelBox.getModel());
-						resultClassDisplay.setText("Lvl. "+tempChildChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChildChar.getBaseClass());
-					
+						
+						//setting up child level box
+						String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempStartLevel + 1)];	
+						for(int i = 0; i<=(tempJob.getMaxStats(0) - tempStartLevel); i++)
+						{
+							possibleLevels[i] = (i+tempStartLevel+"");
+						}
+						
+						resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+						resultClassDisplay.setText("Lvl. "+tempStartLevel+" "+tempChildChar.getBaseClass());
+						
+						//resultLevelBox.setSelectedIndex(childStartingLevelBox.getSelectedIndex());
+						resultLevelBox.setEnabled(true);
+						
 						//Debug print to console
 						System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 						System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
@@ -905,7 +927,7 @@ public GUI()
 						for(int i = 0; i<tempClassHistory.size();i++)
 						{
 							System.out.println(tempClassHistory.get(i));
-						}	
+						}
 					}
 					catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
 					{
@@ -1004,6 +1026,18 @@ public GUI()
 				resultResDifference.setText("");
 				resultResDifference.setBackground(Color.WHITE);
 				
+				variedParentHPField.setText("");
+				variedParentStrField.setText("");
+				variedParentMagField.setText("");
+				variedParentSklField.setText("");
+				variedParentSpdField.setText("");
+				variedParentLckField.setText("");
+				variedParentDefField.setText("");
+				variedParentResField.setText("");
+				
+				variedParentNameDisplay.setSelectedIndex(-1);
+				variedParentClassDisplay.removeAllItems();
+				
 				graphcontroller.setDataset(graphcontroller.createDataset());
 				resultLevelBox.setEnabled(false);
 				graphStatBox.setEnabled(false);
@@ -1042,7 +1076,15 @@ public GUI()
 				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
-			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()) ;
+			int inputLevel;
+			// if the character being checked is a child, then the input level is from the level box in the child options
+			if(unitcontroller.getCurrentChar().getIsChild())
+			{
+				inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			}
+			else {
+				inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()) ;
+			}
 			double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
 			
 			unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
@@ -1050,12 +1092,26 @@ public GUI()
 			
 			//UPDATES GRAPH
 			int stat = graphStatBox.getSelectedIndex();
-			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			//int startLevel = inputLevel;//Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			int baseLevel;
+			// if the character being checked is a child, then the base level what the user inputed in child options
+			if(unitcontroller.getCurrentChar().getIsChild()) {
+				baseLevel = inputLevel;
+			}
+			// otherwise the base level is the character's natural base level
+			else {
+				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			}
 
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
-			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
+			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);
+			if(unitcontroller.getCurrentChar().getIsChild())
+			{
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
+			}
+			else {
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
+			}
 			graphStatBox.setEnabled(true);
 			
 			//UPDATES BOXES			
@@ -1203,7 +1259,13 @@ public GUI()
 			
 			int stat = graphStatBox.getSelectedIndex();
 			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			int baseLevel;
+			if(unitcontroller.getCurrentChar().getIsChild()) {
+				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			}
+			else {
+				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			}
 
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
@@ -1280,10 +1342,11 @@ public GUI()
 				// Set up variedParents
 				variedParentNameDisplay.setModel(new DefaultComboBoxModel(tempChildChar.getVariedParents().getVariedParentsList(tempRoute)));
 				variedParentNameDisplay.setSelectedIndex(-1);
+				variedParentClassDisplay.removeAllItems();
 				
 				//setting up child level box
-				String[] possibleLevels = new String[(20 - tempLevel + 1)];	
-				for(int i = 0; i<=(20 - tempLevel); i++)
+				String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempLevel + 1)];	
+				for(int i = 0; i<=(tempJob.getMaxStats(0) - tempLevel); i++)
 				{
 					possibleLevels[i] = (i+tempLevel+"");
 				}
@@ -1301,7 +1364,7 @@ public GUI()
 				//Making the class history
 				ArrayList<String> tempClassHistory = new ArrayList();
 				int levelMod = 0;
-				for(int i = tempLevel; i<=20; i++)
+				for(int i = tempLevel; i<=tempJob.getMaxStats(0); i++)
 				{
 					String input = tempChar.getBaseClass();
 					tempClassHistory.add(input);
@@ -1325,15 +1388,15 @@ public GUI()
 				inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
 				
 				//This code will set the level fields and possible classes in the character option windows
-				String[] possibleLevels = new String[(20 - tempLevel + 1)];	
-				for(int i = 0; i<=(20 - tempLevel); i++)
+				String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempLevel + 1)];	
+				for(int i = 0; i<=(tempJob.getMaxStats(0) - tempLevel); i++)
 				{
 					possibleLevels[i] = (i+tempLevel+"");
 				}
 				
 				System.out.println(tempLevel);
-				
-				Object[] listData = unitcontroller.getClassArray();
+
+				Object[] listData = unitcontroller.getClassArray(unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 				jobHistory.setListData(listData);
 				jobHistory.setSelectedIndex(0);
 		
@@ -1363,9 +1426,21 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent e)
 		{
+			DataStorage data = DataStorage.getInstance();
+			UnitController unitcontroller = UnitController.getInstance();
+			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+			int baseLevel;
+			if(unitcontroller.getCurrentChar().getIsChild()) {
+				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			}
+			else {
+				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			}
+			domain.Job tempJob = data.getJobs().get(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
+			
 			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-			String[] possibleLevels = new String[(20 - inputLevel + 1)];	
-			for(int i = 0; i<=(20 - inputLevel); i++)
+			String[] possibleLevels = new String[(tempJob.getMaxStats(0) - inputLevel) + 1];	
+			for(int i = 0; i<=(tempJob.getMaxStats(0) - inputLevel); i++)
 			{
 				possibleLevels[i] = (i+inputLevel+"");
 			}
@@ -1381,7 +1456,13 @@ public GUI()
 			UnitController unitcontroller = UnitController.getInstance();
 			
 			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-			int baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			int baseLevel;
+			if(unitcontroller.getCurrentChar().getIsChild()) {
+				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			}
+			else {
+				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			}
 
 			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();

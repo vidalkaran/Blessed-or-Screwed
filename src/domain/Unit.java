@@ -57,12 +57,12 @@ public class Unit implements Serializable{
 	}
 	
 	// Constructor for a Child Unit
-	public Unit(ChildCharacter inputCharacter, Job inputJob, String inputRoute, double[] fixedParentInputStats, Unit fixedParent, double[] variedParentInputStats, Unit variedParent)
+	public Unit(ChildCharacter inputCharacter, Job inputJob, String inputRoute, double[] fixedParentInputStats, Unit fixedParent, double[] variedParentInputStats, Unit variedParent, int startLevel)
 	{
 		myCharacter = inputCharacter;
 		myJob = inputJob;
 		route = inputRoute;
-		level = inputCharacter.getBaseStats().getStats(route, 0);
+		level = startLevel;
 		this.fixedParentStats = fixedParentInputStats;
 		this.fixedParent = fixedParent;
 		this.variedParentStats = variedParentInputStats;
