@@ -22,15 +22,10 @@ public static void main(String[]args)
 	
 	ArrayList<String> ClassHistory = new ArrayList();
 	ClassHistory.add("Cavalier");// level 6
-	ClassHistory.add("Cavalier");// level 7
-	ClassHistory.add("Cavalier");// level 8
-	ClassHistory.add("Cavalier");// level 9
+	ClassHistory.add("Songstress");// level 7
+	ClassHistory.add("Songstress");// level 8
+	ClassHistory.add("Songstress");// level 9
 	ClassHistory.add("Cavalier");// level 10
-	ClassHistory.add("Cavalier");// level 11
-	ClassHistory.add("Cavalier");// level 12
-	ClassHistory.add("Songstress");// level 13
-	ClassHistory.add("Songstress");// level 14
-	ClassHistory.add("Songstress");// level 15
 
 	UnitController unitController = UnitController.getInstance();
 	
@@ -43,20 +38,20 @@ public static void main(String[]args)
 //	unitController.reclass("Dancer", 10);
 	
 	//TESTING CALCULATIONS
-//	unitController.buildLocalUnitSheet();
-//	unitController.printLocalSheet();
+	unitController.buildLocalUnitSheet();
+	unitController.printLocalSheet();
 	
 	//TESTING CALCULATIONS
-	unitController.buildInputUnitSheet(10, inputStats);
-	unitController.printInputSheet();
+//	unitController.buildInputUnitSheet(10, inputStats);
+//	unitController.printInputSheet();
 
 	//THIS TESTS GETINPUTSTATSPREAD
-	double[] healthOverTime = unitController.getInputStatSpread(0);
+//	double[] healthOverTime = unitController.getInputStatSpread(0);
 	
-	for(int i = 0; i < healthOverTime.length; i++)
-	{
-		System.out.println("HEALTH: "+healthOverTime[i]);
-	}
+//	for(int i = 0; i < healthOverTime.length; i++)
+//	{
+//		System.out.println("HEALTH: "+healthOverTime[i]);
+//	}
 	}
 	
 

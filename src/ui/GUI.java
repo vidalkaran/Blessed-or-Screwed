@@ -1039,6 +1039,7 @@ public GUI()
 				variedParentClassDisplay.removeAllItems();
 				
 				graphcontroller.setDataset(graphcontroller.createDataset());
+				inputLevelBox.setSelectedIndex(0);
 				resultLevelBox.setEnabled(false);
 				graphStatBox.setEnabled(false);
 		}	
@@ -1428,23 +1429,28 @@ public GUI()
 		{
 			DataStorage data = DataStorage.getInstance();
 			UnitController unitcontroller = UnitController.getInstance();
-			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-			int baseLevel;
-			if(unitcontroller.getCurrentChar().getIsChild()) {
-				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-			}
-			else {
-				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
-			}
-			domain.Job tempJob = data.getJobs().get(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
 			
-			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-			String[] possibleLevels = new String[(tempJob.getMaxStats(0) - inputLevel) + 1];	
-			for(int i = 0; i<=(tempJob.getMaxStats(0) - inputLevel); i++)
+			int inputBaseLevel;
+			int characterBaseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
+			
+			if(unitcontroller.getCurrentChar().getIsChild()) 
 			{
-				possibleLevels[i] = (i+inputLevel+"");
+				inputBaseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 			}
-
+			else
+			{
+				inputBaseLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()); 
+			}
+						
+			Object[] possibleLevels = new Object[(unitcontroller.getClassHistory().size()) - (inputBaseLevel - characterBaseLevel)];
+			
+			for(int i = 0; i< (possibleLevels.length); i++)
+			{
+					possibleLevels[i] = inputBaseLevel;
+					inputBaseLevel++;
+					System.out.println(i);
+			}
+			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}
 	}

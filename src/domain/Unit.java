@@ -1,12 +1,10 @@
 package domain;
 
-import java.io.Serializable;
-
 import json.DataStorage;
 
 // note: two uses of unit, one for player input and one for auto generation.
 
-public class Unit implements Serializable{
+public class Unit {
 	
 	private Character myCharacter;
 	private Job myJob;
@@ -145,12 +143,12 @@ public class Unit implements Serializable{
 				baseStats[7] -= 1;
 			}
 		}
-		// Calculate baseStats for adult characters
+		// Calculate baseStats for adult characters //MIGHT BE UNECESSARY
 		else if(!myCharacter.getIsChild())
 		{
 			for(int i = 0; i< baseStats.length; i++)
 			{
-				baseStats[i] = myCharacter.getBaseStats().getStats(route, i+1) - myJob.getBaseStats(i);
+				baseStats[i] = myCharacter.getBaseStats().getStats(route, i+1);// - myJob.getBaseStats(i);
 				//System.out.println(myCharacter.getBaseStats().getStats(route, i+1) + "+" + myJob.getBaseStats(i));
 			}
 			
@@ -550,8 +548,19 @@ public class Unit implements Serializable{
 	}	
 	
 	//This function reclasses a Unit, and recalculates the growths and maxes without changing the base stats.
-	public void reClass(Job newJob)
-	{
+	public void reclass(Job newJob)
+	{				
+		//Adjusts base stats
+		int[] newStatMods = newJob.getBaseStats();
+		int[] oldStatMods = myJob.getBaseStats();
+				
+		for(int j = 0; j < newStatMods.length; j++)
+		{
+			baseStats[j] -= oldStatMods[j];
+			baseStats[j] += newStatMods[j];
+		}
+		
+		//Sets the current class as the new class, and readjusts growths and maxes
 		myJob = newJob;
 		calculateGrowths();
 		calculateMaxStats();

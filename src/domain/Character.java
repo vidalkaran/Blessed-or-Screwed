@@ -3,7 +3,7 @@ package domain;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class Character implements Serializable{
+public class Character {
 	
 	// The following block of variables match the names of the variables in the json file so that gson can create objects of this class
 	protected String name;					// Name of the character

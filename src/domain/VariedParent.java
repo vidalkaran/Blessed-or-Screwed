@@ -1,9 +1,8 @@
 package domain;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
-public class VariedParent implements Serializable{
+public class VariedParent {
 		private String[] conquest;
 		private String[] birthright;
 		private String[] revelations;
