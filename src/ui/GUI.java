@@ -182,7 +182,7 @@ static String[] conquestCharacters;
 static String[] birthrightCharacters;
 static String[] revelationsCharacters;
 
-static String[] jobs = {"Cavalier", "Dark Mage", "Diviner", "Songstress"};
+static String[] jobs;
 
 public static void main(String[]args)
 {
@@ -202,6 +202,7 @@ public GUI()
 	conquestCharacters = data.getConquestCharacters().toArray(new String[0]);
 	birthrightCharacters = data.getBirthrightCharacters().toArray(new String[0]);
 	revelationsCharacters = data.getRevelationsCharacters().toArray(new String[0]);
+	jobs = data.getJobNames().toArray(new String[0]);
 	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
@@ -977,6 +978,16 @@ public GUI()
 {
 	public void actionPerformed(ActionEvent e) 
 	{
+		UnitController unitcontroller = UnitController.getInstance();
+		int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+		int baseLevel;
+		if(unitcontroller.getCurrentChar().getIsChild()) {
+			baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+		}
+		else {
+			baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+		}
+		resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
 		optionPane.dispose();
 	}
 	
@@ -1172,35 +1183,35 @@ public GUI()
 					{
 						resultMagDifference.setBackground(Color.WHITE);
 					}
-			resultSpdField.setText(formatter.format(inputResults[3]));
-			avgSpdField.setText(formatter.format(localResults[3]));
-			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+			resultSklField.setText(formatter.format(inputResults[3]));
+			avgSklField.setText(formatter.format(localResults[3]));
+			resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
 				if((inputResults[3] - localResults[3]) < 0)
-				{
-					resultSpdDifference.setBackground(Color.RED);
-				}
-					else if ((inputResults[3] - localResults[3]) > 0)
-					{
-						resultSpdDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultSpdDifference.setBackground(Color.WHITE);
-					}
-			resultSklField.setText(formatter.format(inputResults[4]));
-			avgSklField.setText(formatter.format(localResults[4]));
-			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
-				if((inputResults[4] - localResults[4]) < 0)
 				{
 					resultSklDifference.setBackground(Color.RED);
 				}
-					else if ((inputResults[4] - localResults[4]) > 0)
+					else if ((inputResults[3] - localResults[3]) > 0)
 					{
 						resultSklDifference.setBackground(Color.GREEN);
 					}
 					else 
 					{
 						resultSklDifference.setBackground(Color.WHITE);
+					}
+			resultSpdField.setText(formatter.format(inputResults[4]));
+			avgSpdField.setText(formatter.format(localResults[4]));
+			resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+				if((inputResults[4] - localResults[4]) < 0)
+				{
+					resultSpdDifference.setBackground(Color.RED);
+				}
+					else if ((inputResults[4] - localResults[4]) > 0)
+					{
+						resultSpdDifference.setBackground(Color.GREEN);
+					}
+					else 
+					{
+						resultSpdDifference.setBackground(Color.WHITE);
 					}
 			resultLckField.setText(formatter.format(inputResults[5]));
 			avgLckField.setText(formatter.format(localResults[5]));
@@ -1496,13 +1507,13 @@ public GUI()
 			avgMagField.setText(formatter.format(localResults[2]));
 			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
 
-			resultSpdField.setText(formatter.format(inputResults[3]));
-			avgSpdField.setText(formatter.format(localResults[3]));
-			resultSpdDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+			resultSklField.setText(formatter.format(inputResults[3]));
+			avgSklField.setText(formatter.format(localResults[3]));
+			resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
 			
-			resultSklField.setText(formatter.format(inputResults[4]));
-			avgSklField.setText(formatter.format(localResults[4]));
-			resultSklDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+			resultSpdField.setText(formatter.format(inputResults[4]));
+			avgSpdField.setText(formatter.format(localResults[4]));
+			resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
 			
 			resultLckField.setText(formatter.format(inputResults[5]));
 			avgLckField.setText(formatter.format(localResults[5]));

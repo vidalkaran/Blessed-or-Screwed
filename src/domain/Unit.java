@@ -353,10 +353,10 @@ public class Unit {
 		// Calculate growths for children characters
 		// NOTE: Kana is UNAFFECTED by Avatar in terms of growths!!!!!
 		else {
-			//Character temp = data.getCharacters().get(myChildCharacter.getVariedParent());
 			for(int i = 0; i< growths.length; i++)
 			{
-				growths[i] = (myCharacter.getGrowths(i) + variedParent.getGrowths()[i])/2.0 + myJob.getGrowths(i);
+				// (ChildCharacter base growth + variedParent base growth)/2 + ChildCharacter job growth
+				growths[i] = (myCharacter.getGrowths(i) + (variedParent.getGrowths()[i] - variedParent.getMyJob().getGrowths(i)))/2.0 + myJob.getGrowths(i);
 				//debug: Use this to print the equation to the console
 				//System.out.println(myCharacter.getGrowths(i)+ "+" + myJob.getGrowths(i));
 			}
