@@ -52,6 +52,7 @@ public class DataStorage implements Serializable{
 	private ArrayList<String> conquestCharacters;		// ArrayList to hold all characters in the Conquest route
 	private ArrayList<String> birthrightCharacters;		// ArrayList to hold all characters in the Birthright route
 	private ArrayList<String> revelationsCharacters;	// ArrayList to hold all characters in the Revelations route
+	private ArrayList<String> jobNames;					// ArrayList to hold all of the jobNames to be accessed for filling out the GUI list of jobs
 	
 	private String[] boons;	// Array to hold the names of all of the possible boons
 	private String[] banes; // Array to hold the names of all of the possible banes
@@ -78,6 +79,10 @@ public class DataStorage implements Serializable{
 	// getters
 	public Map<String, Character> getCharacters() {
 		return characters;
+	}
+	
+	public ArrayList<String> getJobNames() {
+		return jobNames;
 	}
 	
 	public Map<String, Job> getJobs() {
@@ -204,7 +209,7 @@ public class DataStorage implements Serializable{
 			}
 			
 			
-			// Sort arrays by name
+			// Sort all character arraylists alphabetically
 			Collections.sort(conquestCharacters);
 			Collections.sort(birthrightCharacters);
 			Collections.sort(revelationsCharacters);
@@ -225,13 +230,18 @@ public class DataStorage implements Serializable{
 			Gson gson = new GsonBuilder().create();
 			jobArray = gson.fromJson(reader, Job[].class);
 			jobs = new HashMap<String, Job>();
+			jobNames = new ArrayList<String>();
 			specialClasses = new ArrayList<String>();
 			for(int i = 0; i < jobArray.length; i++) {
 				// fill the specialClasses array
 				if(jobArray[i].getIsSpecial())
 					specialClasses.add(jobArray[i].getName());
 				jobs.put(jobArray[i].getName(), jobArray[i]);
+				jobNames.add(jobArray[i].getName());
 			}
+			// Sort jobNames alphabetically
+			Collections.sort(jobNames);
+			
 			reader.close();
 		}
 		catch (IOException e)

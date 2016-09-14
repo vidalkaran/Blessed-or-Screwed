@@ -40,6 +40,16 @@ Lck: 22
 Def: 21
 Res: 19
 
+Dark Mage Base Stats:
+HP: 16
+Str: 0
+Mag: 6
+Skl: 3
+Spd: 3
+Lck: 1
+Def: 3
+Res: 5
+
 Dark Mage Growths:
 HP: 0
 Str: 10
@@ -49,6 +59,16 @@ Spd: 10
 Lck: 0
 Def: 5
 Res: 10
+
+Songstress Base Stats:
+HP: 16
+Str: 3
+Mag: 0
+Skl: 6
+Spd: 5
+Lck: 3
+Def: 2
+Res: 3
 
 Songstress Growths:
 HP: 0
@@ -133,35 +153,45 @@ Res: 40
 	Lck: 15
 	Def: 10
 	Res: 5
+	
+	Songstress Base Stats:
+	HP: 16
+	Str: 3
+	Mag: 0
+	Skl: 6
+	Spd: 5
+	Lck: 3
+	Def: 2
+	Res: 3
 ]
 
 C = Class base stats + [Child’s absolute base stats + (N x Child’s full growth rates)
 Child’s Level 10 + N stats = C + {[(Father’s personal stats – C; 0 if negative) + (Mother’s personal stats – C; 0 if negative)] / 4; cannot be higher than (C/10) +2 rounded down}
 Base Stats:
 HP: 25
-	C = 17 + 8 = 25
-	((22-25) + (16-25))/4 = 0 + 25 = 25
+	C = 8
+	((22-17-8) + (16-16-8))/4 = 0 + 17 + 8 = 25
 Str: 12
-	C = 6 + 6 = 12
-	((11-12) + (5-12))/4 = 0 + 12 = 12
-Mag: 2.75
-	C = 0 + 2 = 2
-	((0-2) + (5-2))/4 = .75 + 2 = 2.75
+	C = 6
+	((11-6-6) + (5-3-6))/4 = 0 + 6 + 6 = 12
+Mag: 2
+	C = 2
+	((0-0-2) + (2-0-2))/4 = 0 + 0 + 2 = 2
 Skl: 12
-	C = 5 + 7 = 12
-	((9-12) + (8-12))/4 = 0 + 12
+	C = 7
+	((9-5-7) + (8-6-7))/4 = 0 + 5 + 7 = 12
 Spd: 11
-	C = 5 + 6 = 11
-	((8-11) + (8-11))/4 = 0 + 11
+	C = 6
+	((8-5-7) + (8-5-7))/4 = 0 + 5 + 6 = 11
 Lck: 10
-	C = 3 + 7 = 10
-	((7-10) + (6-10))/4 = 0 + 10
+	C = 7
+	((7-3-7) + (6-3-7))/4 = 0 + 3 + 7 = 10
 Def: 9.25
-	C = 5 + 4 = 9
-	((10-9) + (4-9))/4 = .25 + 9
+	C = 4
+	((10-5-4) + (4-2-4))/4 = .25 + 5 + 4 = 9.25
 Res: 9
-	C = 3 + 6 = 9
-	((5-9) + (7-9))/4 = 0 + 9
+	C = 6
+	((5-3-6) + (7-3-6))/4 = 0 + 3 + 6 = 9
 
 Azura!Sophie Cavalier Max Stats:
 HP: 40
@@ -226,35 +256,45 @@ Res: 37.5
 	Lck: 15
 	Def: 10
 	Res: 5
+	
+	Dark Mage Base Stats:
+	HP: 16
+	Str: 0
+	Mag: 6
+	Skl: 3
+	Spd: 3
+	Lck: 1
+	Def: 3
+	Res: 5
 ]
 
 C = Class base stats + [Child’s absolute base stats + (N x Child’s full growth rates)
 Child’s Level 10 + N stats = C + {[(Father’s personal stats – C; 0 if negative) + (Mother’s personal stats – C; 0 if negative)] / 4; cannot be higher than (C/10) +2 rounded down}
 Base Stats:
 HP: 25
-	C = 17 + 8 = 25
-	((22-25) + (20-25))/4 = 0 + 25 = 25
+	C = 8
+	((22-17-8) + (20-16-8))/4 = 0 + 17 + 8 = 25
 Str: 12
-	C = 6 + 6 = 12
-	((11-12) + (1-12))/4 = 0 + 12 = 12
-Mag: 4.2
-	C = 0 + 2 = 2; (2/10) = .2 + 2 = 2.2
-	((0-2) + (12-2))/4 = 2.5 (>2.2 = 2.2) + 2 = 4.2
+	C = 6
+	((11-6-6) + (1-0-6))/4 = 0 + 6 + 6 = 12
+Mag: 3
+	C = 2
+	((0-0-2) + (12-6-2))/4 = 1 + 0 + 2 = 3
 Skl: 12
-	C = 5 + 7 = 12
-	((9-12) + (5-12))/4 = 0 + 12
-Spd: 11
-	C = 5 + 6 = 11
-	((8-11) + (11-11))/4 = 0 + 11
+	C = 7
+	((9-5-7) + (5-3-7))/4 = 0 + 5 + 7 = 12
+Spd: 11.5
+	C = 6
+	((8-5-6) + (11-3-6))/4 = .5 + 5 + 6 = 11.5
 Lck: 10
-	C = 3 + 7 = 10
-	((7-10) + (3-10))/4 = 0 + 10
+	C = 7
+	((7-3-7) + (3-1-7))/4 = 0 + 3 + 7 = 10
 Def: 9.25
-	C = 5 + 4 = 9
-	((10-9) + (4-9))/4 = .25 + 9
+	C = 4
+	((10-5-4) + (4-3-4))/4 = .25 + 5 + 4 = 9.25
 Res: 9
-	C = 3 + 6 = 9
-	((5-9) + (8-9))/4 = 0 + 9
+	C = 6
+	((5-3-6) + (8-5-6))/4 = 0 + 3 + 6 = 9
 	
 Nyx!Sophie Cavalier Max Stats:
 HP: 40
