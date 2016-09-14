@@ -20,7 +20,7 @@ import domain.Job;
 
 public class UnitController {
 
-	private static UnitController instance = null;	// DataStorage singleton instance	
+	private static UnitController instance = null;	// UnitController singleton instance	
 	DataStorage data = DataStorage.getInstance(); //This is the data
 	ArrayList<Unit> localUnitSheet = new ArrayList<Unit>(); //this unitSheet is calculated to compare the input one against.
 	ArrayList<Unit> inputUnitSheet = new ArrayList<Unit>(); //this is unitSheet that users will input. This is compared against localUnitSheet.
