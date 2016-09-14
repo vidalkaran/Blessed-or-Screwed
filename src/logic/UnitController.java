@@ -50,16 +50,19 @@ public class UnitController {
 	}
 
 	//BUILDS A LOCALUNITSHEET
-	public void buildLocalUnitSheet()
+	public void buildLocalUnitSheet(int inputJobIndex)
 	{		
+		Job newJob = data.getJobs().get(classHistory.get(inputJobIndex));
+		System.out.println("InitialJob "+newJob.getName());
+
 		//Creating the unit
 		Unit localUnit;
 			if(currentChar instanceof ChildCharacter)
 			{
-				localUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
+				localUnit = new Unit((ChildCharacter)currentChar, newJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
 			}
 			else {
-				localUnit = new Unit(currentChar, currentJob, currentRoute);
+				localUnit = new Unit(currentChar, newJob, currentRoute);
 			}
 		//Making the unitSheet
 		localUnitSheet.clear();
@@ -67,9 +70,12 @@ public class UnitController {
 	}
 	
 	//BUILDS A INPUTUNITSHEET
-	public void buildInputUnitSheet(int inputLevel, double[] inputStats)
+	public void buildInputUnitSheet(int inputLevel, double[] inputStats, int inputJobIndex)
 	{
 		ArrayList<String> inputClassHistory = new ArrayList();
+		
+		Job newJob = data.getJobs().get(classHistory.get(inputJobIndex));
+		System.out.println("InitialJob "+newJob.getName());
 		
 		//setting the base level 
 		int baseLevel;
@@ -93,10 +99,10 @@ public class UnitController {
 		Unit inputUnit;
 			if(currentChar instanceof ChildCharacter)
 			{
-				inputUnit = new Unit((ChildCharacter)currentChar, currentJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
+				inputUnit = new Unit((ChildCharacter)currentChar, newJob, currentRoute, fixedParentInputStats, fixedParent, variedParentInputStats, variedParent, startLevel);
 			}
 			else {
-				inputUnit = new Unit(currentChar, currentJob, currentRoute);
+				inputUnit = new Unit(currentChar, newJob, currentRoute);
 			}
 
 		//Correcting the unit's stats in accordance to input
