@@ -1061,8 +1061,9 @@ public GUI()
 			UnitController unitcontroller = UnitController.getInstance();
 			GraphController graphcontroller = GraphController.getInstance();
 			
-			int inputLevel; // User input
-			int baseLevel;  // Starting level of unit
+			int inputLevel; 	// User input
+			int baseLevel;  	// Starting level of unit
+			int inputJobIndex;	// index of the job in the classhistory
 			
 			try
 			{
@@ -1079,29 +1080,28 @@ public GUI()
 			{
 				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
 			}
-// WHY IS THIS GIVING THE WRONG VALUE?!				
-			// if the character being checked is a child, then the input level is from the level box in the child options
-				if(unitcontroller.getCurrentChar().getIsChild())
-				{
-					inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-				}
-				else
-				{
-					inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-				}
-				
+			
+// WHY IS THIS GIVING THE WRONG VALUE?!
+			// if the character being checked is a child, then the input level is from the level box in the child options (because the inputLevelBox is hidden)
 			// if the character being checked is a child, then the base level what the user inputed in child options
-				if(unitcontroller.getCurrentChar().getIsChild())
-				{
-					baseLevel = inputLevel;
-				}
-				// otherwise the base level is the character's natural base level
-				else {
-					baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+			// inputJobIndex is of the index of the childStartingLevelBox for a child
+			if(unitcontroller.getCurrentChar().getIsChild())
+			{
+				inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+				baseLevel = inputLevel;
+				inputJobIndex = childStartingLevelBox.getSelectedIndex();
+			}
+			// otherwise the inputLevel is equal to the level selected in the inputLevelBox
+			// otherwise the base level is the character's natural base level
+			// otherwise the inputJobIndex is of the index of the inputLevelBox
+			else
+			{
+				inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
+				inputJobIndex = inputLevelBox.getSelectedIndex();
 				}
 
 			double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
-			int inputJobIndex = inputLevel = baseLevel;
 			
 			unitcontroller.buildInputUnitSheet(inputLevel, inputStats, inputJobIndex);
 			unitcontroller.buildLocalUnitSheet(inputJobIndex);
