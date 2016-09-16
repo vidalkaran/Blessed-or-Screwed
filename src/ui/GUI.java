@@ -748,7 +748,7 @@ public GUI()
 	parentalUnitsPane.add(parentalUnitsPanel);
 	parentalUnitsPane.setTitle("Parents");
 	parentalUnitsPane.setResizable(true);
-	parentalUnitsPane.setSize(300,450);
+	parentalUnitsPane.setSize(375,450);
 	parentalUnitsPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
 
 	//Add all Components
@@ -792,19 +792,17 @@ public GUI()
 		public void actionPerformed(ActionEvent e) 
 		{
 			UnitController unitcontroller = UnitController.getInstance();
-			int newLevel = (jobHistory.getSelectedIndex() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
+			
 			String newJob = reclassBox.getSelectedItem().toString();
 
-			unitcontroller.reclass(newJob, newLevel);
+			int baseLevel = calculateBaseLevel();
 			
-			int baseLevel;
-			if(unitcontroller.getCurrentChar().getIsChild()) {
-				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-			}
-			else {
-				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
-			}
+			// the level we want to reclass at is equal to the index selected in the jobHistory + whatever our base level is
+			int newLevel = jobHistory.getSelectedIndex() + baseLevel;
+			System.out.println("newLevel: " + newLevel + ", baseLevel: " + baseLevel);
 			
+			unitcontroller.reclass(newJob, newLevel, baseLevel);
+
 			Object[] listData = unitcontroller.getClassArray(baseLevel);
 			jobHistory.setListData(listData);
 		}
@@ -857,21 +855,49 @@ public GUI()
 						domain.ChildCharacter tempChildChar = (domain.ChildCharacter) data.getCharacters().get(inputCharBox.getSelectedItem().toString());
 				 		domain.Job tempJob = data.getJobs().get(tempChildChar.getBaseClass());
 						String tempRoute = inputRouteBox.getSelectedItem().toString();
-						int tempLevel = tempChildChar.getBaseStats().getStats(tempRoute, 0);
+						int tempStartLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 						
+						/*
+						// PRETTY SURE THIS IS POINTLESS T.T
+						// Run a check to see if the user is changing the start level of the unit to a reclassed level 
+						// For example, say I do Nyx!Sophie and start her at level 15. Then I reclass her to Dark Mage at level 17.
+						// Next, I want to change her base level to level 17. She will still retain her reclassing as a Dark Mage.
+						// First, we need to make sure that the character we're working with is a child (since unitcontroller is never cleared)
+						if(unitcontroller.currentChar.getIsChild()) {
+							// Search through the entire job history
+							for(int i = 0; i < jobHistory.getModel().getSize(); i++) {
+								// Get the string of the job history at each index
+								String jobHistoryItemString = (String) jobHistory.getModel().getElementAt(i);
+								// Parse it to only find be the level
+								// This replaces all non-integers in a string with "" and then parses it to an int
+								int jobHistoryLevel = Integer.parseInt(jobHistoryItemString.replaceAll("[\\D]", ""));
+								// Also parse it to only be the name of the job
+								// The reason for adding 2 to the index of "." is to exclude the space before it as well
+								String jobNameSubstring = jobHistoryItemString.substring(jobHistoryItemString.indexOf(".") + 2, jobHistoryItemString.length());
+								//System.out.println("DAS JOB " + jobNameSubstring);
+								// If the level we want to start at matches a level in our job history
+								// And the name of the job in the job history is not the same as the child's base job,
+								// Then the job we use is now the job in the job history rather then the base job
+								// Break the loop since we found what we came for
+								if(tempStartLevel == jobHistoryLevel && !data.getJobs().get(tempChildChar.getBaseClass()).getName().equals(jobNameSubstring))
+								{
+									tempJob = data.getJobs().get(jobNameSubstring);
+									break;
+								}
+							}
+						}*/
+					
 						domain.Unit tempFixedParent = new domain.Unit((domain.Character) data.getCharacters().get(fixedParentNameDisplay.getText()), (domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
 						domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()), (domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
 						double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()), Double.parseDouble(fixedParentStrField.getText()), Double.parseDouble(fixedParentMagField.getText()), Double.parseDouble(fixedParentSklField.getText()), Double.parseDouble(fixedParentSpdField.getText()), Double.parseDouble(fixedParentLckField.getText()), Double.parseDouble(fixedParentDefField.getText()), Double.parseDouble(fixedParentResField.getText())};
 						double[] tempVariedParentStats = new double[] {Double.parseDouble(variedParentHPField.getText()), Double.parseDouble(variedParentStrField.getText()), Double.parseDouble(variedParentMagField.getText()), Double.parseDouble(variedParentSklField.getText()), Double.parseDouble(variedParentSpdField.getText()), Double.parseDouble(variedParentLckField.getText()), Double.parseDouble(variedParentDefField.getText()), Double.parseDouble(variedParentResField.getText())};
-						int tempStartLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 						
 						//Making the class history
 						ArrayList<String> tempClassHistory = new ArrayList();
 						int levelMod = 0;
 						for(int i = tempStartLevel; i<=tempJob.getMaxStats(0); i++)
 						{
-							String input = tempChildChar.getBaseClass();
-							tempClassHistory.add(input);
+							tempClassHistory.add(tempJob.getName());
 							levelMod++;
 						}
 								
@@ -899,7 +925,7 @@ public GUI()
 						inputDefField.setText(""+(int)tempChildUnit.getBaseStats()[6]);
 						inputResField.setText(""+(int)tempChildUnit.getBaseStats()[7]);
 						
-						System.out.println(tempLevel);
+						//System.out.println(tempLevel);
 						
 						Object[] listData = unitcontroller.getClassArray(tempStartLevel);
 						jobHistory.setListData(listData);
@@ -915,7 +941,8 @@ public GUI()
 						}
 						
 						resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-						resultClassDisplay.setText("Lvl. "+tempStartLevel+" "+tempChildChar.getBaseClass());
+						// display the class of whatever class we set above in case of changing levels after reclassing
+						resultClassDisplay.setText("Lvl. "+tempStartLevel+" "+tempJob.getName());
 						
 						//resultLevelBox.setSelectedIndex(childStartingLevelBox.getSelectedIndex());
 						resultLevelBox.setEnabled(true);
@@ -980,13 +1007,7 @@ public GUI()
 	{
 		UnitController unitcontroller = UnitController.getInstance();
 		int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-		int baseLevel;
-		if(unitcontroller.getCurrentChar().getIsChild()) {
-			baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-		}
-		else {
-			baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
-		}
+		int baseLevel = calculateBaseLevel();
 		resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
 		optionPane.dispose();
 	}
@@ -1001,41 +1022,8 @@ public GUI()
 		{
 			GraphController graphcontroller = GraphController.getInstance();
 			
-			//inputCharBox.setSelectedIndex(1);
-				resultHPField.setText("");
-				resultStrField.setText("");
-				resultMagField.setText("");
-				resultSpdField.setText("");
-				resultSklField.setText("");
-				resultLckField.setText("");
-				resultDefField.setText("");
-				resultResField.setText("");
-				
-				avgHPField.setText("");
-				avgStrField.setText("");
-				avgMagField.setText("");
-				avgSklField.setText("");
-				avgSpdField.setText("");
-				avgLckField.setText("");
-				avgDefField.setText("");
-				avgResField.setText("");
-				
-				resultHPDifference.setText("");
-				resultHPDifference.setBackground(Color.WHITE);
-				resultStrDifference.setText("");
-				resultStrDifference.setBackground(Color.WHITE);
-				resultMagDifference.setText("");
-				resultMagDifference.setBackground(Color.WHITE);
-				resultSklDifference.setText("");
-				resultSklDifference.setBackground(Color.WHITE);
-				resultSpdDifference.setText("");
-				resultSpdDifference.setBackground(Color.WHITE);
-				resultLckDifference.setText("");
-				resultLckDifference.setBackground(Color.WHITE);
-				resultDefDifference.setText("");
-				resultDefDifference.setBackground(Color.WHITE);
-				resultResDifference.setText("");
-				resultResDifference.setBackground(Color.WHITE);
+			//inputCharBox.setSelectedIndex(1);			
+				clearResults();
 				
 				variedParentHPField.setText("");
 				variedParentStrField.setText("");
@@ -1076,75 +1064,76 @@ public GUI()
 			int baseLevel;  	// Starting level of unit
 			int inputJobIndex;	// index of the job in the classhistory
 			
-			try
-			{
-				HP = Integer.parseInt(inputHPField.getText());
-				Str = Integer.parseInt(inputStrField.getText());
-				Mag = Integer.parseInt(inputMagField.getText());
-				Skl = Integer.parseInt(inputSklField.getText());
-				Spd = Integer.parseInt(inputSpdField.getText());
-				Lck = Integer.parseInt(inputLckField.getText());
-				Def = Integer.parseInt(inputDefField.getText());
-				Res = Integer.parseInt(inputResField.getText());
+			if(!unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString())) {
+				JOptionPane.showMessageDialog(GUI.this, "Please set up Parents in Child Options");
 			}
-			catch(NumberFormatException f)
-			{
-				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-			
-// WHY IS THIS GIVING THE WRONG VALUE?!
-			// if the character being checked is a child, then the input level is from the level box in the child options (because the inputLevelBox is hidden)
-			// if the character being checked is a child, then the base level what the user inputed in child options
-			// inputJobIndex is of the index of the childStartingLevelBox for a child
-			if(unitcontroller.getCurrentChar().getIsChild())
-			{
-				inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-				baseLevel = inputLevel;
-				inputJobIndex = childStartingLevelBox.getSelectedIndex();
-			}
-			// otherwise the inputLevel is equal to the level selected in the inputLevelBox
-			// otherwise the base level is the character's natural base level
-			// otherwise the inputJobIndex is of the index of the inputLevelBox
-			else
-			{
-				inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
-				inputJobIndex = inputLevelBox.getSelectedIndex();
-				}
-
-			double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
-			
-			unitcontroller.buildInputUnitSheet(inputLevel, inputStats, inputJobIndex);
-			unitcontroller.buildLocalUnitSheet(inputJobIndex);
-			
-		//UPDATES GRAPH
-			int stat = graphStatBox.getSelectedIndex();
-
-			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);
-		
-	System.out.println("INPUT LEVEL" + inputLevel);
-	System.out.println("GRAPH IS DISPLAYING:" +(inputLevel)+" - "+(baseLevel));
-			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
-
-			graphStatBox.setEnabled(true);
-			
-		//UPDATES BOXES			
-			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-
-			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
-			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
-			
-			DecimalFormat formatter = new DecimalFormat( "##.##" );
-			resultLevelBox.setEnabled(true);
-			
-			resultHPField.setText(formatter.format(inputResults[0]));
-			avgHPField.setText(formatter.format(localResults[0]));
-			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
-				if((inputResults[0] - localResults[0]) < 0)
+			else {
+				try
 				{
-					resultHPDifference.setBackground(Color.RED);
+					HP = Integer.parseInt(inputHPField.getText());
+					Str = Integer.parseInt(inputStrField.getText());
+					Mag = Integer.parseInt(inputMagField.getText());
+					Skl = Integer.parseInt(inputSklField.getText());
+					Spd = Integer.parseInt(inputSpdField.getText());
+					Lck = Integer.parseInt(inputLckField.getText());
+					Def = Integer.parseInt(inputDefField.getText());
+					Res = Integer.parseInt(inputResField.getText());
 				}
+				catch(NumberFormatException f)
+				{
+					JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+	// WHY IS THIS GIVING THE WRONG VALUE?!
+				// if the character being checked is a child, then the input level is from the level box in the child options (because the inputLevelBox is hidden)
+				// inputJobIndex is always 0 because technically the inputed level for a child character is always the base level (aka index 0)
+				if(unitcontroller.getCurrentChar().getIsChild())
+				{
+					inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+					inputJobIndex = 0;
+				}
+				// otherwise the inputLevel is equal to the level selected in the inputLevelBox
+				// otherwise the inputJobIndex is of the index of the inputLevelBox
+				else
+				{
+					inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+					inputJobIndex = inputLevelBox.getSelectedIndex();
+				}
+				baseLevel = calculateBaseLevel();
+				//inputJobIndex = jobHistory.getSelectedIndex();
+				double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
+				
+				unitcontroller.buildInputUnitSheet(inputLevel, inputStats, inputJobIndex);
+				unitcontroller.buildLocalUnitSheet(inputJobIndex);
+				
+			//UPDATES GRAPH
+				int stat = graphStatBox.getSelectedIndex();
+	
+				double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);
+			
+			System.out.println("INPUT LEVEL" + inputLevel);
+			System.out.println("GRAPH IS DISPLAYING:" +(inputLevel)+" - "+(baseLevel));
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
+	
+				graphStatBox.setEnabled(true);
+				
+			//UPDATES BOXES			
+				int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
+	
+				double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+				double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+				
+				DecimalFormat formatter = new DecimalFormat( "##.##" );
+				resultLevelBox.setEnabled(true);
+				
+				resultHPField.setText(formatter.format(inputResults[0]));
+				avgHPField.setText(formatter.format(localResults[0]));
+				resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
+					if((inputResults[0] - localResults[0]) < 0)
+					{
+						resultHPDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[0] - localResults[0]) > 0)
 					{
 						resultHPDifference.setBackground(Color.GREEN);
@@ -1153,13 +1142,13 @@ public GUI()
 					{
 						resultHPDifference.setBackground(Color.WHITE);
 					}
-			resultStrField.setText(formatter.format(inputResults[1]));
-			avgStrField.setText(formatter.format(localResults[1]));
-			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
-				if((inputResults[1] - localResults[1]) < 0)
-				{
-					resultStrDifference.setBackground(Color.RED);
-				}
+				resultStrField.setText(formatter.format(inputResults[1]));
+				avgStrField.setText(formatter.format(localResults[1]));
+				resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
+					if((inputResults[1] - localResults[1]) < 0)
+					{
+						resultStrDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[1] - localResults[1]) > 0)
 					{
 						resultStrDifference.setBackground(Color.GREEN);
@@ -1168,13 +1157,13 @@ public GUI()
 					{
 						resultStrDifference.setBackground(Color.WHITE);
 					}
-			resultMagField.setText(formatter.format(inputResults[2]));
-			avgMagField.setText(formatter.format(localResults[2]));
-			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
-				if((inputResults[2] - localResults[2]) < 0)
-				{
-					resultMagDifference.setBackground(Color.RED);
-				}
+				resultMagField.setText(formatter.format(inputResults[2]));
+				avgMagField.setText(formatter.format(localResults[2]));
+				resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
+					if((inputResults[2] - localResults[2]) < 0)
+					{
+						resultMagDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[2] - localResults[2]) > 0)
 					{
 						resultMagDifference.setBackground(Color.GREEN);
@@ -1183,13 +1172,13 @@ public GUI()
 					{
 						resultMagDifference.setBackground(Color.WHITE);
 					}
-			resultSklField.setText(formatter.format(inputResults[3]));
-			avgSklField.setText(formatter.format(localResults[3]));
-			resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
-				if((inputResults[3] - localResults[3]) < 0)
-				{
-					resultSklDifference.setBackground(Color.RED);
-				}
+				resultSklField.setText(formatter.format(inputResults[3]));
+				avgSklField.setText(formatter.format(localResults[3]));
+				resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+					if((inputResults[3] - localResults[3]) < 0)
+					{
+						resultSklDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[3] - localResults[3]) > 0)
 					{
 						resultSklDifference.setBackground(Color.GREEN);
@@ -1198,13 +1187,13 @@ public GUI()
 					{
 						resultSklDifference.setBackground(Color.WHITE);
 					}
-			resultSpdField.setText(formatter.format(inputResults[4]));
-			avgSpdField.setText(formatter.format(localResults[4]));
-			resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
-				if((inputResults[4] - localResults[4]) < 0)
-				{
-					resultSpdDifference.setBackground(Color.RED);
-				}
+				resultSpdField.setText(formatter.format(inputResults[4]));
+				avgSpdField.setText(formatter.format(localResults[4]));
+				resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+					if((inputResults[4] - localResults[4]) < 0)
+					{
+						resultSpdDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[4] - localResults[4]) > 0)
 					{
 						resultSpdDifference.setBackground(Color.GREEN);
@@ -1213,13 +1202,13 @@ public GUI()
 					{
 						resultSpdDifference.setBackground(Color.WHITE);
 					}
-			resultLckField.setText(formatter.format(inputResults[5]));
-			avgLckField.setText(formatter.format(localResults[5]));
-			resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
-			if((inputResults[5] - localResults[5]) < 0)
-				{
-				resultLckDifference.setBackground(Color.RED);
-				}
+				resultLckField.setText(formatter.format(inputResults[5]));
+				avgLckField.setText(formatter.format(localResults[5]));
+				resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+					if((inputResults[5] - localResults[5]) < 0)
+					{
+					resultLckDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[5] - localResults[5]) > 0)
 					{
 						resultLckDifference.setBackground(Color.GREEN);
@@ -1228,13 +1217,13 @@ public GUI()
 					{
 						resultLckDifference.setBackground(Color.WHITE);
 					}
-			resultDefField.setText(formatter.format(inputResults[6]));
-			avgDefField.setText(formatter.format(localResults[6]));
-			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
-				if((inputResults[6] - localResults[6]) < 0)
-				{
-					resultDefDifference.setBackground(Color.RED);
-				}
+				resultDefField.setText(formatter.format(inputResults[6]));
+				avgDefField.setText(formatter.format(localResults[6]));
+				resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
+					if((inputResults[6] - localResults[6]) < 0)
+					{
+						resultDefDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[6] - localResults[6]) > 0)
 					{
 						resultDefDifference.setBackground(Color.GREEN);
@@ -1243,13 +1232,13 @@ public GUI()
 					{
 						resultDefDifference.setBackground(Color.WHITE);
 					}
-			resultResField.setText(formatter.format(inputResults[7]));
-			avgResField.setText(formatter.format(localResults[7]));
-			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
-				if((inputResults[7] - localResults[7]) < 0)
-				{
-					resultResDifference.setBackground(Color.RED);
-				}
+				resultResField.setText(formatter.format(inputResults[7]));
+				avgResField.setText(formatter.format(localResults[7]));
+				resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
+					if((inputResults[7] - localResults[7]) < 0)
+					{
+						resultResDifference.setBackground(Color.RED);
+					}
 					else if ((inputResults[7] - localResults[7]) > 0)
 					{
 						resultResDifference.setBackground(Color.GREEN);
@@ -1258,11 +1247,11 @@ public GUI()
 					{
 						resultResDifference.setBackground(Color.WHITE);
 					}
-			//Stuff for Debug
-			//unitcontroller.printLocalSheet();
-			//unitcontroller.printInputSheet();
-						}
-		
+				//Stuff for Debug
+				//unitcontroller.printLocalSheet();
+				//unitcontroller.printInputSheet();
+			}
+		}	
 	}
 	//This allows you to change the data visualized on the graph using the stat combo box
 	public class graphBoxHandler implements ActionListener
@@ -1274,15 +1263,7 @@ public GUI()
 			
 			int stat = graphStatBox.getSelectedIndex();
 			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-			int baseLevel;
-			if(unitcontroller.getCurrentChar().getIsChild())
-			{
-				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-			}
-			else 
-			{
-				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
-			}
+			int baseLevel = calculateBaseLevel();
 
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
@@ -1299,17 +1280,20 @@ public GUI()
 		{
 			if(inputRouteBox.getSelectedItem() == "Conquest")
 			{
-			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));	
+			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
+			    inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf("Silas"));
 			    repaint();
 			}
 			else if(inputRouteBox.getSelectedItem() == "Birthright")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
+			    inputCharBox.setSelectedIndex(Arrays.asList(birthrightCharacters).indexOf("Silas"));
 			    repaint();
 			}
 			if(inputRouteBox.getSelectedItem() == "Revelations")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
+			    inputCharBox.setSelectedIndex(Arrays.asList(revelationsCharacters).indexOf("Silas"));
 			    repaint();
 			}
 		}
@@ -1325,6 +1309,7 @@ public GUI()
 		//Storing the Character, Job, Route, and BaseLevel
 		try
 		{
+			clearResults();
 			domain.Character tempChar = data.getCharacters().get(inputCharBox.getSelectedItem().toString());
 	 		domain.Job tempJob = data.getJobs().get(tempChar.getBaseClass());
 			String tempRoute = inputRouteBox.getSelectedItem().toString();
@@ -1337,7 +1322,7 @@ public GUI()
 				inputLevelBox.setVisible(false);
 				parentalUnitsButton.setVisible(true);
 				
-				JOptionPane.showMessageDialog(null, "Please input parents' stats");
+				JOptionPane.showMessageDialog(GUI.this, "Please input parents' stats");
 				
 				// temp variable for the child
 				domain.ChildCharacter tempChildChar = (domain.ChildCharacter)data.getCharacters().get(inputCharBox.getSelectedItem().toString());
@@ -1414,12 +1399,12 @@ public GUI()
 					possibleLevels[i] = (i+tempLevel+"");
 				}
 				
-				System.out.println(tempLevel);
+				//System.out.println(tempLevel);
 
 				Object[] listData = unitcontroller.getClassArray(unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 				jobHistory.setListData(listData);
 				jobHistory.setSelectedIndex(0);
-		
+
 				inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 				resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 				resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
@@ -1449,31 +1434,23 @@ public GUI()
 			DataStorage data = DataStorage.getInstance();
 			UnitController unitcontroller = UnitController.getInstance();
 			
-			int inputBaseLevel;
-			int characterBaseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
+			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()); 
+			int baseLevel = calculateBaseLevel();
+				
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(inputLevel-baseLevel).toString());
 			
-			if(unitcontroller.getCurrentChar().getIsChild()) 
-			{
-				inputBaseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-			}
-			else
-			{
-				inputBaseLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()); 
-			}
-						
-			Object[] possibleLevels = new Object[(unitcontroller.getClassHistory().size()) - (inputBaseLevel - characterBaseLevel)];
+			Object[] possibleLevels = new Object[(unitcontroller.getClassHistory().size()) - (inputLevel - baseLevel)];
 			
 			for(int i = 0; i< (possibleLevels.length); i++)
 			{
-					possibleLevels[i] = inputBaseLevel;
-					inputBaseLevel++;
-					System.out.println(i);
+					possibleLevels[i] = inputLevel;
+					inputLevel++;
+					//System.out.println(i);
 			}
-			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}
 	}
-	//This handler  updates the result panel based on the input level
+	//This handler updates the result panel based on the input level
 	public class ResultLevelBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -1481,13 +1458,7 @@ public GUI()
 			UnitController unitcontroller = UnitController.getInstance();
 			
 			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-			int baseLevel;
-			if(unitcontroller.getCurrentChar().getIsChild()) {
-				baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-			}
-			else {
-				baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
-			}
+			int baseLevel = calculateBaseLevel();
 
 			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
@@ -1528,5 +1499,55 @@ public GUI()
 			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));			
 		}
 	}
-
+	// This is a method that clears the results field
+	public void clearResults() {
+		resultHPField.setText("");
+		resultStrField.setText("");
+		resultMagField.setText("");
+		resultSpdField.setText("");
+		resultSklField.setText("");
+		resultLckField.setText("");
+		resultDefField.setText("");
+		resultResField.setText("");
+		
+		avgHPField.setText("");
+		avgStrField.setText("");
+		avgMagField.setText("");
+		avgSklField.setText("");
+		avgSpdField.setText("");
+		avgLckField.setText("");
+		avgDefField.setText("");
+		avgResField.setText("");
+		
+		resultHPDifference.setText("");
+		resultHPDifference.setBackground(Color.WHITE);
+		resultStrDifference.setText("");
+		resultStrDifference.setBackground(Color.WHITE);
+		resultMagDifference.setText("");
+		resultMagDifference.setBackground(Color.WHITE);
+		resultSklDifference.setText("");
+		resultSklDifference.setBackground(Color.WHITE);
+		resultSpdDifference.setText("");
+		resultSpdDifference.setBackground(Color.WHITE);
+		resultLckDifference.setText("");
+		resultLckDifference.setBackground(Color.WHITE);
+		resultDefDifference.setText("");
+		resultDefDifference.setBackground(Color.WHITE);
+		resultResDifference.setText("");
+		resultResDifference.setBackground(Color.WHITE);
+	}
+	// Determines the baseLevel of a character which is different if the Character chosen is a child character or no
+	public int calculateBaseLevel() {
+		UnitController unitcontroller = UnitController.getInstance();
+		int baseLevel;
+		// if the character being checked is a child, then the base level what the user inputed in child options
+		if(unitcontroller.getCurrentChar().getIsChild()) {
+			baseLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+		}
+		// otherwise the base level is the character's natural base level
+		else {
+			baseLevel = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0); 
+		}
+		return baseLevel;
+	}
 }
