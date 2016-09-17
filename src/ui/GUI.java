@@ -852,10 +852,64 @@ public GUI()
 					//Storing the ChildCharacter, Job, Route, and BaseLevel
 					try
 					{
-						domain.ChildCharacter tempChildChar = (domain.ChildCharacter) data.getCharacters().get(inputCharBox.getSelectedItem().toString());
-				 		domain.Job tempJob = data.getJobs().get(tempChildChar.getBaseClass());
-						String tempRoute = inputRouteBox.getSelectedItem().toString();
+						domain.ChildCharacter tempChildChar;
+						domain.Job tempJob;
+						String tempRoute;
 						int tempStartLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+						ArrayList<String> tempClassHistory;
+						
+						System.out.println("unitcontroller startLevel: " + unitcontroller.getStartLevel() + ", tempStartLevel: " + tempStartLevel);
+						
+						// If the current character in unitcontroller is a child && it's the same character as what we selected 
+						// && the character hasn't changed their base level && the result field is not empty (aka it's not the first time creating data)
+						// Then the user is accessing the parental unit pane to change some data. Don't change the character, their base job, their route, or their class history
+						// by taking the data already in unitcontroller
+						if(unitcontroller.currentChar.getIsChild() && unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString()) 
+								&& unitcontroller.getStartLevel() == Integer.parseInt(childStartingLevelBox.getSelectedItem().toString()) && !resultHPField.getText().equals("")) {
+							tempChildChar = (domain.ChildCharacter) unitcontroller.getCurrentChar();
+							tempJob = unitcontroller.getCurrentJob();
+							tempRoute = unitcontroller.getCurrentRoute();
+							tempClassHistory = unitcontroller.getClassHistory();
+						}
+						// Otherwise make a new unit by taking the data from the input
+						else {
+							tempChildChar = (domain.ChildCharacter) data.getCharacters().get(inputCharBox.getSelectedItem().toString());
+					 		tempJob = data.getJobs().get(tempChildChar.getBaseClass());
+							tempRoute = inputRouteBox.getSelectedItem().toString();
+							
+							//Making the class history
+							tempClassHistory = new ArrayList<String>();						
+							for(int i = tempStartLevel; i<=tempJob.getMaxStats(0); i++)
+							{
+								tempClassHistory.add(tempJob.getName());
+							}
+						}
+						
+						domain.Unit tempFixedParent = new domain.Unit((domain.Character) data.getCharacters().get(fixedParentNameDisplay.getText()), 
+																		(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
+																		inputRouteBox.getSelectedItem().toString());
+						
+						domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()),
+																		(domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()),
+																		inputRouteBox.getSelectedItem().toString());
+						
+						double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()),
+																		Double.parseDouble(fixedParentStrField.getText()), 
+																		Double.parseDouble(fixedParentMagField.getText()), 
+																		Double.parseDouble(fixedParentSklField.getText()), 
+																		Double.parseDouble(fixedParentSpdField.getText()), 
+																		Double.parseDouble(fixedParentLckField.getText()), 
+																		Double.parseDouble(fixedParentDefField.getText()), 
+																		Double.parseDouble(fixedParentResField.getText())};
+						
+						double[] tempVariedParentStats = new double[] {Double.parseDouble(variedParentHPField.getText()), 
+																		Double.parseDouble(variedParentStrField.getText()), 
+																		Double.parseDouble(variedParentMagField.getText()), 
+																		Double.parseDouble(variedParentSklField.getText()), 
+																		Double.parseDouble(variedParentSpdField.getText()), 
+																		Double.parseDouble(variedParentLckField.getText()), 
+																		Double.parseDouble(variedParentDefField.getText()), 
+																		Double.parseDouble(variedParentResField.getText())};				
 						
 						/*
 						// PRETTY SURE THIS IS POINTLESS T.T
@@ -863,7 +917,7 @@ public GUI()
 						// For example, say I do Nyx!Sophie and start her at level 15. Then I reclass her to Dark Mage at level 17.
 						// Next, I want to change her base level to level 17. She will still retain her reclassing as a Dark Mage.
 						// First, we need to make sure that the character we're working with is a child (since unitcontroller is never cleared)
-						if(unitcontroller.currentChar.getIsChild()) {
+						if(unitcontroller.getCurrentChar().getIsChild()) {
 							// Search through the entire job history
 							for(int i = 0; i < jobHistory.getModel().getSize(); i++) {
 								// Get the string of the job history at each index
@@ -886,21 +940,7 @@ public GUI()
 								}
 							}
 						}*/
-					
-						domain.Unit tempFixedParent = new domain.Unit((domain.Character) data.getCharacters().get(fixedParentNameDisplay.getText()), (domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
-						domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()), (domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()), inputRouteBox.getSelectedItem().toString());
-						double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()), Double.parseDouble(fixedParentStrField.getText()), Double.parseDouble(fixedParentMagField.getText()), Double.parseDouble(fixedParentSklField.getText()), Double.parseDouble(fixedParentSpdField.getText()), Double.parseDouble(fixedParentLckField.getText()), Double.parseDouble(fixedParentDefField.getText()), Double.parseDouble(fixedParentResField.getText())};
-						double[] tempVariedParentStats = new double[] {Double.parseDouble(variedParentHPField.getText()), Double.parseDouble(variedParentStrField.getText()), Double.parseDouble(variedParentMagField.getText()), Double.parseDouble(variedParentSklField.getText()), Double.parseDouble(variedParentSpdField.getText()), Double.parseDouble(variedParentLckField.getText()), Double.parseDouble(variedParentDefField.getText()), Double.parseDouble(variedParentResField.getText())};
 						
-						//Making the class history
-						ArrayList<String> tempClassHistory = new ArrayList();
-						int levelMod = 0;
-						for(int i = tempStartLevel; i<=tempJob.getMaxStats(0); i++)
-						{
-							tempClassHistory.add(tempJob.getName());
-							levelMod++;
-						}
-								
 						//Update UnitController for a child
 						unitcontroller.setCurrentChar(tempChildChar);
 						unitcontroller.setCurrentJob(tempJob);
@@ -934,7 +974,7 @@ public GUI()
 						inputLevelBox.setModel(childStartingLevelBox.getModel());
 						
 						//setting up child level box
-						String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempStartLevel + 1)];	
+						String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempStartLevel + 1)];
 						for(int i = 0; i<=(tempJob.getMaxStats(0) - tempStartLevel); i++)
 						{
 							possibleLevels[i] = (i+tempStartLevel+"");
@@ -1064,7 +1104,13 @@ public GUI()
 			int baseLevel;  	// Starting level of unit
 			int inputJobIndex;	// index of the job in the classhistory
 			
-			if(!unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString())) {
+			// If the Character in UnitController isn't the same as the one they want when they click calculate, 
+			// it's because the user tried to select a child without setting up parents. So give the user a message.
+			// Also check the specific case that the user cleared after working with a child character as that should reset things, but does not change the selected character in the index
+			// To do so, check if the unitcontroller currentChar is a child, if the name in the input box is the same, and if variedParentNameDisplay selected index is set to the default -1
+			if(!unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString()) || 
+					(unitcontroller.getCurrentChar().getIsChild() && unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString())
+							&& variedParentNameDisplay.getSelectedIndex() == -1)) {
 				JOptionPane.showMessageDialog(GUI.this, "Please set up Parents in Child Options");
 			}
 			else {

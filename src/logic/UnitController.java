@@ -315,6 +315,10 @@ public class UnitController {
 		this.variedParentInputStats = variedParentInputStats;
 	}
 
+	public int getStartLevel() {
+		return startLevel;
+	}
+	
 	public void setStartLevel(int startLevel) {
 		this.startLevel = startLevel;
 	}
