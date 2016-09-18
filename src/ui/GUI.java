@@ -101,21 +101,23 @@ public class GUI extends JFrame{
 		
 //Option Window
 		JDialog optionPane;
-		JButton promoteButton;
 		JButton parentalUnitsButton;
 		JButton confirmButton;
-		JButton eternalSealButton;
-		
 		JList jobHistory;
-		
 		JLabel avatarBoonLabel;
 		JLabel avatarBaneLabel;
 		JComboBox avatarBoonBox;
 		JComboBox avatarBaneBox;
-		
 		JLabel reclassLabel;
 		JComboBox reclassBox;
 		JButton reclassButton;
+		JLabel promoteLabel;
+		JComboBox promoteBox;
+		JButton promoteButton;
+		JLabel eternalSealLabel;
+		JComboBox eternalSealBox;
+		JButton eternalSealButton;
+
 		
 //ParentalUnitsPane
 		JDialog parentalUnitsPane;
@@ -429,7 +431,7 @@ public GUI()
 	//GRAPH PANEL 1
 	JPanel graphPanel = new JPanel();
 		graphStat = new JLabel("Stat: ");
-		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Lck", "Def", "Res"};
+		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Lck", "Def", "Res", "Rating"};
 		graphStatBox = new JComboBox(statArray);
 		graphBoxHandler graphboxhandler = new graphBoxHandler();
 		graphStatBox.addActionListener(graphboxhandler);
@@ -553,25 +555,41 @@ public GUI()
 		reclassButton.addActionListener(ReclassOptionButtonHandler);
 			reclassPanel.add(reclassButton);	
 	modPanel.add(reclassPanel);
+	
+//Promote Panel	
+	JPanel promotePanel = new JPanel();
+	promoteLabel = new JLabel("Promote:");
+		promotePanel.add(promoteLabel);
+	promoteBox = new JComboBox();
+	promoteBox.setModel(new DefaultComboBoxModel(jobs));
+		promotePanel.add(promoteBox);		
+	promoteButton = new JButton("Promote");
+		PromoteOptionButtonHandler promoteOptionButtonHandler = new PromoteOptionButtonHandler();
+		promoteButton.addActionListener(promoteOptionButtonHandler);
+			promotePanel.add(promoteButton);	
+	modPanel.add(promotePanel);
 
+
+//Promote Panel	
+	String[] eternalSealOptions = {"+1", "+5", "+10", "+50", "MAX"};
+	JPanel eternalSealPanel = new JPanel();
+	eternalSealLabel = new JLabel("Eternal Seal:");
+		eternalSealPanel.add(eternalSealLabel);
+	eternalSealBox = new JComboBox();
+	eternalSealBox.setModel(new DefaultComboBoxModel(eternalSealOptions));
+	eternalSealPanel.add(eternalSealBox);		
+	eternalSealButton = new JButton("Eternal Seal");
+		EternalSealButtonHandler eternalSealOptionButtonHandler = new EternalSealButtonHandler();
+		eternalSealButton.addActionListener(eternalSealOptionButtonHandler);
+		eternalSealPanel.add(eternalSealButton);	
+	modPanel.add(eternalSealPanel);
+	
 //Button Panel
 	JPanel buttonOptionsPanel = new JPanel();
-	buttonOptionsPanel.setLayout(new GridLayout(2,2));
-		promoteButton = new JButton("Promote");
-			PromoteOptionButtonHandler PromoteOptionButtonHandler = new PromoteOptionButtonHandler();
-			promoteButton.addActionListener(PromoteOptionButtonHandler);
-			buttonOptionsPanel.add(promoteButton);
-				promoteButton.setEnabled(false);
-		eternalSealButton = new JButton("EternalSeal");
-			EternalSealButtonHandler EternalSealButtonHandler = new EternalSealButtonHandler();
-			eternalSealButton.addActionListener(EternalSealButtonHandler);
-			buttonOptionsPanel.add(eternalSealButton);
-				eternalSealButton.setEnabled(false);
-		confirmButton = new JButton("Confirm");
-			CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
-			confirmButton.addActionListener(CloseOptionButtonHandler);
-			buttonOptionsPanel.add(confirmButton);
-			
+	confirmButton = new JButton("Confirm");
+		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
+		confirmButton.addActionListener(CloseOptionButtonHandler);
+		buttonOptionsPanel.add(confirmButton);
 	modPanel.add(buttonOptionsPanel);
 	
 //PARENTAL UNITS PANEL
@@ -1155,13 +1173,21 @@ public GUI()
 			//UPDATES GRAPH
 				int stat = graphStatBox.getSelectedIndex();
 	
+				//Looking for rating
+				if(stat == 8)
+				{
+				double[] LocalStatSpread = unitcontroller.getLocalRating();
+				double[] InputStatSpread = unitcontroller.getInputRating();
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel,baseLevel));
+				}
+				//Looking for normal stats
+				else
+				{
 				double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);
-			
-			System.out.println("INPUT LEVEL" + inputLevel);
-			System.out.println("GRAPH IS DISPLAYING:" +(inputLevel)+" - "+(baseLevel));
-				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, baseLevel));
-	
+				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel,baseLevel));
+				
+				}	
 				graphStatBox.setEnabled(true);
 				
 			//UPDATES BOXES			
@@ -1310,12 +1336,25 @@ public GUI()
 			int stat = graphStatBox.getSelectedIndex();
 			int startLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
 			int baseLevel = calculateBaseLevel();
-
+			
+			//Looking for rating
+			if(stat == 8)
+			{
+			double[] LocalStatSpread = unitcontroller.getLocalRating();
+			double[] InputStatSpread = unitcontroller.getInputRating();
+			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
+			}
+			//Looking for normal stats
+			else
+			{
 			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
 			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel,baseLevel));
-			System.out.println("INPUT LEVEL" + startLevel);
-			System.out.println("GRAPH IS DISPLAYING:" +(startLevel)+" - "+(baseLevel));
+			}
+			
+//		For debug
+//			System.out.println("INPUT LEVEL" + startLevel);
+//			System.out.println("GRAPH IS DISPLAYING:" +(startLevel)+" - "+(baseLevel));
 
 		}
 	}
@@ -1402,9 +1441,10 @@ public GUI()
 					possibleLevels[i] = (i+tempLevel+"");
 				}
 				childStartingLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-				
-				parentalUnitsPane.setVisible(true);
-				parentalUnitsPane.setEnabled(true);
+	
+			//This code automatically brings up the child options window
+//				parentalUnitsPane.setVisible(true);
+//				parentalUnitsPane.setEnabled(true);
 			}
 			else
 			{

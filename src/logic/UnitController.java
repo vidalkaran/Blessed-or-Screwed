@@ -3,15 +3,8 @@
 
 package logic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import java.util.ArrayList;
-
 import com.rits.cloning.Cloner;
-
 import domain.Unit;
 import json.DataStorage;
 import domain.Character;
@@ -225,6 +218,46 @@ public class UnitController {
 		for (int i = 0; i < inputUnitSheet.size(); i++) {
 			double[] tempArray = inputUnitSheet.get(i).getBaseStats();
 			output[i] = tempArray[stat];
+		}
+
+		return output;
+	}
+	
+	public double[] getLocalRating() 
+	{
+		double[] output = new double[localUnitSheet.size()];
+
+		for (int i = 0; i < localUnitSheet.size(); i++) 
+		{
+			int inputStat = 0;
+			
+			for(int j = 0; j<8; j++)
+			{
+				double tempStat = localUnitSheet.get(i).getStats(j);
+				inputStat+=tempStat;
+			}
+			
+			output[i] = inputStat;
+		}
+
+		return output;
+	}
+	
+	public double[] getInputRating() 
+	{
+		double[] output = new double[inputUnitSheet.size()];
+
+		for (int i = 0; i < inputUnitSheet.size(); i++) 
+		{
+			int inputStat = 0;
+			
+			for(int j = 0; j<8; j++)
+			{
+				double tempStat = inputUnitSheet.get(i).getStats(j);
+				inputStat+=tempStat;
+			}
+			
+			output[i] = inputStat;
 		}
 
 		return output;
