@@ -38,13 +38,18 @@ public static void main(String[]args)
 //	unitController.reclass("Dancer", 10);
 	
 	//TESTING CALCULATIONS
-	unitController.buildLocalUnitSheet(0);
-	unitController.printLocalSheet();
+//	unitController.buildLocalUnitSheet(0);
+//	unitController.printLocalSheet();
 	
 	//TESTING CALCULATIONS
-//	unitController.buildInputUnitSheet(10, inputStats);
-//	unitController.printInputSheet();
-
+	unitController.buildInputUnitSheet(6, inputStats, 0);
+	unitController.printInputSheet();
+	double[] rating = unitController.getInputRating();
+	System.out.println("PRINTING RATING ARRAY");
+	for(int i = 0; i<ClassHistory.size(); i++)
+	{
+	System.out.println("Rating: "+rating[i]);
+	}
 	//THIS TESTS GETINPUTSTATSPREAD
 //	double[] healthOverTime = unitController.getInputStatSpread(0);
 	

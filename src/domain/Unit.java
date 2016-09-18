@@ -634,6 +634,10 @@ public class Unit {
 		return baseStats;
 	}
 
+	public double getStats(int i) {
+		return baseStats[i];
+	}
+	
 	public void setBaseStats(double[] baseStats) {
 		this.baseStats = baseStats;
 	}
