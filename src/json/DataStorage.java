@@ -43,19 +43,23 @@ public class DataStorage implements Serializable{
 		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
 	}
 	
-	private static DataStorage instance = null;	// DataStorage singleton instance		
-	private Map<String, Character> characters;	// Map for storing all characters. <key, value> = <character name, Character object>
-	private Job[] jobArray;						// Array used for JSON parsing jobs
-	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
-	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
+	private static DataStorage instance = null;	// DataStorage singleton instance	
 	
+	// Arrays to hold the names of all of the possible boons and banes. These are final because they will never change
+	private final String[] BOONS = {"Robust (HP)", "Strong (Str)", "Clever (Mag)", "Deft (Skl)", "Quick (Spd)", "Lucky (Lck)", "Sturdy (Def)", "Calm (Res)"}; 
+	private final String[] BANES = {"Sickly (HP)", "Weak  (Str)", "Dull (Mag)", "Clumsy (Skl)", "Slow (Spd)", "Unlucky (Lck)", "Fragile (Def)", "Excitable (Res)"}; 
+	
+	private Map<String, Character> characters;			// Map for storing all characters. <key, value> = <character name, Character object>
 	private ArrayList<String> conquestCharacters;		// ArrayList to hold all characters in the Conquest route
 	private ArrayList<String> birthrightCharacters;		// ArrayList to hold all characters in the Birthright route
 	private ArrayList<String> revelationsCharacters;	// ArrayList to hold all characters in the Revelations route
-	private ArrayList<String> jobNames;					// ArrayList to hold all of the jobNames to be accessed for filling out the GUI list of jobs
 	
-	private String[] boons;	// Array to hold the names of all of the possible boons
-	private String[] banes; // Array to hold the names of all of the possible banes
+	private Job[] jobArray;						// Array used for JSON parsing jobs
+	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
+	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
+	private ArrayList<String> jobNames;					// ArrayList to hold all of the jobNames to be accessed for filling out the GUI list of jobs
+	private ArrayList<String> promotedJobNames;			// ArrayList to hold all of the promoted classes to be accessed for filling out the GUI list of jobs
+	private ArrayList<String> nonpromotedJobNames;		// ArrayList to hold all of the non-promoted classes to be accessed for filling out the GUI list of jobs
 	
 	// OUTDATED
 	// Arrays representing locked Marriage Options - for example, Xander and Leo cannot marry their sisters (Camilla and Elise)
@@ -81,18 +85,6 @@ public class DataStorage implements Serializable{
 		return characters;
 	}
 	
-	public ArrayList<String> getJobNames() {
-		return jobNames;
-	}
-	
-	public Map<String, Job> getJobs() {
-		return jobs;
-	}
-	
-	public ArrayList<String> getSpecialClasses() {
-		return specialClasses;
-	}
-	
 	public ArrayList<String> getConquestCharacters() {
 		return conquestCharacters;
 	}
@@ -105,12 +97,32 @@ public class DataStorage implements Serializable{
 		return revelationsCharacters;
 	}
 	
-	public String[] getBoons() {
-		return boons;
+	public Map<String, Job> getJobs() {
+		return jobs;
+	}
+	
+	public ArrayList<String> getSpecialClasses() {
+		return specialClasses;
+	}
+	
+	public ArrayList<String> getJobNames() {
+		return jobNames;
+	}
+	
+	public ArrayList<String> getPromotedJobNames() {
+		return promotedJobNames;
 	}
 
-	public String[] getBanes() {
-		return banes;
+	public ArrayList<String> getNonpromotedJobNames() {
+		return nonpromotedJobNames;
+	}
+
+	public String[] getBOONS() {
+		return BOONS;
+	}
+
+	public String[] getBANES() {
+		return BANES;
 	}
 	
 	public String[] getAVATAR_LOCKED() {
@@ -231,6 +243,8 @@ public class DataStorage implements Serializable{
 			jobArray = gson.fromJson(reader, Job[].class);
 			jobs = new HashMap<String, Job>();
 			jobNames = new ArrayList<String>();
+			promotedJobNames = new ArrayList<String>();
+			nonpromotedJobNames = new ArrayList<String>();
 			specialClasses = new ArrayList<String>();
 			for(int i = 0; i < jobArray.length; i++) {
 				// fill the specialClasses array
@@ -238,9 +252,17 @@ public class DataStorage implements Serializable{
 					specialClasses.add(jobArray[i].getName());
 				jobs.put(jobArray[i].getName(), jobArray[i]);
 				jobNames.add(jobArray[i].getName());
+				if(jobArray[i].getIsPromoted()) {
+					promotedJobNames.add(jobArray[i].getName());
+				}
+				else {
+					nonpromotedJobNames.add(jobArray[i].getName());
+				}
 			}
-			// Sort jobNames alphabetically
+			// Sort all job names alphabetically
 			Collections.sort(jobNames);
+			Collections.sort(promotedJobNames);
+			Collections.sort(nonpromotedJobNames);
 			
 			reader.close();
 		}
@@ -248,12 +270,6 @@ public class DataStorage implements Serializable{
 		{
 			System.err.println("Caught IOException: " + e.getMessage());
 		}
-	}
-	
-	// sets up boons and banes
-	public void InitializeBoonsAndBanes() {
-		boons = new String[] {"Robust (HP)", "Strong (Str)", "Clever (Mag)", "Deft (Skl)", "Quick (Spd)", "Lucky (Lck)", "Sturdy (Def)", "Calm (Res)"}; 
-		banes = new String[] {"Sickly (HP)", "Weak  (Str)", "Dull (Mag)", "Clumsy (Skl)", "Slow (Spd)", "Unlucky (Lck)", "Fragile (Def)", "Excitable (Res)"}; 
 	}
 	
 	// Printing methods for testing purposes

@@ -13,7 +13,6 @@ public class BlessedOrScrewed {
 		// ALWAYS PARSE FILES FIRST BEFORE DOING ANYTHING ELSE
 		data.ParseJsonCharacters();
 		data.ParseJsonJobs();
-		data.InitializeBoonsAndBanes();
 		
 		System.out.println("ALL CHARACTERS: ");
 		data.printAllCharacters();

@@ -199,7 +199,6 @@ public GUI()
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
 	data.ParseJsonJobs();
-	data.InitializeBoonsAndBanes();
 	
 	conquestCharacters = data.getConquestCharacters().toArray(new String[0]);
 	birthrightCharacters = data.getBirthrightCharacters().toArray(new String[0]);
@@ -530,11 +529,11 @@ public GUI()
 //Boon and Bane Panel
 	JPanel avatarBoonBanePanel = new JPanel();
 	avatarBoonLabel = new JLabel("Boons:");
-	avatarBoonBox= new JComboBox(new DefaultComboBoxModel(data.getBoons()));
-		avatarBoonBox.setSelectedIndex(Arrays.asList(data.getBoons()).indexOf("Strong (Str)"));
+	avatarBoonBox= new JComboBox(new DefaultComboBoxModel(data.getBOONS()));
+		avatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf("Strong (Str)"));
 	avatarBaneLabel = new JLabel("Banes:");
-	avatarBaneBox= new JComboBox(new DefaultComboBoxModel(data.getBanes()));
-		avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBanes()).indexOf("Fragile (Def)"));
+	avatarBaneBox= new JComboBox(new DefaultComboBoxModel(data.getBANES()));
+		avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf("Fragile (Def)"));
 		avatarBoonBox.setEnabled(false);
 		avatarBaneBox.setEnabled(false);
 		avatarBoonBanePanel.add(avatarBoonLabel);
@@ -729,12 +728,12 @@ public GUI()
 	JPanel baneboonPanel = new JPanel();
 	baneboonPanel.setLayout(new GridLayout(2,1));
 	boonLabel = new JLabel("Boon: ");
-	boonBox = new JComboBox(new DefaultComboBoxModel(data.getBoons()));
-		boonBox.setSelectedIndex(Arrays.asList(data.getBoons()).indexOf("Quick (Spd)"));
+	boonBox = new JComboBox(new DefaultComboBoxModel(data.getBOONS()));
+		boonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf("Quick (Spd)"));
 		boonBox.setEnabled(false);
 	baneLabel = new JLabel("Bane: ");
-	baneBox = new JComboBox(new DefaultComboBoxModel(data.getBanes()));
-		baneBox.setSelectedIndex(Arrays.asList(data.getBanes()).indexOf("Unlucky (Lck)"));
+	baneBox = new JComboBox(new DefaultComboBoxModel(data.getBANES()));
+		baneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf("Unlucky (Lck)"));
 		baneBox.setEnabled(false);
 		baneboonPanel.add(boonLabel);
 		baneboonPanel.add(boonBox);
@@ -817,7 +816,6 @@ public GUI()
 			
 			// the level we want to reclass at is equal to the index selected in the jobHistory + whatever our base level is
 			int newLevel = jobHistory.getSelectedIndex() + baseLevel;
-			System.out.println("newLevel: " + newLevel + ", baseLevel: " + baseLevel);
 			
 			unitcontroller.reclass(newJob, newLevel, baseLevel);
 
@@ -875,8 +873,6 @@ public GUI()
 						String tempRoute;
 						int tempStartLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 						ArrayList<String> tempClassHistory;
-						
-						System.out.println("unitcontroller startLevel: " + unitcontroller.getStartLevel() + ", tempStartLevel: " + tempStartLevel);
 						
 						// If the current character in unitcontroller is a child && it's the same character as what we selected 
 						// && the character hasn't changed their base level && the result field is not empty (aka it's not the first time creating data)
@@ -982,8 +978,6 @@ public GUI()
 						inputLckField.setText(""+(int)tempChildUnit.getBaseStats()[5]);
 						inputDefField.setText(""+(int)tempChildUnit.getBaseStats()[6]);
 						inputResField.setText(""+(int)tempChildUnit.getBaseStats()[7]);
-						
-						//System.out.println(tempLevel);
 						
 						Object[] listData = unitcontroller.getClassArray(tempStartLevel);
 						jobHistory.setListData(listData);
@@ -1484,8 +1478,6 @@ public GUI()
 				{
 					possibleLevels[i] = (i+tempLevel+"");
 				}
-				
-				//System.out.println(tempLevel);
 
 				Object[] listData = unitcontroller.getClassArray(unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 				jobHistory.setListData(listData);
@@ -1531,7 +1523,6 @@ public GUI()
 			{
 					possibleLevels[i] = inputLevel;
 					inputLevel++;
-					//System.out.println(i);
 			}
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}

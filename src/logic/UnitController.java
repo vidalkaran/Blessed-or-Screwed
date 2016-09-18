@@ -56,7 +56,7 @@ public class UnitController {
 	// BUILDS A LOCALUNITSHEET
 	public void buildLocalUnitSheet(int inputJobIndex) {
 		Job newJob = data.getJobs().get(classHistory.get(inputJobIndex));
-		System.out.println("InitialJob " + newJob.getName());
+		//System.out.println("InitialJob " + newJob.getName());
 
 		// Creating the unit
 		Unit localUnit;
@@ -76,7 +76,7 @@ public class UnitController {
 		ArrayList<String> inputClassHistory = new ArrayList<String>();
 
 		Job newJob = data.getJobs().get(classHistory.get(inputJobIndex));
-		System.out.println("InitialJob " + newJob.getName());
+		//System.out.println("InitialJob " + newJob.getName());
 
 		// setting the base level
 		int baseLevel;
