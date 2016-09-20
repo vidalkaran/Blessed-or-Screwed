@@ -9,9 +9,13 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeMap;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import json.DataStorage;
 import logic.GraphController;
 import logic.UnitController;
@@ -185,6 +189,8 @@ static String[] birthrightCharacters;
 static String[] revelationsCharacters;
 
 static String[] jobs;
+static String[] promotedJobs;
+static String[] nonpromotedJobs;
 
 public static void main(String[]args)
 {
@@ -204,6 +210,8 @@ public GUI()
 	birthrightCharacters = data.getBirthrightCharacters().toArray(new String[0]);
 	revelationsCharacters = data.getRevelationsCharacters().toArray(new String[0]);
 	jobs = data.getJobNames().toArray(new String[0]);
+	promotedJobs = data.getPromotedJobNames().toArray(new String[0]);
+	nonpromotedJobs = data.getNonpromotedJobNames().toArray(new String[0]);
 	
 	//Main Panel
 	JPanel mainPanel = new JPanel();
@@ -516,6 +524,8 @@ public GUI()
 
 //Initializes Job History
 	jobHistory = new JList();
+	JobHistoryListHandler jobhistorylisthandler = new JobHistoryListHandler();
+	jobHistory.addListSelectionListener(jobhistorylisthandler);
 	jobHistory.setFixedCellWidth(150);
 	jobHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
 	listPanel.add(new JScrollPane(jobHistory));
@@ -560,7 +570,7 @@ public GUI()
 	promoteLabel = new JLabel("Promote:");
 		promotePanel.add(promoteLabel);
 	promoteBox = new JComboBox();
-	promoteBox.setModel(new DefaultComboBoxModel(jobs));
+	promoteBox.setModel(new DefaultComboBoxModel(promotedJobs));
 		promotePanel.add(promoteBox);		
 	promoteButton = new JButton("Promote");
 		PromoteOptionButtonHandler promoteOptionButtonHandler = new PromoteOptionButtonHandler();
@@ -570,7 +580,7 @@ public GUI()
 
 
 //Promote Panel	
-	String[] eternalSealOptions = {"+1", "+5", "+10", "+50", "MAX"};
+	String[] eternalSealOptions = {"+5", "+10", "+50", "MAX"};
 	JPanel eternalSealPanel = new JPanel();
 	eternalSealLabel = new JLabel("Eternal Seal:");
 		eternalSealPanel.add(eternalSealLabel);
@@ -803,11 +813,74 @@ public GUI()
 		}
 		
 	}
+	//This handles selection on the job history
+	public class JobHistoryListHandler implements ListSelectionListener
+	{
+		public void valueChanged (ListSelectionEvent e)
+		{			
+			DataStorage data = DataStorage.getInstance();
+			UnitController unitcontroller = UnitController.getInstance();
+			
+			int index = jobHistory.getSelectedIndex();	// the jobHistory index selected
+			// Make sure we only do something if something is selected
+			if(index > -1) {
+				String jobHistoryItemString = (String) jobHistory.getModel().getElementAt(index);
+				// Parse the jobHistory string to only be the name of the job
+				// The reason for adding 2 to the index of "." is to exclude the space before it as well
+				String jobNameSubstring = jobHistoryItemString.substring(jobHistoryItemString.indexOf(".") + 2, jobHistoryItemString.length());
+				// get the internal level
+				String jobHistoryLevel;
+				// if it contains parentheses, get the value in between the parentheses, which is the inner level
+				if(jobHistoryItemString.contains("("))
+				{
+					jobHistoryLevel = jobHistoryItemString.substring(jobHistoryItemString.indexOf('(') + 1, jobHistoryItemString.indexOf(')'));;
+				}
+				else
+				{
+					// Parse it to only find be the level
+					// This replaces all non-integers in a string with "" and then parses it to an int
+					jobHistoryLevel = jobHistoryItemString.replaceAll("[\\D]", "");	
+				}
+				
+				domain.Job tempJob = data.getJobs().get(jobNameSubstring);
+				int tempLevel = Integer.parseInt(jobHistoryLevel);
+				
+				if(tempJob.getIsSpecial() && tempLevel <= 20)
+				{
+					reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+				}
+				else if(tempJob.getIsSpecial() && tempLevel > 20) {
+					reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
+				}
+				else if(tempJob.getIsPromoted()) {
+					reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
+				}
+				else {
+					reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+				}
+				
+				// Change the promote box accordingly
+				promoteBox.setModel(new DefaultComboBoxModel(data.getJobs().get(jobNameSubstring).getPromotions()));
+				TreeMap<Integer, String> tempMap = unitcontroller.getClassHistory();
+				String tempLastJobName = tempMap.get(tempMap.lastKey());
+				domain.Job tempLastJob = data.getJobs().get(tempLastJobName);
+				
+				if(tempJob.getIsSpecial() || tempJob.getIsPromoted()) {
+					promoteButton.setEnabled(false);
+				}
+				else if(!tempJob.getIsSpecial() && !tempJob.getIsPromoted() && (tempLastJob.getIsPromoted() || tempLastJob.getIsSpecial()))
+				{
+					promoteButton.setEnabled(true);
+				}
+			}
+		}
+	}
 	//This handles the button that opens the reclass window from the options window
 	public class ReclassOptionButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			DataStorage data = DataStorage.getInstance();
 			UnitController unitcontroller = UnitController.getInstance();
 			
 			String newJob = reclassBox.getSelectedItem().toString();
@@ -817,10 +890,16 @@ public GUI()
 			// the level we want to reclass at is equal to the index selected in the jobHistory + whatever our base level is
 			int newLevel = jobHistory.getSelectedIndex() + baseLevel;
 			
-			unitcontroller.reclass(newJob, newLevel, baseLevel);
+			// save the selected index so that we can retain after we remake jobHistory
+			int tempIndex = jobHistory.getSelectedIndex();
+			
+			unitcontroller.reclass(newJob, newLevel);
 
 			Object[] listData = unitcontroller.getClassArray(baseLevel);
 			jobHistory.setListData(listData);
+			
+			// set the selected index to what we had
+			jobHistory.setSelectedIndex(tempIndex);
 		}
 		
 	}
@@ -829,6 +908,57 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			UnitController unitcontroller = UnitController.getInstance();
+			
+			String promotedJob = promoteBox.getSelectedItem().toString();
+
+			int baseLevel = calculateBaseLevel();
+			
+			// the level we want to promote at is equal to the index selected in the jobHistory + whatever our base level is
+			int newLevel = jobHistory.getSelectedIndex() + baseLevel;
+			
+			// save the selected index so that we can retain after we remake jobHistory
+			int tempIndex = jobHistory.getSelectedIndex();
+			
+			if(newLevel > 9) {
+				// promote
+				unitcontroller.promote(promotedJob, newLevel);
+	
+				Object[] listData = unitcontroller.getClassArray(baseLevel);
+				jobHistory.setListData(listData);
+				
+				// set the selected index to what we had
+				jobHistory.setSelectedIndex(tempIndex);
+				
+				// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
+				String[] possibleLevels = new String[(unitcontroller.getClassHistory().size())];
+				
+				for(int i = 0; i< (possibleLevels.length); i++)
+				{
+					String jobHistoryItemString = (String) jobHistory.getModel().getElementAt(i);
+					String jobHistoryLevel = "";
+					// if it contains parentheses, include the values in the parentheses, which denotes the inner level
+					if(jobHistoryItemString.contains("("))
+					{
+						jobHistoryLevel = jobHistoryItemString.substring(jobHistoryItemString.indexOf('('), jobHistoryItemString.indexOf('.'));
+					}
+					else
+					{
+						// Parse it to only find be the level
+						// This replaces all non-integers in a string with "" and then parses it to an int
+						jobHistoryLevel = jobHistoryItemString.replaceAll("[\\D]", "");	
+					}
+					possibleLevels[i] = jobHistoryLevel;
+				}
+				resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+				inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+				// Once a unit is successfully promoted, disable promoting
+				promoteButton.setEnabled(false);
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(GUI.this, "Units can only promote at level 10 or above.");
+			}
 		}
 		
 	}
@@ -868,11 +998,30 @@ public GUI()
 					//Storing the ChildCharacter, Job, Route, and BaseLevel
 					try
 					{
+						// This next block of code is used to make sure that the user has valid inputs in both parents stat blocks
+						// If they haven't, the try will fail
+						Integer.parseInt(fixedParentHPField.getText());
+						Integer.parseInt(fixedParentStrField.getText());
+						Integer.parseInt(fixedParentMagField.getText());
+						Integer.parseInt(fixedParentSklField.getText());
+						Integer.parseInt(fixedParentSpdField.getText());
+						Integer.parseInt(fixedParentLckField.getText());
+						Integer.parseInt(fixedParentDefField.getText());
+						Integer.parseInt(fixedParentResField.getText());
+						Integer.parseInt(variedParentHPField.getText());
+						Integer.parseInt(variedParentStrField.getText());
+						Integer.parseInt(variedParentMagField.getText());
+						Integer.parseInt(variedParentSklField.getText());
+						Integer.parseInt(variedParentSpdField.getText());
+						Integer.parseInt(variedParentLckField.getText());
+						Integer.parseInt(variedParentDefField.getText());
+						Integer.parseInt(variedParentResField.getText());
+						
 						domain.ChildCharacter tempChildChar;
 						domain.Job tempJob;
 						String tempRoute;
 						int tempStartLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-						ArrayList<String> tempClassHistory;
+						TreeMap<Integer, String> tempClassHistory;
 						
 						// If the current character in unitcontroller is a child && it's the same character as what we selected 
 						// && the character hasn't changed their base level && the result field is not empty (aka it's not the first time creating data)
@@ -892,20 +1041,21 @@ public GUI()
 							tempRoute = inputRouteBox.getSelectedItem().toString();
 							
 							//Making the class history
-							tempClassHistory = new ArrayList<String>();						
-							for(int i = tempStartLevel; i<=tempJob.getMaxStats(0); i++)
+							tempClassHistory = new TreeMap<Integer, String>();						
+							for(int i = tempStartLevel; i<=tempJob.getMaxStats(0) + tempChildChar.getMaxMods(0); i++)
 							{
-								tempClassHistory.add(tempJob.getName());
+								tempClassHistory.put(i, tempJob.getName());
 							}
 						}
 						
+						// Set startLevel to 0 for the parents as the level is not important
 						domain.Unit tempFixedParent = new domain.Unit((domain.Character) data.getCharacters().get(fixedParentNameDisplay.getText()), 
 																		(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
-																		inputRouteBox.getSelectedItem().toString());
+																		inputRouteBox.getSelectedItem().toString(), 0);
 						
 						domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()),
 																		(domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()),
-																		inputRouteBox.getSelectedItem().toString());
+																		inputRouteBox.getSelectedItem().toString(), 0);
 						
 						double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()),
 																		Double.parseDouble(fixedParentStrField.getText()), 
@@ -986,8 +1136,8 @@ public GUI()
 						inputLevelBox.setModel(childStartingLevelBox.getModel());
 						
 						//setting up child level box
-						String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempStartLevel + 1)];
-						for(int i = 0; i<=(tempJob.getMaxStats(0) - tempStartLevel); i++)
+						String[] possibleLevels = new String[(tempJob.getMaxStats(0) + tempChildChar.getMaxMods(0) - tempStartLevel + 1)];
+						for(int i = 0; i<=(tempJob.getMaxStats(0) + tempChildChar.getMaxMods(0) - tempStartLevel); i++)
 						{
 							possibleLevels[i] = (i+tempStartLevel+"");
 						}
@@ -999,6 +1149,11 @@ public GUI()
 						//resultLevelBox.setSelectedIndex(childStartingLevelBox.getSelectedIndex());
 						resultLevelBox.setEnabled(true);
 						
+						reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+						
+						// set up the promote box
+						promoteBox.setModel(new DefaultComboBoxModel(unitcontroller.getCurrentJob().getPromotions()));
+						
 						//Debug print to console
 						System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 						System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
@@ -1008,12 +1163,13 @@ public GUI()
 						{
 							System.out.println(tempClassHistory.get(i));
 						}
+						
+						parentalUnitsPane.dispose();
 					}
-					catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
+					catch(NumberFormatException f)
 					{
-						JOptionPane.showMessageDialog(GUI.this, "Sorry, this character is not implemented yet!", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					parentalUnitsPane.dispose();
 				}
 			}
 		//This handles the close button in the parental units window
@@ -1031,24 +1187,31 @@ public GUI()
 		{
 			if(parentalUnitsPane.isVisible())
 			{
-				DataStorage data = DataStorage.getInstance();
-				domain.Character tempVariedParent = data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString());
-				domain.Job tempVariedParentJob = data.getJobs().get(tempVariedParent.getBaseClass());
-				String tempRoute = inputRouteBox.getSelectedItem().toString();
-				
-				// Set up jobs list
-				variedParentClassDisplay.setModel(new DefaultComboBoxModel(jobs));
-				variedParentClassDisplay.setSelectedIndex(Arrays.asList(jobs).indexOf(tempVariedParentJob.getName()));
-				
-				// Set fields with base stats
-				variedParentHPField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 1));
-				variedParentStrField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 2));
-				variedParentMagField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 3));
-				variedParentSklField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 4));
-				variedParentSpdField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 5));
-				variedParentLckField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 6));
-				variedParentDefField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 7));
-				variedParentResField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 8));
+				try
+				{
+					DataStorage data = DataStorage.getInstance();
+					domain.Character tempVariedParent = data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString());
+					domain.Job tempVariedParentJob = data.getJobs().get(tempVariedParent.getBaseClass());
+					String tempRoute = inputRouteBox.getSelectedItem().toString();
+					
+					// Set up jobs list
+					variedParentClassDisplay.setModel(new DefaultComboBoxModel(jobs));
+					variedParentClassDisplay.setSelectedIndex(Arrays.asList(jobs).indexOf(tempVariedParentJob.getName()));
+					
+					// Set fields with base stats
+					variedParentHPField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 1));
+					variedParentStrField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 2));
+					variedParentMagField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 3));
+					variedParentSklField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 4));
+					variedParentSpdField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 5));
+					variedParentLckField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 6));
+					variedParentDefField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 7));
+					variedParentResField.setText(""+tempVariedParent.getBaseStats().getStats(tempRoute, 8));
+				}
+				catch(NullPointerException exception) //TEMPORARY UNTIL ALL CHARACTERS ARE IMPLEMENTED
+				{
+					JOptionPane.showMessageDialog(GUI.this, "Sorry, this character is not implemented yet!", "Error", JOptionPane.ERROR_MESSAGE);
+				}	
 			}
 		}
 	}
@@ -1057,10 +1220,7 @@ public GUI()
 {
 	public void actionPerformed(ActionEvent e) 
 	{
-		UnitController unitcontroller = UnitController.getInstance();
-		int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-		int baseLevel = calculateBaseLevel();
-		resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
+		resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevelBox.getSelectedIndex()).toString());
 		optionPane.dispose();
 	}
 	
@@ -1072,27 +1232,71 @@ public GUI()
 	{
 		public void actionPerformed(ActionEvent arg0) 
 		{
+			DataStorage data = DataStorage.getInstance();
 			GraphController graphcontroller = GraphController.getInstance();
+			UnitController unitcontroller = UnitController.getInstance();
 			
-			//inputCharBox.setSelectedIndex(1);			
-				clearResults();
-				
-				variedParentHPField.setText("");
-				variedParentStrField.setText("");
-				variedParentMagField.setText("");
-				variedParentSklField.setText("");
-				variedParentSpdField.setText("");
-				variedParentLckField.setText("");
-				variedParentDefField.setText("");
-				variedParentResField.setText("");
-				
-				variedParentNameDisplay.setSelectedIndex(-1);
-				variedParentClassDisplay.removeAllItems();
-				
-				graphcontroller.setDataset(graphcontroller.createDataset());
-				inputLevelBox.setSelectedIndex(0);
-				resultLevelBox.setEnabled(false);
-				graphStatBox.setEnabled(false);
+			int tempLevel = unitcontroller.getStartLevel();
+			domain.Job tempJob = unitcontroller.getCurrentJob();
+			domain.Character tempChar = unitcontroller.getCurrentChar();
+			
+			clearResults();
+			
+			variedParentHPField.setText("");
+			variedParentStrField.setText("");
+			variedParentMagField.setText("");
+			variedParentSklField.setText("");
+			variedParentSpdField.setText("");
+			variedParentLckField.setText("");
+			variedParentDefField.setText("");
+			variedParentResField.setText("");
+			
+			variedParentNameDisplay.setSelectedIndex(-1);
+			variedParentClassDisplay.removeAllItems();
+			
+			graphcontroller.setDataset(graphcontroller.createDataset());
+			
+			//reset promote
+			promoteBox.removeAllItems();
+			// if the current character's base class is not promoted, enable the promote button again
+			if(!data.getJobs().get(tempChar.getBaseClass()).getIsPromoted())
+				promoteButton.setEnabled(true);
+			
+			//Resetting jobHistory
+			TreeMap<Integer, String> tempClassHistory = new TreeMap<Integer, String>();
+
+			
+			for(int i = tempLevel; i<=tempJob.getMaxStats(0) + tempChar.getMaxMods(0); i++)
+			{
+				String input = tempChar.getBaseClass();
+				tempClassHistory.put(i, input);
+			}
+			unitcontroller.setClassHistory(tempClassHistory);
+			
+			//This code will set the level fields and possible classes in the character option windows
+			String[] possibleLevels = new String[(tempJob.getMaxStats(0) + tempChar.getMaxMods(0) - tempLevel + 1)];	
+			for(int i = 0; i<=(tempJob.getMaxStats(0) + tempChar.getMaxMods(0) - tempLevel); i++)
+			{
+				possibleLevels[i] = (i+tempLevel+"");
+			}
+
+			Object[] listData = unitcontroller.getClassArray(unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
+			jobHistory.setListData(listData);
+			jobHistory.setSelectedIndex(0);
+			
+			// reset the level boxes
+			childStartingLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			
+			//inputLevelBox.setSelectedIndex(0);
+			resultLevelBox.setEnabled(false);
+			graphStatBox.setEnabled(false);
+			if(data.getJobs().get(tempChar.getBaseClass()).getIsPromoted())
+				reclassBox.setSelectedIndex(Arrays.asList(promotedJobs).indexOf(tempChar.getBaseClass()));
+			else
+				reclassBox.setSelectedIndex(Arrays.asList(nonpromotedJobs).indexOf(tempChar.getBaseClass()));
+			
 		}	
 	}
 	//This generates the unitSheet and populates the result fields and graph
@@ -1113,8 +1317,7 @@ public GUI()
 			GraphController graphcontroller = GraphController.getInstance();
 			
 			int inputLevel; 	// User input
-			int baseLevel;  	// Starting level of unit
-			int inputJobIndex;	// index of the job in the classhistory
+			//int baseLevel;  	// Starting level of unit
 			
 			// If the Character in UnitController isn't the same as the one they want when they click calculate, 
 			// it's because the user tried to select a child without setting up parents. So give the user a message.
@@ -1123,7 +1326,7 @@ public GUI()
 			if(!unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString()) || 
 					(unitcontroller.getCurrentChar().getIsChild() && unitcontroller.getCurrentChar().getName().equals(inputCharBox.getSelectedItem().toString())
 							&& variedParentNameDisplay.getSelectedIndex() == -1)) {
-				JOptionPane.showMessageDialog(GUI.this, "Please set up Parents in Child Options");
+				JOptionPane.showMessageDialog(GUI.this, "Please input Parents in Child Options");
 			}
 			else {
 				try
@@ -1135,7 +1338,7 @@ public GUI()
 					Spd = Integer.parseInt(inputSpdField.getText());
 					Lck = Integer.parseInt(inputLckField.getText());
 					Def = Integer.parseInt(inputDefField.getText());
-					Res = Integer.parseInt(inputResField.getText());
+					Res = Integer.parseInt(inputResField.getText());					
 				}
 				catch(NumberFormatException f)
 				{
@@ -1147,48 +1350,62 @@ public GUI()
 				// inputJobIndex is always 0 because technically the inputed level for a child character is always the base level (aka index 0)
 				if(unitcontroller.getCurrentChar().getIsChild())
 				{
-					inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
-					inputJobIndex = 0;
+					String currJobInfo = childStartingLevelBox.getSelectedItem().toString();
+					if(currJobInfo.contains("("))
+					{
+						String innerLevel = currJobInfo.substring(currJobInfo.indexOf('(') + 1, currJobInfo.indexOf(')'));
+						inputLevel = Integer.parseInt(innerLevel);
+					}
+					else
+						inputLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
 				}
 				// otherwise the inputLevel is equal to the level selected in the inputLevelBox
 				// otherwise the inputJobIndex is of the index of the inputLevelBox
 				else
 				{
-					inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
-					inputJobIndex = inputLevelBox.getSelectedIndex();
+					String currJobInfo = inputLevelBox.getSelectedItem().toString();
+					if(currJobInfo.contains("("))
+					{
+						String innerLevel = currJobInfo.substring(currJobInfo.indexOf('(') + 1, currJobInfo.indexOf(')'));
+						inputLevel = Integer.parseInt(innerLevel);
+					}
+					else
+						inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
 				}
-				baseLevel = calculateBaseLevel();
 				//inputJobIndex = jobHistory.getSelectedIndex();
 				double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
 				
-				unitcontroller.buildInputUnitSheet(inputLevel, inputStats, inputJobIndex);
-				unitcontroller.buildLocalUnitSheet(inputJobIndex);
+				unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
+				unitcontroller.buildLocalUnitSheet(inputLevel);
 				
-			//UPDATES GRAPH
+				//UPDATES GRAPH
 				int stat = graphStatBox.getSelectedIndex();
 	
 				//Looking for rating
 				if(stat == 8)
 				{
-				double[] LocalStatSpread = unitcontroller.getLocalRating();
-				double[] InputStatSpread = unitcontroller.getInputRating();
-				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel,baseLevel));
+					double[] LocalStatSpread = unitcontroller.getLocalRating();
+					double[] InputStatSpread = unitcontroller.getInputRating();
+					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, inputLevel));
 				}
 				//Looking for normal stats
 				else
 				{
-				double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
-				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel,baseLevel));
-				
+					double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+					double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, inputLevel));
+					
 				}	
 				graphStatBox.setEnabled(true);
 				
-			//UPDATES BOXES			
-				int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-	
+				//UPDATES BOXES
+				ArrayList<domain.Unit> testLocal = unitcontroller.getLocalUnitSheet();
+				ArrayList<domain.Unit> testInput = unitcontroller.getInputUnitSheet();
+				
+				System.out.println("local size: " + testLocal.size() + ", input size: " + testInput.size());
+				
 				double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
-				double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+				double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 				
 				DecimalFormat formatter = new DecimalFormat( "##.##" );
 				resultLevelBox.setEnabled(true);
@@ -1394,6 +1611,14 @@ public GUI()
 			String tempRoute = inputRouteBox.getSelectedItem().toString();
 			int tempLevel = tempChar.getBaseStats().getStats(tempRoute, 0);
 			
+			// set up reclass box
+			if(tempJob.getIsPromoted()) {
+				reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
+			}
+			else {
+				reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+			}
+			
 			//Checks for children and adjusts GUI as necessary
 			if(tempChar.getIsChild() == true)
 			{
@@ -1401,7 +1626,7 @@ public GUI()
 				inputLevelBox.setVisible(false);
 				parentalUnitsButton.setVisible(true);
 				
-				JOptionPane.showMessageDialog(GUI.this, "Please input parents' stats");
+				//JOptionPane.showMessageDialog(GUI.this, "Please input parents' stats");
 				
 				// temp variable for the child
 				domain.ChildCharacter tempChildChar = (domain.ChildCharacter)data.getCharacters().get(inputCharBox.getSelectedItem().toString());
@@ -1429,8 +1654,8 @@ public GUI()
 				variedParentClassDisplay.removeAllItems();
 				
 				//setting up child level box
-				String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempLevel + 1)];	
-				for(int i = 0; i<=(tempJob.getMaxStats(0) - tempLevel); i++)
+				String[] possibleLevels = new String[(tempJob.getMaxStats(0) + tempChar.getMaxMods(0) - tempLevel + 1)];	
+				for(int i = 0; i<=(tempJob.getMaxStats(0) + tempChar.getMaxMods(0) - tempLevel); i++)
 				{
 					possibleLevels[i] = (i+tempLevel+"");
 				}
@@ -1447,19 +1672,18 @@ public GUI()
 				inputLevelBox.setVisible(true);
 				
 				//Making the class history
-				ArrayList<String> tempClassHistory = new ArrayList();
-				int levelMod = 0;
-				for(int i = tempLevel; i<=tempJob.getMaxStats(0); i++)
+				TreeMap<Integer, String> tempClassHistory = new TreeMap<Integer, String>();
+				for(int i = tempLevel; i<=tempJob.getMaxStats(0) + tempChar.getMaxMods(0); i++)
 				{
 					String input = tempChar.getBaseClass();
-					tempClassHistory.add(input);
-					levelMod++;
+					tempClassHistory.put(i, input);
 				}
 						
 				//Update UnitController
 				unitcontroller.setCurrentChar(tempChar);
 				unitcontroller.setCurrentJob(tempJob);
 				unitcontroller.setCurrentRoute(tempRoute);
+				unitcontroller.setStartLevel(tempLevel);
 				unitcontroller.setClassHistory(tempClassHistory);
 				
 				//Sets the stat boxes
@@ -1473,8 +1697,8 @@ public GUI()
 				inputResField.setText(""+tempChar.getBaseStats().getStats(tempRoute, 8));
 				
 				//This code will set the level fields and possible classes in the character option windows
-				String[] possibleLevels = new String[(tempJob.getMaxStats(0) - tempLevel + 1)];	
-				for(int i = 0; i<=(tempJob.getMaxStats(0) - tempLevel); i++)
+				String[] possibleLevels = new String[(tempJob.getMaxStats(0) + tempChar.getMaxMods(0) - tempLevel + 1)];	
+				for(int i = 0; i<=(tempJob.getMaxStats(0) + tempChar.getMaxMods(0) - tempLevel); i++)
 				{
 					possibleLevels[i] = (i+tempLevel+"");
 				}
@@ -1485,14 +1709,22 @@ public GUI()
 
 				inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 				resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+				
+				//set the result display to reflect the level and job highlighted
 				resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
-			
+				
+				// set up the promote box
+				promoteBox.setModel(new DefaultComboBoxModel(unitcontroller.getCurrentJob().getPromotions()));
+				// if the unit is already a promoted unit, then they can't promote
+				if(tempJob.getIsPromoted() || tempJob.getIsSpecial())
+					promoteButton.setEnabled(false);
+				
 				//Debug print to console
 				System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 				System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
 				System.out.println("Base Level: "+ unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(),0));
 				System.out.println("Route: "+unitcontroller.getCurrentRoute());
-				for(int i = 0; i<tempClassHistory.size();i++)
+				for(int i = tempLevel; i<=tempClassHistory.lastKey();i++)
 				{
 					System.out.println(tempClassHistory.get(i));
 				}	
@@ -1512,17 +1744,28 @@ public GUI()
 			DataStorage data = DataStorage.getInstance();
 			UnitController unitcontroller = UnitController.getInstance();
 			
-			int inputLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString()); 
+			// set the result class display
+			// get the string of the selected item
+			String str = inputLevelBox.getSelectedItem().toString();
+			// check if it's a string for a promoted class and thus has the inner level in "(...)"
+			if(str.contains("("))
+				str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+			
+			// set the input level to the inner level
+			int inputLevel = Integer.parseInt(str); 
 			int baseLevel = calculateBaseLevel();
-				
-			resultClassDisplay.setText(jobHistory.getModel().getElementAt(inputLevel-baseLevel).toString());
 			
-			Object[] possibleLevels = new Object[(unitcontroller.getClassHistory().size()) - (inputLevel - baseLevel)];
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(inputLevel - baseLevel).toString());
 			
-			for(int i = 0; i< (possibleLevels.length); i++)
+			// the size of the possible levels are equal to the value of the last key (highest level) - the level the user selects + 1
+			String[] possibleLevels = new String[unitcontroller.getClassHistory().lastKey() - inputLevel + 1];
+			
+			// iterated from the inputLevelBox's selected index to the possibleLevels size + the inputLevelBox's index (to preserve the changed range)
+			for(int i = inputLevelBox.getSelectedIndex(); i< possibleLevels.length + inputLevelBox.getSelectedIndex(); i++)
 			{
-					possibleLevels[i] = inputLevel;
-					inputLevel++;
+				// make sure we start with 0 when filling in possible levels by subtracting the inputLevelBox index
+				// populate it with the values from our selected index to the last item in the list
+				possibleLevels[i - inputLevelBox.getSelectedIndex()] = inputLevelBox.getItemAt(i).toString();
 			}
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}
@@ -1533,15 +1776,23 @@ public GUI()
 		public void actionPerformed(ActionEvent e)
 		{
 			UnitController unitcontroller = UnitController.getInstance();
-			
-			int resultLevel = Integer.parseInt(resultLevelBox.getSelectedItem().toString()); 
-			int baseLevel = calculateBaseLevel();
 
 			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
-			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevel-baseLevel).getBaseStats();
+			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 			
 			DecimalFormat formatter = new DecimalFormat( "##.##" );
-			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel-baseLevel).toString());
+			
+			// set the result class display
+			// get the string of the selected item
+			String str = resultLevelBox.getSelectedItem().toString();
+			// check if it's a string for a promoted class and thus has the inner level in "(...)"
+			if(str.contains("("))
+				str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+						
+			// set the result level to the inner level
+			int resultLevel = Integer.parseInt(str);
+			int baseLevel = calculateBaseLevel();
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - baseLevel).toString());
 
 			resultHPField.setText(formatter.format(inputResults[0]));
 			avgHPField.setText(formatter.format(localResults[0]));

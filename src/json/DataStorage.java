@@ -248,16 +248,20 @@ public class DataStorage implements Serializable{
 			specialClasses = new ArrayList<String>();
 			for(int i = 0; i < jobArray.length; i++) {
 				// fill the specialClasses array
-				if(jobArray[i].getIsSpecial())
+				// also add special classes to both the promoted and nonpromoted arrays
+				if(jobArray[i].getIsSpecial()) {
 					specialClasses.add(jobArray[i].getName());
-				jobs.put(jobArray[i].getName(), jobArray[i]);
-				jobNames.add(jobArray[i].getName());
-				if(jobArray[i].getIsPromoted()) {
+					promotedJobNames.add(jobArray[i].getName());
+					nonpromotedJobNames.add(jobArray[i].getName());
+				}
+				else if(jobArray[i].getIsPromoted()) {
 					promotedJobNames.add(jobArray[i].getName());
 				}
 				else {
 					nonpromotedJobNames.add(jobArray[i].getName());
 				}
+				jobs.put(jobArray[i].getName(), jobArray[i]);
+				jobNames.add(jobArray[i].getName());
 			}
 			// Sort all job names alphabetically
 			Collections.sort(jobNames);

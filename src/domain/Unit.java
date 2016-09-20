@@ -27,12 +27,12 @@ public class Unit {
 	private String myBane;
 	
 	// Constructor for a Parent Unit (non Avatar)
-	public Unit(Character inputCharacter, Job inputJob, String inputRoute)
+	public Unit(Character inputCharacter, Job inputJob, String inputRoute, int startLevel)
 	{
 		myCharacter = inputCharacter;
 		myJob = inputJob;
 		route = inputRoute;
-		level = inputCharacter.getBaseStats().getStats(route, 0);
+		level = startLevel;
 		
 		calculateBaseStats();
 		calculateGrowths();
@@ -40,12 +40,12 @@ public class Unit {
 	}
 	
 	// Constructor for a Avatar Unit
-	public Unit(Avatar inputCharacter, Job inputJob, String inputRoute, String boon, String bane)
+	public Unit(Avatar inputCharacter, Job inputJob, String inputRoute, String boon, String bane, int startLevel)
 	{
 		myCharacter = inputCharacter;
 		myJob = inputJob;
 		route = inputRoute;
-		level = inputCharacter.getBaseStats().getStats(route, 0);
+		level = startLevel;
 		myBoon = boon;
 		myBane = bane;
 		
