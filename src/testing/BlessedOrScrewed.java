@@ -13,7 +13,6 @@ public class BlessedOrScrewed {
 		// ALWAYS PARSE FILES FIRST BEFORE DOING ANYTHING ELSE
 		data.ParseJsonCharacters();
 		data.ParseJsonJobs();
-		data.InitializeBoonsAndBanes();
 		
 		System.out.println("ALL CHARACTERS: ");
 		data.printAllCharacters();
@@ -89,8 +88,8 @@ public class BlessedOrScrewed {
 		int startLevel = 20;
 		double[] fixedParentStats = {27,11,14,13,20,20,12,8};
 		double[] variedParentStats = {18,17,5,26,25,17,7,13};
-		Unit fixedParent = new Unit(data.getCharacters().get("Hayato"), data.getJobs().get("Diviner"), "Birthright");
-		Unit variedParentAzura = new Unit(data.getCharacters().get("Azura"), data.getJobs().get("Songstress"), "Birthright");
+		Unit fixedParent = new Unit(data.getCharacters().get("Hayato"), data.getJobs().get("Diviner"), "Birthright", 0);
+		Unit variedParentAzura = new Unit(data.getCharacters().get("Azura"), data.getJobs().get("Songstress"), "Birthright", 0);
 		
 		Unit tempUnit = new Unit(tempC, data.getJobs().get("Diviner"), "Birthright", fixedParentStats, fixedParent, variedParentStats, variedParentAzura, startLevel);
 		Unit variedParentRhajat = tempUnit;	// This is being done for the Kana test, not for testing Rhajat
@@ -102,15 +101,15 @@ public class BlessedOrScrewed {
 		startLevel = 10;
 		fixedParentStats = new double[] {22, 11, 0, 9, 8, 7, 10, 5};
 		variedParentStats = new double[] {16, 5, 2, 8, 8, 6, 4, 7};
-		fixedParent = new Unit(data.getCharacters().get("Silas"), data.getJobs().get("Cavalier"), "Conquest");
-		variedParentAzura = new Unit(data.getCharacters().get("Azura"), data.getJobs().get("Songstress"), "Conquest");
+		fixedParent = new Unit(data.getCharacters().get("Silas"), data.getJobs().get("Cavalier"), "Conquest", 0);
+		variedParentAzura = new Unit(data.getCharacters().get("Azura"), data.getJobs().get("Songstress"), "Conquest", 0);
 		tempUnit = new Unit(tempC, data.getJobs().get("Cavalier"), "Conquest", fixedParentStats, fixedParent, variedParentStats, variedParentAzura, startLevel);
 		tempUnit.printUnit();
 		System.out.println();
 		
 		System.out.println("NYX!SOPHIE");
 		variedParentStats = new double[] {20, 1, 12, 5, 11, 3, 4, 8};
-		Unit variedParentNyx = new Unit(data.getCharacters().get("Nyx"), data.getJobs().get("Dark Mage"), "Conquest");
+		Unit variedParentNyx = new Unit(data.getCharacters().get("Nyx"), data.getJobs().get("Dark Mage"), "Conquest", 0);
 		tempUnit = new Unit(tempC, data.getJobs().get("Cavalier"), "Conquest", fixedParentStats, fixedParent, variedParentStats, variedParentNyx, startLevel);
 		tempUnit.printUnit();
 		System.out.println();
