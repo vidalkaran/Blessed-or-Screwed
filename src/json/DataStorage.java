@@ -43,11 +43,14 @@ public class DataStorage implements Serializable{
 		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
 	}
 	
+	public static final int BASE_MAX_LEVEL = 20;
+	public static final int SPECIAL_MAX_LEVEL = 40;
+	
 	private static DataStorage instance = null;	// DataStorage singleton instance	
 	
 	// Arrays to hold the names of all of the possible boons and banes. These are final because they will never change
 	private final String[] BOONS = {"Robust (HP)", "Strong (Str)", "Clever (Mag)", "Deft (Skl)", "Quick (Spd)", "Lucky (Lck)", "Sturdy (Def)", "Calm (Res)"}; 
-	private final String[] BANES = {"Sickly (HP)", "Weak  (Str)", "Dull (Mag)", "Clumsy (Skl)", "Slow (Spd)", "Unlucky (Lck)", "Fragile (Def)", "Excitable (Res)"}; 
+	private final String[] BANES = {"Sickly (HP)", "Weak  (Str)", "Dull (Mag)", "Clumsy (Skl)", "Slow (Spd)", "Unlucky (Lck)", "Fragile (Def)", "Excitable (Res)"};
 	
 	private Map<String, Character> characters;			// Map for storing all characters. <key, value> = <character name, Character object>
 	private ArrayList<String> conquestCharacters;		// ArrayList to hold all characters in the Conquest route
@@ -247,13 +250,24 @@ public class DataStorage implements Serializable{
 			nonpromotedJobNames = new ArrayList<String>();
 			specialClasses = new ArrayList<String>();
 			for(int i = 0; i < jobArray.length; i++) {
-				// fill the specialClasses array
-				// also add special classes to both the promoted and nonpromoted arrays
+				// handle special classes first
 				if(jobArray[i].getIsSpecial()) {
+					// add special classes to the special classes array
 					specialClasses.add(jobArray[i].getName());
-					promotedJobNames.add(jobArray[i].getName());
-					nonpromotedJobNames.add(jobArray[i].getName());
+					// if the special class is a class with a max level of 40, add it to both the promoted and nonpromoted arrays
+					if(jobArray[i].getMaxStats(0) == 40) {
+						promotedJobNames.add(jobArray[i].getName());
+						nonpromotedJobNames.add(jobArray[i].getName());
+					}
+					// otherwise add them to the appropriate array depending on if they're promoted or nonpromoted
+					else if(jobArray[i].getIsPromoted()) {
+						promotedJobNames.add(jobArray[i].getName());
+					}
+					else {
+						nonpromotedJobNames.add(jobArray[i].getName());
+					}
 				}
+				// add all remaining jobs to the appropriate array depending on if they're promoted or nonpromoted
 				else if(jobArray[i].getIsPromoted()) {
 					promotedJobNames.add(jobArray[i].getName());
 				}
