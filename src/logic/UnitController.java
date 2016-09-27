@@ -191,7 +191,7 @@ public class UnitController {
 
 	}
 	
-	// THIS NEEDS TO BE MODIFIED TO NOT OVERWRITE OTHER RECLASSES
+	// SHOULD BE CHANGED TO ALLOW A RECLASSING RANGE WHEN THAT IS IMPLEMENTED
 	// Method for reclassing, only affects jobHistory
 	// @Params
 	// newJob - the job we want to reclass to
@@ -203,10 +203,6 @@ public class UnitController {
 		// change all levels from the one we reclassed to the last in the classHistory
 		// do not override promoted levels
 		for (int i = changeLevel; i <= classHistory.lastKey(); i++) {
-			// check to see if we hit a promoted level while changing a non promoted job
-			//if(!tempNewJob.getIsPromoted() && data.getJobs().get(classHistory.get(i)).getIsPromoted() && 
-				//	(!tempNewJob.getIsSpecial() || (tempNewJob.getIsSpecial() && tempNewJob.getMaxStats(0) != data.SPECIAL_MAX_LEVEL)))
-			
 			// if we hit a different job from the one we're reclassing from, stop reclassing
 			if(!tempOldJob.getName().equals(classHistory.get(i)))
 				break;
@@ -221,6 +217,7 @@ public class UnitController {
 		}
 	}
 	
+	// Promotes a units to the promoted job starting at the user-indicated level (changeLevel)
 	public void promote(String promotedJob, int changeLevel) {
 		// remove the classes from the end of classHistory to the index the user is promoting at, including the index itself
 		for (int i = classHistory.lastKey(); i > changeLevel; i--) {
@@ -235,6 +232,7 @@ public class UnitController {
 		}
 	}
 	
+	// Handles eternal seals by adding levels to the end equal to levelsToAdd
 	public void eternalSeal(int levelsToAdd) {
 		String lastJobName = classHistory.get(classHistory.lastKey());
 		int lastLevel = classHistory.lastKey();
@@ -247,6 +245,7 @@ public class UnitController {
 		}
 	}
 	
+	// Formats the classHistory to how it should be displayed
 	public String[] getFormattedClassHistory() {
 		String[] newClassHistory = new String[classHistory.size()];
 		boolean tempIsPromoted;
@@ -262,10 +261,12 @@ public class UnitController {
 			int tempIndex = i-startLevel;	// Used to start at 0 for the newClassHistory array
 			tempJob = data.getJobs().get(classHistory.get(i));
 			tempIsPromoted = tempJob.getIsPromoted();
-	
 			// checks to see if the unit is a promoted unit so it displays the inner level with the non-inner level
-			// do some extra checks for special class (aka if it's a special class without a level 40 cap
-			if(((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.BASE_MAX_LEVEL) || !tempJob.getIsSpecial()) && i > data.BASE_MAX_LEVEL)
+			// do some extra checks for special class (aka if it's a special class without a level 40 cap)
+			// then do some extra checks for Felicia and Jakob because they will not have their first twenty levels as inner levels
+			if(((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.BASE_MAX_LEVEL) || !tempJob.getIsSpecial()) && tempJob.getIsPromoted() && 
+					((!currentChar.getName().contains("Felicia") && !currentChar.getName().contains("Jakob")) ||
+					(currentChar.getName().contains("Felicia") || currentChar.getName().contains("Jakob") && i > data.BASE_MAX_LEVEL)))
 			{
 				newClassHistory[tempIndex] = "Lvl (" + i + ") " + promotedLevel + ". " + classHistory.get(i);
 			}
@@ -276,7 +277,9 @@ public class UnitController {
 			// if the current job is a promoted one OR if the top is special, has a max level of 40 and we're above level 20 (aka dealing with promoted jobs)
 			// then increase promoted level by 1
 			// This ensures that reclassing from a special 40-max-level job to a non-special promoted job will display correctly
-			if(promotedLevel < data.DISPLAY_MAX_LEVEL && (tempIsPromoted || (tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) && i > data.BASE_MAX_LEVEL)) {
+			// Also account for the special case that that the unit is Felicia or Jakob, who both always have the promotedLevel increased
+			if(promotedLevel < data.DISPLAY_MAX_LEVEL && ((tempIsPromoted || (tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) && i > data.BASE_MAX_LEVEL) || 
+				(currentChar.getName().contains("Felicia") || currentChar.getName().contains("Jakob")))) {
 				promotedLevel++;
 			}
 		}

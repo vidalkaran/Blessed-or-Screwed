@@ -846,14 +846,19 @@ public GUI()
 				index = reclassBox.getSelectedIndex();
 				
 				// reset the reclass box to show promoted or non-promoted jobs (including any valid specials classes)
-				if(tempJob.getIsSpecial() && tempLevel <= data.BASE_MAX_LEVEL)
-					reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
-				else if(tempJob.getIsSpecial() && tempLevel > data.BASE_MAX_LEVEL)
+				// Felicia and Jakob are special cases. They can never be nonpromoted jobs so their reclass boxes are always promotedJobs
+				if(unitcontroller.getCurrentChar().getName().contains("Felicia") || unitcontroller.getCurrentChar().getName().contains("Jakob"))
 					reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
-				else if(tempJob.getIsPromoted())
-					reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
-				else
-					reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+				else {
+					if(tempJob.getIsSpecial() && tempLevel <= data.BASE_MAX_LEVEL)
+						reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+					else if(tempJob.getIsSpecial() && tempLevel > data.BASE_MAX_LEVEL)
+						reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
+					else if(tempJob.getIsPromoted())
+						reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
+					else
+						reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
+				}
 				
 				// try to set the reclassBox's index. If the index is out of bounds, do nothing (it should default to 0)
 				try { reclassBox.setSelectedIndex(index); }
