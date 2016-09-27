@@ -4,6 +4,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 import com.rits.cloning.Cloner;
 import domain.Unit;
 import json.DataStorage;
@@ -30,14 +31,16 @@ public class UnitController {
 	public Character currentChar;
 	public Job currentJob;
 	public String currentRoute;
-	public ArrayList<String> classHistory; // this is shared between the
+	// classHistory hold's a unit's history of its jobs at each level
+	// the key for classHistory is the unit's level and the value is the name of the job at the key's level
+	public TreeMap<Integer, String> classHistory; // this is shared between the
 											// localUnitSheet and
 											// inputUnitSheet.
 	public Unit fixedParent;
 	public Unit variedParent;
 	public double[] fixedParentInputStats;
 	public double[] variedParentInputStats;
-	public int startLevel;
+	public int startLevel;					// This is the unit's first level it starts at as an inner level (so promoted units will have +20 to this)
 
 	// prevents instantiation
 	private UnitController() {
@@ -54,9 +57,9 @@ public class UnitController {
 	}
 
 	// BUILDS A LOCALUNITSHEET
-	public void buildLocalUnitSheet(int inputJobIndex) {
-		Job newJob = data.getJobs().get(classHistory.get(inputJobIndex));
-		System.out.println("InitialJob " + newJob.getName());
+	public void buildLocalUnitSheet(int inputLevel) {
+		Job newJob = data.getJobs().get(classHistory.get(inputLevel));
+		//System.out.println("InitialJob " + newJob.getName());
 
 		// Creating the unit
 		Unit localUnit;
@@ -64,19 +67,19 @@ public class UnitController {
 			localUnit = new Unit((ChildCharacter) currentChar, newJob, currentRoute, fixedParentInputStats, fixedParent,
 					variedParentInputStats, variedParent, startLevel);
 		} else {
-			localUnit = new Unit(currentChar, newJob, currentRoute);
+			localUnit = new Unit(currentChar, newJob, currentRoute, inputLevel);
 		}
 		// Making the unitSheet
 		localUnitSheet.clear();
-		buildSheet(localUnit, classHistory, localUnitSheet, 0);
+		buildSheet(localUnit, classHistory, localUnitSheet, inputLevel);
 	}
 
 	// BUILDS A INPUTUNITSHEET
-	public void buildInputUnitSheet(int inputLevel, double[] inputStats, int inputJobIndex) {
-		ArrayList<String> inputClassHistory = new ArrayList<String>();
+	public void buildInputUnitSheet(int inputLevel, double[] inputStats) {
+		TreeMap<Integer, String> inputClassHistory = new TreeMap<Integer, String>();
 
-		Job newJob = data.getJobs().get(classHistory.get(inputJobIndex));
-		System.out.println("InitialJob " + newJob.getName());
+		Job newJob = data.getJobs().get(classHistory.get(inputLevel));
+		//System.out.println("InitialJob " + newJob.getName());
 
 		// setting the base level
 		int baseLevel;
@@ -85,12 +88,19 @@ public class UnitController {
 		} else {
 			baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
 		}
-
+		
+		boolean tempIsPromoted = newJob.getIsPromoted();
+		String baseJobName = currentChar.getBaseClass();
+		int promotedLevel = 1;	// Used to set levels of a user-promoted unit in the jobHistory in the GUI from 1 - job's max level
+		if(tempIsPromoted && !baseJobName.equals(newJob.getName())) {
+			
+		}
+		
 		// Creating a temporary job history array to match the level of the
 		// inputUnit(Ignoring the previous levels)
 		int levelMod = inputLevel - baseLevel;
-		for (int i = 0; i < classHistory.size() - levelMod; i++) {
-			inputClassHistory.add(classHistory.get(i + levelMod));
+		for (int i = inputLevel; i <= classHistory.lastKey(); i++) {
+			inputClassHistory.put(i, classHistory.get(i));
 		}
 
 		// Making the unit
@@ -99,7 +109,7 @@ public class UnitController {
 			inputUnit = new Unit((ChildCharacter) currentChar, newJob, currentRoute, fixedParentInputStats, fixedParent,
 					variedParentInputStats, variedParent, startLevel);
 		} else {
-			inputUnit = new Unit(currentChar, newJob, currentRoute);
+			inputUnit = new Unit(currentChar, newJob, currentRoute, inputLevel);
 		}
 
 		// Correcting the unit's stats in accordance to input
@@ -108,26 +118,29 @@ public class UnitController {
 
 		// Making the unitSheet
 		inputUnitSheet.clear();
-		buildSheet(inputUnit, inputClassHistory, inputUnitSheet, 0);
+		buildSheet(inputUnit, inputClassHistory, inputUnitSheet, inputLevel);
 	}
 
 	// =================================================================THIS IS
 	// THE MATH ZONE. BEWARE
 
 	// RECURSION WHAT :O
-	public void buildSheet(Unit unit, ArrayList<String> inputClassHistory, ArrayList<Unit> inputSheet, int i) {
+	public void buildSheet(Unit unit, TreeMap<Integer, String> inputClassHistory, ArrayList<Unit> inputSheet, int i) {
 		Cloner cloner = new Cloner();
 		Unit newUnit = cloner.deepClone(unit); // this is the deep clone.
 
-		if (i == inputClassHistory.size()) // ends recursion
+		if (i > inputClassHistory.lastKey()) // ends recursion
 		{
+			// do nothing
 			System.out.println("Complete");
-		} else if (i == 0) // adds an initial base unit if list is empty
+		} 
+		else if (i == inputClassHistory.firstKey()) // adds an initial base unit if list is empty
 		{
 			inputSheet.add(newUnit);
 			i++;
 			buildSheet(newUnit, inputClassHistory, inputSheet, i);
-		} else // Leveling up the new Unit
+		} 
+		else // Leveling up the new Unit
 		{
 			// Handle reclassing
 			if (inputClassHistory.get(i).equals(unit.getMyJob().getName()) != true) {
@@ -177,29 +190,91 @@ public class UnitController {
 		}
 
 	}
-
+	
+	// THIS NEEDS TO BE MODIFIED TO NOT OVERWRITE OTHER RECLASSES
 	// Method for reclassing, only affects jobHistory
 	// @Params
 	// newJob - the job we want to reclass to
 	// changeLevel - the level we're reclassing at
-	// baseLevel - the character's base level
-	public void reclass(String newJob, int changeLevel, int baseLevel) {
-		int levelVector = changeLevel - baseLevel;
-
-		// we cannot have a negative level difference
-		if (levelVector < 0) {
-			levelVector = 0;
+	public void reclass(String newJob, int changeLevel) {
+		Job tempNewJob = data.getJobs().get(newJob);						// the new job
+		Job tempOldJob = data.getJobs().get(classHistory.get(changeLevel));	// the old job
+		
+		// change all levels from the one we reclassed to the last in the classHistory
+		// do not override promoted levels
+		for (int i = changeLevel; i <= classHistory.lastKey(); i++) {
+			// check to see if we hit a promoted level while changing a non promoted job
+			//if(!tempNewJob.getIsPromoted() && data.getJobs().get(classHistory.get(i)).getIsPromoted() && 
+				//	(!tempNewJob.getIsSpecial() || (tempNewJob.getIsSpecial() && tempNewJob.getMaxStats(0) != data.SPECIAL_MAX_LEVEL)))
+			
+			// if we hit a different job from the one we're reclassing from, stop reclassing
+			if(!tempOldJob.getName().equals(classHistory.get(i)))
+				break;
+			classHistory.put(i, newJob);
 		}
-
-		for (int i = 0; i < (classHistory.size() - levelVector); i++) {
-			classHistory.set((levelVector + i), newJob);
+		
+		// if we're reclassing to a special class and we don't have the minimum number of values, add until we do
+		if(tempNewJob.getIsSpecial() && classHistory.lastKey() < tempNewJob.getMaxStats(0)) {
+			for (int i = classHistory.lastKey() + 1; i <= tempNewJob.getMaxStats(0); i++) {
+				classHistory.put(i, newJob);
+			}
 		}
 	}
-
+	
+	public void promote(String promotedJob, int changeLevel) {
+		// remove the classes from the end of classHistory to the index the user is promoting at, including the index itself
+		for (int i = classHistory.lastKey(); i > changeLevel; i--) {
+			classHistory.remove(i);
+		}
+		
+		int maxLevel = data.getJobs().get(promotedJob).getMaxStats(0);
+		int tempLastKey = classHistory.lastKey();	// get the current last key for calculations (lest we end up in an infinite loop if we use classHistory.lastKey())
+		// Add the promoted job to classHistory a number of levels equal to its max stats
+		for (int i = classHistory.lastKey() + 1; i < tempLastKey + 1 + maxLevel; i++) {
+			classHistory.put(i, promotedJob);
+		}
+	}
+	
+	public String[] getFormattedClassHistory() {
+		String[] newClassHistory = new String[classHistory.size()];
+		boolean tempIsPromoted;
+		Job tempJob;
+		String baseJobName = currentChar.getBaseClass();
+		
+		// Used to set levels of a user-promoted unit in the jobHistory in the GUI from
+		// 1 - job's max level if the unit is not a prepromoted unit or from the unit's base level - job's max level if the unit is prepromoted
+		int promotedLevel = data.getJobs().get(baseJobName).getIsPromoted() ? currentChar.getBaseStats().getStats(currentRoute, 0) : 1;
+		
+		// iterate from the base level to the last key in the classhistory
+		for (int i = startLevel; i <= classHistory.lastKey(); i++) {
+			int tempIndex = i-startLevel;	// Used to start at 0 for the newClassHistory array
+			tempJob = data.getJobs().get(classHistory.get(i));
+			tempIsPromoted = tempJob.getIsPromoted();
+	
+			// checks to see if the unit is a promoted unit so it displays the inner level with the non-inner level
+			// do some extra checks for special class (aka if it's a special class without a level 40 cap
+			if(((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.BASE_MAX_LEVEL) || !tempJob.getIsSpecial()) && i > data.BASE_MAX_LEVEL)
+			{
+				newClassHistory[tempIndex] = "Lvl (" + i + ") " + promotedLevel + ". " + classHistory.get(i);
+			}
+			// if the unit isn't promoted, then the levels range from the base level of the unit to the max level of the job
+			else
+				newClassHistory[tempIndex] = "Lvl " + i + ". " + classHistory.get(i);
+			
+			// if the current job is a promoted one OR if the top is special, has a max level of 40 and we're above level 20 (aka dealing with promoted jobs)
+			// then increase promoted level by 1
+			// This ensures that reclassing from a special 40-max-level job to a non-special promoted job will display correctly
+			if(tempIsPromoted || (tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) && i > data.BASE_MAX_LEVEL) {
+				promotedLevel++;
+			}
+		}
+		return newClassHistory;
+	}
+	
 	// ===========================================================STUFF FOR GUI
 	// AND TESTING
 
-	// This returns an of stats from the local sheet
+	// This returns an array of stats from the local sheet
 	// REFERENCE: 0=HP, 1=STR, 2=MAG, 3=SPD, 4=SKL, 5=LUK, 6=DEF, 7=RES
 	public double[] getLocalStatSpread(int stat) {
 		double[] output = new double[localUnitSheet.size()];
@@ -316,19 +391,15 @@ public class UnitController {
 		this.currentRoute = currentRoute;
 	}
 
-	public ArrayList<String> getClassHistory() {
+	public TreeMap<Integer, String> getClassHistory() {
 		return classHistory;
 	}
-
-	public String[] getClassArray(int baseLevel) {
-		String[] newClassHistory = new String[classHistory.size()];
-		for (int i = 0; i < classHistory.size(); i++) {
-			newClassHistory[i] = "Lvl " + (baseLevel + i) + ". " + classHistory.get(i);
-		}
-		return newClassHistory;
+	
+	public String getClassHistoryValueByKey(int key) {
+		return classHistory.get(key);
 	}
 
-	public void setClassHistory(ArrayList<String> classHistory) {
+	public void setClassHistory(TreeMap<Integer, String> classHistory) {
 		this.classHistory = classHistory;
 	}
 
