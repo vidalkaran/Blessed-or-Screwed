@@ -832,59 +832,46 @@ public GUI()
 				String jobHistoryLevel;
 				// if it contains parentheses, get the value in between the parentheses, which is the inner level
 				if(jobHistoryItemString.contains("("))
-				{
-					jobHistoryLevel = jobHistoryItemString.substring(jobHistoryItemString.indexOf('(') + 1, jobHistoryItemString.indexOf(')'));;
-				}
+					jobHistoryLevel = jobHistoryItemString.substring(jobHistoryItemString.indexOf('(') + 1, jobHistoryItemString.indexOf(')'));
 				else
-				{
 					// Parse it to only find be the level
 					// This replaces all non-integers in a string with "" and then parses it to an int
 					jobHistoryLevel = jobHistoryItemString.replaceAll("[\\D]", "");	
-				}
 				
 				// get the currently selected job and level
 				domain.Job tempJob = data.getJobs().get(jobNameSubstring);
 				int tempLevel = Integer.parseInt(jobHistoryLevel);
 				
 				// get the selected index of the reclass box to retain it when the reclassBox's data is changed
-				int tempIndex = reclassBox.getSelectedIndex();
+				index = reclassBox.getSelectedIndex();
 				
 				// reset the reclass box to show promoted or non-promoted jobs (including any valid specials classes)
 				if(tempJob.getIsSpecial() && tempLevel <= data.BASE_MAX_LEVEL)
-				{
 					reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
-				}
-				else if(tempJob.getIsSpecial() && tempLevel > data.BASE_MAX_LEVEL) {
+				else if(tempJob.getIsSpecial() && tempLevel > data.BASE_MAX_LEVEL)
 					reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
-				}
-				else if(tempJob.getIsPromoted()) {
+				else if(tempJob.getIsPromoted())
 					reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
-				}
-				else {
+				else
 					reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
-				}
 				
 				// try to set the reclassBox's index. If the index is out of bounds, do nothing (it should default to 0)
-				try {
-					reclassBox.setSelectedIndex(tempIndex);
-				}
+				try { reclassBox.setSelectedIndex(index); }
 				catch (IndexOutOfBoundsException exception) {}
 				
 				// Change the promote box to show the correct promotions
 				// get the promoteBox's currently selected index for retainment
-				tempIndex = promoteBox.getSelectedIndex();
+				index = promoteBox.getSelectedIndex();
 				promoteBox.setModel(new DefaultComboBoxModel(data.getJobs().get(jobNameSubstring).getPromotions()));
 				// try to set the promoteBox's index. Only attempt this is the index > -1 (which is the default for "no item selected")
-				if(tempIndex > -1){ 
+				if(index > -1){ 
 					// First check if the promoteBox is empty,
 					// which will throw an IllegalArgumentException as setSelectedIndex(x) cannot be called from an empty JComboBox
 					// If the promoteBox is empty do nothing
 					try {
 						// Then actually try to set the promoteBox's empty. If the index is out of bounds, do nothing (it should default to 0)
 						// This is just a precaution as the exception here should never be thrown for any class with promotions has exactly 2 promotions
-						try {
-								promoteBox.setSelectedIndex(tempIndex);
-						}
+						try { promoteBox.setSelectedIndex(index); }
 						catch (IndexOutOfBoundsException exception) {}
 					}
 					catch (IllegalArgumentException exception) {}
@@ -900,13 +887,16 @@ public GUI()
 				//		The job is a special class that has a max level of 40 OR
 				//		The Job is a promoted job OR
 				//		The current level selected is less than 10 (cannot promoted below level 10)
-				if((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) || tempJob.getIsPromoted() || tempLevel < 10) {
+				if((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) || tempJob.getIsPromoted() || tempLevel < 10)
 					promoteButton.setEnabled(false);
-				}
 				else
-				{
 					promoteButton.setEnabled(true);
-				}
+				
+				
+				if((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) || tempJob.getIsPromoted())
+					eternalSealButton.setEnabled(true);
+				else
+					eternalSealButton.setEnabled(false);
 			}
 		}
 	}
@@ -965,37 +955,64 @@ public GUI()
 			// save the selected index so that we can retain after we remake jobHistory
 			int tempIndex = jobHistory.getSelectedIndex();
 			
-			// THIS CHECK SHOULD NO LONGER BE NECESSARY DUE TO THE CHECKS IN JOBHISTORYLISTHANDLER
-			if(newLevel > 9) {
-				// promote
-				unitcontroller.promote(promotedJob, newLevel);
-	
-				Object[] listData = unitcontroller.getFormattedClassHistory();
-				jobHistory.setListData(listData);
-				
-				// set the selected index to what we had
-				jobHistory.setSelectedIndex(tempIndex);
-				
-				// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
-				String[] possibleLevels = setUpPossibleLevels(listData);
-				
-				resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-				inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-				// Once a unit is successfully promoted, disable promoting
-				promoteButton.setEnabled(false);
-			}
-			else
-			{
-				JOptionPane.showMessageDialog(GUI.this, "Units can only promote at level 10 or above.");
-			}
+			// promote
+			unitcontroller.promote(promotedJob, newLevel);
+			
+			// update the jobHistory
+			Object[] listData = unitcontroller.getFormattedClassHistory();
+			jobHistory.setListData(listData);
+			
+			// set the selected index to what we had
+			jobHistory.setSelectedIndex(tempIndex);
+			
+			// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
+			String[] possibleLevels = setUpPossibleLevels(listData);
+			
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			// Once a unit is successfully promoted, disable promoting
+			promoteButton.setEnabled(false);
 		}
 		
 	}
-	//This handles the Eternal Seal button in the options window (NOT IMPLEMENTED YET)
+	//This handles the Eternal Seal button in the options window
 	public class EternalSealButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			UnitController unitcontroller = UnitController.getInstance();
+			int amount;
+			
+			// get the item in the eternalSealBox and remove any non-numbers
+			String item = eternalSealBox.getSelectedItem().toString();
+			item = item.replaceAll("[\\D]", "");
+			// If the result is a number, then set amount to that
+			try {
+				amount = Integer.parseInt(item);
+			}
+			// If the result is not a number, then that means the user selected max
+			catch (NumberFormatException exception){
+				amount = DataStorage.ETERNAL_SEAL_CAP;
+			}
+			
+			// Apply the eternal seal
+			unitcontroller.eternalSeal(amount);
+			
+			// save the selected index so that we can retain after we remake jobHistory
+			int index = jobHistory.getSelectedIndex();
+			
+			// update the jobHistory
+			Object[] listData = unitcontroller.getFormattedClassHistory();
+			jobHistory.setListData(listData);
+			
+			// set the selected index to what we had
+			jobHistory.setSelectedIndex(index);
+			
+			// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
+			String[] possibleLevels = setUpPossibleLevels(listData);
+			
+			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 		}
 		
 	}
@@ -1326,14 +1343,16 @@ public GUI()
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			
-			//inputLevelBox.setSelectedIndex(0);
 			resultLevelBox.setEnabled(false);
 			graphStatBox.setEnabled(false);
+			// Reset the reclass box
 			if(data.getJobs().get(tempChar.getBaseClass()).getIsPromoted())
 				reclassBox.setSelectedIndex(Arrays.asList(promotedJobs).indexOf(tempChar.getBaseClass()));
 			else
 				reclassBox.setSelectedIndex(Arrays.asList(nonpromotedJobs).indexOf(tempChar.getBaseClass()));
 			
+			// Reset the eternal seal box
+			eternalSealBox.setSelectedIndex(0);
 		}	
 	}
 	//This generates the unitSheet and populates the result fields and graph
@@ -1652,7 +1671,8 @@ public GUI()
 			// set up reclass box
 			if(tempJob.getIsPromoted()) {
 				reclassBox.setModel(new DefaultComboBoxModel(promotedJobs));
-				prepromoteModifier = data.BASE_MAX_LEVEL;
+				if(!tempChar.getName().contains("Jakob") && !tempChar.getName().contains("Felicia"))
+					prepromoteModifier = data.BASE_MAX_LEVEL;
 			}
 			else {
 				reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));

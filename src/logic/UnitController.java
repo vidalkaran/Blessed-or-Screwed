@@ -235,6 +235,18 @@ public class UnitController {
 		}
 	}
 	
+	public void eternalSeal(int levelsToAdd) {
+		String lastJobName = classHistory.get(classHistory.lastKey());
+		int lastLevel = classHistory.lastKey();
+		
+		for(int i = lastLevel + 1; i < lastLevel + levelsToAdd + 1; i++) {
+			// Make sure we don't add more levels than our cap
+			if(i > data.ETERNAL_SEAL_CAP)
+				break;
+			classHistory.put(i, lastJobName);
+		}
+	}
+	
 	public String[] getFormattedClassHistory() {
 		String[] newClassHistory = new String[classHistory.size()];
 		boolean tempIsPromoted;
@@ -264,7 +276,7 @@ public class UnitController {
 			// if the current job is a promoted one OR if the top is special, has a max level of 40 and we're above level 20 (aka dealing with promoted jobs)
 			// then increase promoted level by 1
 			// This ensures that reclassing from a special 40-max-level job to a non-special promoted job will display correctly
-			if(tempIsPromoted || (tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) && i > data.BASE_MAX_LEVEL) {
+			if(promotedLevel < data.DISPLAY_MAX_LEVEL && (tempIsPromoted || (tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.SPECIAL_MAX_LEVEL) && i > data.BASE_MAX_LEVEL)) {
 				promotedLevel++;
 			}
 		}
