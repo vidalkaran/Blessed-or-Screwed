@@ -43,8 +43,10 @@ public class DataStorage implements Serializable{
 		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
 	}
 	
-	public static final int BASE_MAX_LEVEL = 20;
-	public static final int SPECIAL_MAX_LEVEL = 40;
+	public static final int BASE_MAX_LEVEL = 20;		// The max level of a normal class
+	public static final int SPECIAL_MAX_LEVEL = 40;		// The max level of a special level capped class
+	public static final int ETERNAL_SEAL_CAP = 150;		// Arbitrary cap for eternal seals
+	public static final int DISPLAY_MAX_LEVEL = 99;		// THe max level that can be displayed in Fire Emblem Fates
 	
 	private static DataStorage instance = null;	// DataStorage singleton instance	
 	
