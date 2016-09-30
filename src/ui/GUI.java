@@ -1435,8 +1435,8 @@ public GUI()
 				//inputJobIndex = jobHistory.getSelectedIndex();
 				double[]inputStats = {HP, Str, Mag, Skl, Spd, Lck, Def,Res};
 				
-				unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
 				unitcontroller.buildLocalUnitSheet(inputLevel);
+				unitcontroller.buildInputUnitSheet(inputLevel, inputStats);
 				
 				//UPDATES GRAPH
 				int stat = graphStatBox.getSelectedIndex();
@@ -1446,14 +1446,14 @@ public GUI()
 				{
 					double[] LocalStatSpread = unitcontroller.getLocalRating();
 					double[] InputStatSpread = unitcontroller.getInputRating();
-					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, inputLevel));
+					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel));
 				}
 				//Looking for normal stats
 				else
 				{
 					double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
 					double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
-					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel, inputLevel));
+					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel));
 					
 				}	
 				graphStatBox.setEnabled(true);
@@ -1605,22 +1605,22 @@ public GUI()
 			GraphController graphcontroller = GraphController.getInstance();
 			
 			int stat = graphStatBox.getSelectedIndex();
-			int displayLevel = Integer.parseInt(inputLevelBox.getSelectedItem().toString());
+			
 			int startLevel = unitcontroller.getStartLevel();
 			
 			//Looking for rating
 			if(stat == 8)
 			{
-			double[] LocalStatSpread = unitcontroller.getLocalRating();
-			double[] InputStatSpread = unitcontroller.getInputRating();
-			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, displayLevel, startLevel));
+				double[] LocalStatSpread = unitcontroller.getLocalRating();
+				double[] InputStatSpread = unitcontroller.getInputRating();
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel));
 			}
 			//Looking for normal stats
 			else
 			{
-			double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-			double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
-			graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, displayLevel, startLevel));
+				double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
+				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel));
 			}
 			
 //		For debug

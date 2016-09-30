@@ -58,9 +58,14 @@ public class UnitController {
 
 	// BUILDS A LOCALUNITSHEET
 	public void buildLocalUnitSheet(int inputLevel) {
+		TreeMap<Integer, String> localClassHistory = new TreeMap<Integer, String>();
+		
 		Job newJob = data.getJobs().get(classHistory.get(inputLevel));
-		//System.out.println("InitialJob " + newJob.getName());
-
+		
+		for (int i = inputLevel; i <= classHistory.lastKey(); i++) {
+			localClassHistory.put(i, classHistory.get(i));
+		}
+		
 		// Creating the unit
 		Unit localUnit;
 		if (currentChar instanceof ChildCharacter) {
@@ -71,7 +76,7 @@ public class UnitController {
 		}
 		// Making the unitSheet
 		localUnitSheet.clear();
-		buildSheet(localUnit, classHistory, localUnitSheet, inputLevel);
+		buildSheet(localUnit, localClassHistory, localUnitSheet, inputLevel);
 	}
 
 	// BUILDS A INPUTUNITSHEET
@@ -79,26 +84,7 @@ public class UnitController {
 		TreeMap<Integer, String> inputClassHistory = new TreeMap<Integer, String>();
 
 		Job newJob = data.getJobs().get(classHistory.get(inputLevel));
-		//System.out.println("InitialJob " + newJob.getName());
 
-		// setting the base level
-		int baseLevel;
-		if (currentChar.getIsChild()) {
-			baseLevel = startLevel;
-		} else {
-			baseLevel = currentChar.getBaseStats().getStats(currentRoute, 0);
-		}
-		
-		boolean tempIsPromoted = newJob.getIsPromoted();
-		String baseJobName = currentChar.getBaseClass();
-		int promotedLevel = 1;	// Used to set levels of a user-promoted unit in the jobHistory in the GUI from 1 - job's max level
-		if(tempIsPromoted && !baseJobName.equals(newJob.getName())) {
-			
-		}
-		
-		// Creating a temporary job history array to match the level of the
-		// inputUnit(Ignoring the previous levels)
-		int levelMod = inputLevel - baseLevel;
 		for (int i = inputLevel; i <= classHistory.lastKey(); i++) {
 			inputClassHistory.put(i, classHistory.get(i));
 		}
@@ -125,36 +111,50 @@ public class UnitController {
 	// THE MATH ZONE. BEWARE
 
 	// RECURSION WHAT :O
-	public void buildSheet(Unit unit, TreeMap<Integer, String> inputClassHistory, ArrayList<Unit> inputSheet, int i) {
+	public void buildSheet(Unit unit, TreeMap<Integer, String> argClassHistory, ArrayList<Unit> argSheet, int i) {
 		Cloner cloner = new Cloner();
 		Unit newUnit = cloner.deepClone(unit); // this is the deep clone.
-
-		if (i > inputClassHistory.lastKey()) // ends recursion
+		
+		if (i > argClassHistory.lastKey()) // ends recursion
 		{
 			// do nothing
 			System.out.println("Complete");
 		} 
-		else if (i == inputClassHistory.firstKey()) // adds an initial base unit if list is empty
+		else if (i == argClassHistory.firstKey()) // adds an initial base unit if list is empty
 		{
-			inputSheet.add(newUnit);
+			// retrieve the unit's base level
+			int unitBaseLevel = newUnit.getMyCharacter().getBaseStats().getStats(currentRoute, 0);
+			// if the unit is a prepromoted unit and is now Felicia or Jakob, add BASE_MAX_LEVEL to their base level
+			if(data.getJobs().get(newUnit.getMyCharacter().getBaseClass()).getIsPromoted() && 
+					!newUnit.getMyCharacter().getName().contains("Felicia") && !newUnit.getMyCharacter().getName().contains("Jakob")) {
+				unitBaseLevel += data.BASE_MAX_LEVEL;
+			}
+
+			// check if the sent in argSheet is the localUnitSheet and check if we're not starting at the character's base level
+			if(argSheet.equals(localUnitSheet) && unitBaseLevel < i)
+			{
+				// send in the appropriate level difference to calculate the average differences
+				CalculateAverageStats(newUnit, i - unitBaseLevel);
+			}
+			argSheet.add(newUnit);
 			i++;
-			buildSheet(newUnit, inputClassHistory, inputSheet, i);
+			buildSheet(newUnit, argClassHistory, argSheet, i);
 		} 
 		else // Leveling up the new Unit
 		{
 			// Handle reclassing
-			if (inputClassHistory.get(i).equals(unit.getMyJob().getName()) != true) {
-				newUnit.reclass(data.getJobs().get(inputClassHistory.get(i)));
+			if (argClassHistory.get(i).equals(unit.getMyJob().getName()) != true) {
+				newUnit.reclass(data.getJobs().get(argClassHistory.get(i)));
 			}
 
-			// Calculate the average stat for the correct level
-			CalculateAverageStats(newUnit, (newUnit.getLevel() + 1));
-			inputSheet.add(newUnit);
+			// Calculate the average stat for a difference of one level
+			CalculateAverageStats(newUnit, 1);
+			argSheet.add(newUnit);
 
 			// increase the level of the unit by 1 so we can map out each level
 			newUnit.setLevel(newUnit.getLevel() + 1);
 			i++;
-			buildSheet(newUnit, inputClassHistory, inputSheet, i);
+			buildSheet(newUnit, argClassHistory, argSheet, i);
 		}
 	}
 
@@ -171,24 +171,18 @@ public class UnitController {
 	}
 
 	// calculates averagestats for a unit
-	public void CalculateAverageStats(Unit inputUnit, int inputLevel) {
-		int levelDifference = (inputLevel - inputUnit.getLevel());
-
-		if (levelDifference < 0) {
-			levelDifference = 0;
-		}
-
+	public void CalculateAverageStats(Unit inputUnit, int levelDifference) {
+		System.out.println("atbarg: " + levelDifference);
+		
 		double[] tempBaseStats = inputUnit.getBaseStats();
-
-		for (int q = 0; q < tempBaseStats.length; q++) {
-			//System.out.println(tempBaseStats[q]);
-		}
 		double[] tempGrowths = inputUnit.getGrowths();
 
-		for (int i = 0; i < inputUnit.getBaseStats().length; i++) {
-			tempBaseStats[i] += ((tempGrowths[i] / 100) * levelDifference);
+		for (int i = 0; i < inputUnit.getBaseStats().length; i++) 
+		{
+			tempBaseStats[i] += (tempGrowths[i] / 100) * levelDifference;
 		}
-
+		
+		inputUnit.setBaseStats(tempBaseStats);
 	}
 	
 	// SHOULD BE CHANGED TO ALLOW A RECLASSING RANGE WHEN THAT IS IMPLEMENTED
@@ -266,7 +260,7 @@ public class UnitController {
 			// then do some extra checks for Felicia and Jakob because they will not have their first twenty levels as inner levels
 			if(((tempJob.getIsSpecial() && tempJob.getMaxStats(0) == data.BASE_MAX_LEVEL) || !tempJob.getIsSpecial()) && tempJob.getIsPromoted() && 
 					((!currentChar.getName().contains("Felicia") && !currentChar.getName().contains("Jakob")) ||
-					(currentChar.getName().contains("Felicia") || currentChar.getName().contains("Jakob") && i > data.BASE_MAX_LEVEL)))
+					((currentChar.getName().contains("Felicia") || currentChar.getName().contains("Jakob")) && i > data.BASE_MAX_LEVEL)))
 			{
 				newClassHistory[tempIndex] = "Lvl (" + i + ") " + promotedLevel + ". " + classHistory.get(i);
 			}
