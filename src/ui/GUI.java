@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -102,6 +103,11 @@ public class GUI extends JFrame{
 		JButton calculateButton;
 		JButton optionsButton;
 		JButton clearButton;
+		JLabel levelRange1;
+		JLabel levelRange2;
+		JSpinner startRangeSpinner;
+		JSpinner endRangeSpinner;
+		JButton rangeButton;
 		
 //Option Window
 		JDialog optionPane;
@@ -444,6 +450,24 @@ public GUI()
 		graphStatBox.addActionListener(graphboxhandler);
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
+		levelRange1 = new JLabel("Level Range: ");
+		levelRange2 = new JLabel("-");
+		startRangeSpinner = new JSpinner();
+			Component mySpinnerEditor = startRangeSpinner.getEditor();
+			JFormattedTextField startRangeSpinnerTextField = ((JSpinner.DefaultEditor) mySpinnerEditor).getTextField();
+			startRangeSpinnerTextField.setColumns(2);
+		endRangeSpinner = new JSpinner();
+			Component mySpinnerEditor2 = endRangeSpinner.getEditor();
+			JFormattedTextField startRangeSpinnerTextField2 = ((JSpinner.DefaultEditor) mySpinnerEditor2).getTextField();
+			startRangeSpinnerTextField2.setColumns(2);
+		rangeButton = new JButton("Set");
+			graphPanel.add(levelRange1);
+			graphPanel.add(startRangeSpinner);
+			graphPanel.add(levelRange2);
+			graphPanel.add(endRangeSpinner);
+			graphPanel.add(rangeButton);
+		GraphRangeHandler graphrangehandler = new GraphRangeHandler();
+		rangeButton.addActionListener(graphrangehandler);
 		graphStatBox.setEnabled(false);
 
 	//GRAPH PANEL 2
@@ -795,8 +819,9 @@ public GUI()
 	//THIS IS WORK IN PROGRESS FOR THE GRAPH
 	graphcontroller.createGraph("");
 	ChartPanel inputChart = graphcontroller.getChartPanel();
+	inputChart.setPopupMenu(null); //This disables the right click menu
 	graphPanel2.add(inputChart);
-	
+			
 	this.pack();
 }
 //=============================================================END GUI CLASS======================================================
@@ -923,6 +948,7 @@ public GUI()
 			// save the selected indexes so that we can retain after we remake jobHistory
 			int tempJobIndex = jobHistory.getSelectedIndex();
 			int tempReclassIndex = reclassBox.getSelectedIndex();
+			int tempLevelIndex = inputLevelBox.getSelectedIndex();
 			
 			// actually reclass
 			unitcontroller.reclass(newJob, newLevel);
@@ -936,10 +962,13 @@ public GUI()
 			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-			
+			inputLevelBox.setSelectedIndex(tempLevelIndex);
 			// set the selected indexes to what we had
 			jobHistory.setSelectedIndex(tempJobIndex);
 			reclassBox.setSelectedIndex(tempReclassIndex);
+			
+			
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
 	}
@@ -958,8 +987,8 @@ public GUI()
 			int newLevel = jobHistory.getSelectedIndex() + startLevel;
 			
 			// save the selected index so that we can retain after we remake jobHistory
-			int tempIndex = jobHistory.getSelectedIndex();
-			
+			int tempJobIndex = jobHistory.getSelectedIndex();
+			int tempLevelIndex = inputLevelBox.getSelectedIndex();
 			// promote
 			unitcontroller.promote(promotedJob, newLevel);
 			
@@ -968,15 +997,20 @@ public GUI()
 			jobHistory.setListData(listData);
 			
 			// set the selected index to what we had
-			jobHistory.setSelectedIndex(tempIndex);
+			jobHistory.setSelectedIndex(tempJobIndex);
 			
 			// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
 			String[] possibleLevels = setUpPossibleLevels(listData);
 			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setSelectedIndex(tempLevelIndex);
 			// Once a unit is successfully promoted, disable promoting
 			promoteButton.setEnabled(false);
+			
+			//Set the end range value for the graph to be the max promoted level
+			//This gets the total level range, which is the jobHistory size + the default level of the unit...
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
 	}
@@ -1016,8 +1050,15 @@ public GUI()
 			// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
 			String[] possibleLevels = setUpPossibleLevels(listData);
 			
+			//Store the previous inputLevelBox index
+			int tempLevelIndex = inputLevelBox.getSelectedIndex();
+			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setSelectedIndex(tempLevelIndex);
+			
+			//Updates level range
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
 	}
@@ -1234,6 +1275,10 @@ public GUI()
 			{
 				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
 			}
+			
+			int startingLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			startRangeSpinner.setValue(startingLevel - 1);
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + startingLevel);
 		}
 	}
 	//This handles the close button in the parental units window
@@ -1466,130 +1511,15 @@ public GUI()
 				
 				double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 				double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+				int[] maxStats = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getMaxstats();
+				SetResultBox(inputResults,localResults, maxStats);
 				
-				DecimalFormat formatter = new DecimalFormat( "##.##" );
 				resultLevelBox.setEnabled(true);
 				
-				resultHPField.setText(formatter.format(inputResults[0]));
-				avgHPField.setText(formatter.format(localResults[0]));
-				resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
-					if((inputResults[0] - localResults[0]) < 0)
-					{
-						resultHPDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[0] - localResults[0]) > 0)
-					{
-						resultHPDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultHPDifference.setBackground(Color.WHITE);
-					}
-				resultStrField.setText(formatter.format(inputResults[1]));
-				avgStrField.setText(formatter.format(localResults[1]));
-				resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
-					if((inputResults[1] - localResults[1]) < 0)
-					{
-						resultStrDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[1] - localResults[1]) > 0)
-					{
-						resultStrDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultStrDifference.setBackground(Color.WHITE);
-					}
-				resultMagField.setText(formatter.format(inputResults[2]));
-				avgMagField.setText(formatter.format(localResults[2]));
-				resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
-					if((inputResults[2] - localResults[2]) < 0)
-					{
-						resultMagDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[2] - localResults[2]) > 0)
-					{
-						resultMagDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultMagDifference.setBackground(Color.WHITE);
-					}
-				resultSklField.setText(formatter.format(inputResults[3]));
-				avgSklField.setText(formatter.format(localResults[3]));
-				resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
-					if((inputResults[3] - localResults[3]) < 0)
-					{
-						resultSklDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[3] - localResults[3]) > 0)
-					{
-						resultSklDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultSklDifference.setBackground(Color.WHITE);
-					}
-				resultSpdField.setText(formatter.format(inputResults[4]));
-				avgSpdField.setText(formatter.format(localResults[4]));
-				resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
-					if((inputResults[4] - localResults[4]) < 0)
-					{
-						resultSpdDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[4] - localResults[4]) > 0)
-					{
-						resultSpdDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultSpdDifference.setBackground(Color.WHITE);
-					}
-				resultLckField.setText(formatter.format(inputResults[5]));
-				avgLckField.setText(formatter.format(localResults[5]));
-				resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
-					if((inputResults[5] - localResults[5]) < 0)
-					{
-					resultLckDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[5] - localResults[5]) > 0)
-					{
-						resultLckDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultLckDifference.setBackground(Color.WHITE);
-					}
-				resultDefField.setText(formatter.format(inputResults[6]));
-				avgDefField.setText(formatter.format(localResults[6]));
-				resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
-					if((inputResults[6] - localResults[6]) < 0)
-					{
-						resultDefDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[6] - localResults[6]) > 0)
-					{
-						resultDefDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultDefDifference.setBackground(Color.WHITE);
-					}
-				resultResField.setText(formatter.format(inputResults[7]));
-				avgResField.setText(formatter.format(localResults[7]));
-				resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
-					if((inputResults[7] - localResults[7]) < 0)
-					{
-						resultResDifference.setBackground(Color.RED);
-					}
-					else if ((inputResults[7] - localResults[7]) > 0)
-					{
-						resultResDifference.setBackground(Color.GREEN);
-					}
-					else 
-					{
-						resultResDifference.setBackground(Color.WHITE);
-					}
+				graphcontroller.setAxisRange((int)startRangeSpinner.getValue(), (int)endRangeSpinner.getValue());
+
+			//Check for max Stats, then set the boxes and adjust backgrounds
+			//HEALTH 0 
 				//Stuff for Debug
 				//unitcontroller.printLocalSheet();
 				//unitcontroller.printInputSheet();
@@ -1627,6 +1557,16 @@ public GUI()
 //			System.out.println("INPUT LEVEL" + startLevel);
 //			System.out.println("GRAPH IS DISPLAYING:" +(displayLevel)+" - "+(startLevel));
 
+		}
+	}
+	public class GraphRangeHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{			
+			GraphController graphcontroller = GraphController.getInstance();
+			int startRange = (int)startRangeSpinner.getValue();
+			int endRange = (int) endRangeSpinner.getValue();
+			graphcontroller.setAxisRange(startRange, endRange);
 		}
 	}
 	//This handler allows a user to select a route and adjusts data in the logic based on route.
@@ -1779,7 +1719,23 @@ public GUI()
 				if(tempJob.getIsPromoted() || tempJob.getIsSpecial())
 					promoteButton.setEnabled(false);
 				
-				
+				System.out.println(" WHAT IS THE NAME? "+tempChar.getName());
+				//Sets up level Range
+				if(tempJob.getIsPromoted() == false)
+				{
+					startRangeSpinner.setValue(tempChar.getBaseStats().getStats(tempRoute, 0) - 1);
+					endRangeSpinner.setValue(jobHistory.getModel().getSize() + tempChar.getBaseStats().getStats(tempRoute, 0));
+				}
+				else if(tempChar.getName().equals("Felicia (M)") || tempChar.getName().equals("Felicia (F)") || tempChar.getName().equals("Jakob (M)") || tempChar.getName().equals("Jakob (F)"))
+				{
+					startRangeSpinner.setValue(tempChar.getBaseStats().getStats(tempRoute, 0) - 1);
+					endRangeSpinner.setValue(jobHistory.getModel().getSize() + tempChar.getBaseStats().getStats(tempRoute, 0));
+				}
+				else
+				{
+					startRangeSpinner.setValue(tempChar.getBaseStats().getStats(tempRoute, 0) - 1 + 20 );
+					endRangeSpinner.setValue(jobHistory.getModel().getSize() + tempChar.getBaseStats().getStats(tempRoute, 0) + 20 );
+				}
 				//Debug print to console
 				System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 				System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
@@ -1804,7 +1760,7 @@ public GUI()
 		{
 			DataStorage data = DataStorage.getInstance();
 			UnitController unitcontroller = UnitController.getInstance();
-			
+			GraphController graphcontroller = GraphController.getInstance();
 			// set the result class display
 			// get the string of the selected item
 			String str = inputLevelBox.getSelectedItem().toString();
@@ -1829,6 +1785,9 @@ public GUI()
 				possibleLevelsResultsBox[i - inputLevelBox.getSelectedIndex()] = inputLevelBox.getItemAt(i).toString();
 			}
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevelsResultsBox));
+			
+			//Adjusts graph, not sure if I want this here...
+			startRangeSpinner.setValue(inputLevel - 1);		
 		}
 	}
 	//This handler updates the result panel based on the input level
@@ -1840,6 +1799,7 @@ public GUI()
 
 			double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 			double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
+			int[] maxStats = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getMaxstats();
 			
 			DecimalFormat formatter = new DecimalFormat( "##.##" );
 			
@@ -1856,37 +1816,7 @@ public GUI()
 
 			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - startLevel).toString());
 
-			resultHPField.setText(formatter.format(inputResults[0]));
-			avgHPField.setText(formatter.format(localResults[0]));
-			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
-			
-			resultStrField.setText(formatter.format(inputResults[1]));
-			avgStrField.setText(formatter.format(localResults[1]));
-			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
-
-			resultMagField.setText(formatter.format(inputResults[2]));
-			avgMagField.setText(formatter.format(localResults[2]));
-			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
-
-			resultSklField.setText(formatter.format(inputResults[3]));
-			avgSklField.setText(formatter.format(localResults[3]));
-			resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
-			
-			resultSpdField.setText(formatter.format(inputResults[4]));
-			avgSpdField.setText(formatter.format(localResults[4]));
-			resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
-			
-			resultLckField.setText(formatter.format(inputResults[5]));
-			avgLckField.setText(formatter.format(localResults[5]));
-			resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
-			
-			resultDefField.setText(formatter.format(inputResults[6]));
-			avgDefField.setText(formatter.format(localResults[6]));
-			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
-
-			resultResField.setText(formatter.format(inputResults[7]));
-			avgResField.setText(formatter.format(localResults[7]));
-			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));			
+			SetResultBox(inputResults, localResults, maxStats);
 		}
 	}
 	
@@ -1954,5 +1884,242 @@ public GUI()
 		}
 		
 		return possibleLevels;
+	}
+	public void SetResultBox(double[] inputResults, double[] localResults, int[] maxStats)
+	{
+		DecimalFormat formatter = new DecimalFormat( "##.##" );
+
+		//HEALTH 0
+		if(inputResults[0]>maxStats[0])
+		{
+			resultHPField.setText(maxStats[0]+"("+formatter.format(inputResults[0])+")");
+			resultHPField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[0]==maxStats[0])
+		{
+			resultHPField.setText(formatter.format(inputResults[0]));
+			resultHPField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultHPField.setText(formatter.format(inputResults[0]));
+		}
+			avgHPField.setText(formatter.format(localResults[0]));
+			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
+				if((inputResults[0] - localResults[0]) < 0)
+				{
+					resultHPDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[0] - localResults[0]) > 0)
+				{
+					resultHPDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultHPDifference.setBackground(Color.WHITE);
+				} 
+		//STRENGTH 1
+		if(inputResults[1]>maxStats[1])
+		{
+			resultStrField.setText(maxStats[1]+"("+formatter.format(inputResults[1])+")");
+			resultStrField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[1]==maxStats[1])
+		{
+			resultStrField.setText(formatter.format(inputResults[1]));
+			resultStrField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultStrField.setText(formatter.format(inputResults[1]));
+		}
+			avgStrField.setText(formatter.format(localResults[1]));
+			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
+				if((inputResults[1] - localResults[1]) < 0)
+				{
+					resultStrDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[1] - localResults[1]) > 0)
+				{
+					resultStrDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultStrDifference.setBackground(Color.WHITE);
+				}
+		//MAGIC 2
+		if(inputResults[2]>maxStats[2])
+		{
+			resultMagField.setText(maxStats[2]+"("+formatter.format(inputResults[2])+")");
+			resultMagField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[2]==maxStats[2])
+		{
+			resultMagField.setText(formatter.format(inputResults[2]));
+			resultMagField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultMagField.setText(formatter.format(inputResults[2]));
+		}
+			avgMagField.setText(formatter.format(localResults[2]));
+			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
+				if((inputResults[2] - localResults[2]) < 0)
+				{
+					resultMagDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[2] - localResults[2]) > 0)
+				{
+					resultMagDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultMagDifference.setBackground(Color.WHITE);
+				}
+		//SKILL 3
+		if(inputResults[3]>maxStats[3])
+		{
+			resultSklField.setText(maxStats[3]+"("+formatter.format(inputResults[3])+")");
+			resultSklField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[3]==maxStats[3])
+		{
+			resultSklField.setText(formatter.format(inputResults[3]));
+			resultSklField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultSklField.setText(formatter.format(inputResults[3]));
+		}
+			avgSklField.setText(formatter.format(localResults[3]));
+			resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
+				if((inputResults[3] - localResults[3]) < 0)
+				{
+					resultSklDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[3] - localResults[3]) > 0)
+				{
+					resultSklDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultSklDifference.setBackground(Color.WHITE);
+				}
+		//SPEED 4
+		if(inputResults[4]>maxStats[4])
+		{
+			resultSpdField.setText(maxStats[4]+"("+formatter.format(inputResults[4])+")");
+			resultSpdField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[4]==maxStats[4])
+		{
+			resultSpdField.setText(formatter.format(inputResults[4]));
+			resultSpdField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultSpdField.setText(formatter.format(inputResults[4]));
+		}
+			avgSpdField.setText(formatter.format(localResults[4]));
+			resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
+				if((inputResults[4] - localResults[4]) < 0)
+				{
+					resultSpdDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[4] - localResults[4]) > 0)
+				{
+					resultSpdDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultSpdDifference.setBackground(Color.WHITE);
+				}
+		//LUCK 5
+		if(inputResults[5]>maxStats[5])
+		{
+			resultLckField.setText(maxStats[5]+"("+formatter.format(inputResults[5])+")");
+			resultLckField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[5]==maxStats[5])
+		{
+			resultLckField.setText(formatter.format(inputResults[5]));
+			resultLckField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultLckField.setText(formatter.format(inputResults[5]));
+		}
+			avgLckField.setText(formatter.format(localResults[5]));
+			resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
+				if((inputResults[5] - localResults[5]) < 0)
+				{
+				resultLckDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[5] - localResults[5]) > 0)
+				{
+					resultLckDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultLckDifference.setBackground(Color.WHITE);
+				}
+		//DEFENSE 6
+		if(inputResults[6]>maxStats[6])
+		{
+			resultDefField.setText(maxStats[6]+"("+formatter.format(inputResults[6])+")");
+			resultDefField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[6]==maxStats[6])
+		{
+			resultDefField.setText(formatter.format(inputResults[6]));
+			resultDefField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultDefField.setText(formatter.format(inputResults[6]));
+		}
+			avgDefField.setText(formatter.format(localResults[6]));
+			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
+				if((inputResults[6] - localResults[6]) < 0)
+				{
+					resultDefDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[6] - localResults[6]) > 0)
+				{
+					resultDefDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultDefDifference.setBackground(Color.WHITE);
+				}
+		//RESISTANCE 7
+		if(inputResults[7]>maxStats[7])
+		{
+			resultResField.setText(maxStats[7]+"("+formatter.format(inputResults[7])+")");
+			resultResField.setBackground(Color.GREEN);
+		}
+		else if(inputResults[7]==maxStats[7])
+		{
+			resultResField.setText(formatter.format(inputResults[7]));
+			resultResField.setBackground(Color.GREEN);
+		}
+		else
+		{
+			resultResField.setText(formatter.format(inputResults[7]));
+		}
+			avgResField.setText(formatter.format(localResults[7]));
+			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
+				if((inputResults[7] - localResults[7]) < 0)
+				{
+					resultResDifference.setBackground(Color.RED);
+				}
+				else if ((inputResults[7] - localResults[7]) > 0)
+				{
+					resultResDifference.setBackground(Color.GREEN);
+				}
+				else 
+				{
+					resultResDifference.setBackground(Color.WHITE);
+				}
 	}
 }
