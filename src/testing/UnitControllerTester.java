@@ -1,6 +1,7 @@
 package testing;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import domain.Character;
 import domain.Job;
@@ -20,17 +21,12 @@ public static void main(String[]args)
 	Job Cavalier = data.getJobs().get("Cavalier");
 	double[] inputStats = {20,20,20,20,20,20,20,20};
 	
-	ArrayList<String> ClassHistory = new ArrayList();
-	ClassHistory.add("Cavalier");// level 6
-	ClassHistory.add("Cavalier");// level 7
-	ClassHistory.add("Cavalier");// level 8
-	ClassHistory.add("Cavalier");// level 9
-	ClassHistory.add("Cavalier");// level 10
-	ClassHistory.add("Cavalier");// level 11
-	ClassHistory.add("Cavalier");// level 12
-	ClassHistory.add("Songstress");// level 13
-	ClassHistory.add("Songstress");// level 14
-	ClassHistory.add("Songstress");// level 15
+	TreeMap<Integer, String> ClassHistory = new TreeMap<Integer, String>();
+	ClassHistory.put(6, "Cavalier");// level 6
+	ClassHistory.put(7, "Songstress");// level 7
+	ClassHistory.put(8, "Songstress");// level 8
+	ClassHistory.put(9, "Songstress");// level 9
+	ClassHistory.put(10, "Cavalier");// level 10
 
 	UnitController unitController = UnitController.getInstance();
 	
@@ -43,20 +39,26 @@ public static void main(String[]args)
 //	unitController.reclass("Dancer", 10);
 	
 	//TESTING CALCULATIONS
-//	unitController.buildLocalUnitSheet();
+//	unitController.buildLocalUnitSheet(0);
 //	unitController.printLocalSheet();
 	
 	//TESTING CALCULATIONS
-	unitController.buildInputUnitSheet(10, inputStats);
+	unitController.buildInputUnitSheet(6, inputStats);
 	unitController.printInputSheet();
-
-	//THIS TESTS GETINPUTSTATSPREAD
-	double[] healthOverTime = unitController.getInputStatSpread(0);
-	
-	for(int i = 0; i < healthOverTime.length; i++)
+	double[] rating = unitController.getInputRating();
+	System.out.println("PRINTING RATING ARRAY");
+	System.out.println("ClassHistory size: " + ClassHistory.size());
+	for(int i = 0; i<ClassHistory.size(); i++)
 	{
-		System.out.println("HEALTH: "+healthOverTime[i]);
+	System.out.println("Rating: "+rating[i]);
 	}
+	//THIS TESTS GETINPUTSTATSPREAD
+//	double[] healthOverTime = unitController.getInputStatSpread(0);
+	
+//	for(int i = 0; i < healthOverTime.length; i++)
+//	{
+//		System.out.println("HEALTH: "+healthOverTime[i]);
+//	}
 	}
 	
 

@@ -43,16 +43,30 @@ public class DataStorage implements Serializable{
 		HP, STR, MAG, SKL, SPD, LCK, DEF, RES
 	}
 	
-	private static DataStorage instance = null;	// DataStorage singleton instance		
-	private Map<String, Character> characters;	// Map for storing all characters. <key, value> = <character name, Character object>
+	public static final int BASE_MAX_LEVEL = 20;		// The max level of a normal class
+	public static final int SPECIAL_MAX_LEVEL = 40;		// The max level of a special level capped class
+	public static final int ETERNAL_SEAL_CAP = 150;		// Arbitrary cap for eternal seals
+	public static final int DISPLAY_MAX_LEVEL = 99;		// THe max level that can be displayed in Fire Emblem Fates
+	
+	private static DataStorage instance = null;	// DataStorage singleton instance	
+	
+	// Arrays to hold the names of all of the possible boons and banes. These are final because they will never change
+	private final String[] BOONS = {"Robust (HP)", "Strong (Str)", "Clever (Mag)", "Deft (Skl)", "Quick (Spd)", "Lucky (Lck)", "Sturdy (Def)", "Calm (Res)"}; 
+	private final String[] BANES = {"Sickly (HP)", "Weak  (Str)", "Dull (Mag)", "Clumsy (Skl)", "Slow (Spd)", "Unlucky (Lck)", "Fragile (Def)", "Excitable (Res)"};
+	
+	private Map<String, Character> characters;			// Map for storing all characters. <key, value> = <character name, Character object>
+	private ArrayList<String> conquestCharacters;		// ArrayList to hold all characters in the Conquest route
+	private ArrayList<String> birthrightCharacters;		// ArrayList to hold all characters in the Birthright route
+	private ArrayList<String> revelationsCharacters;	// ArrayList to hold all characters in the Revelations route
+	
 	private Job[] jobArray;						// Array used for JSON parsing jobs
 	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
 	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
+	private ArrayList<String> jobNames;					// ArrayList to hold all of the jobNames to be accessed for filling out the GUI list of jobs
+	private ArrayList<String> promotedJobNames;			// ArrayList to hold all of the promoted classes to be accessed for filling out the GUI list of jobs
+	private ArrayList<String> nonpromotedJobNames;		// ArrayList to hold all of the non-promoted classes to be accessed for filling out the GUI list of jobs
 	
-	private ArrayList<String> conquestCharacters;
-	private ArrayList<String> birthrightCharacters;
-	private ArrayList<String> revelationsCharacters;
-	
+	// OUTDATED
 	// Arrays representing locked Marriage Options - for example, Xander and Leo cannot marry their sisters (Camilla and Elise)
 	private final String[] AVATAR_LOCKED = {"Gunter", "Shura", "Izana", "Flora", "Scarlet", "Yukimura", "Fuga", "Anna"};
 	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
@@ -76,14 +90,6 @@ public class DataStorage implements Serializable{
 		return characters;
 	}
 	
-	public Map<String, Job> getJobs() {
-		return jobs;
-	}
-	
-	public ArrayList<String> getSpecialClasses() {
-		return specialClasses;
-	}
-	
 	public ArrayList<String> getConquestCharacters() {
 		return conquestCharacters;
 	}
@@ -94,6 +100,34 @@ public class DataStorage implements Serializable{
 
 	public ArrayList<String> getRevelationsCharacters() {
 		return revelationsCharacters;
+	}
+	
+	public Map<String, Job> getJobs() {
+		return jobs;
+	}
+	
+	public ArrayList<String> getSpecialClasses() {
+		return specialClasses;
+	}
+	
+	public ArrayList<String> getJobNames() {
+		return jobNames;
+	}
+	
+	public ArrayList<String> getPromotedJobNames() {
+		return promotedJobNames;
+	}
+
+	public ArrayList<String> getNonpromotedJobNames() {
+		return nonpromotedJobNames;
+	}
+
+	public String[] getBOONS() {
+		return BOONS;
+	}
+
+	public String[] getBANES() {
+		return BANES;
 	}
 	
 	public String[] getAVATAR_LOCKED() {
@@ -192,7 +226,7 @@ public class DataStorage implements Serializable{
 			}
 			
 			
-			// Sort arrays by name
+			// Sort all character arraylists alphabetically
 			Collections.sort(conquestCharacters);
 			Collections.sort(birthrightCharacters);
 			Collections.sort(revelationsCharacters);
@@ -213,13 +247,43 @@ public class DataStorage implements Serializable{
 			Gson gson = new GsonBuilder().create();
 			jobArray = gson.fromJson(reader, Job[].class);
 			jobs = new HashMap<String, Job>();
+			jobNames = new ArrayList<String>();
+			promotedJobNames = new ArrayList<String>();
+			nonpromotedJobNames = new ArrayList<String>();
 			specialClasses = new ArrayList<String>();
 			for(int i = 0; i < jobArray.length; i++) {
-				// fill the specialClasses array
-				if(jobArray[i].getIsSpecial())
+				// handle special classes first
+				if(jobArray[i].getIsSpecial()) {
+					// add special classes to the special classes array
 					specialClasses.add(jobArray[i].getName());
+					// if the special class is a class with a max level of 40, add it to both the promoted and nonpromoted arrays
+					if(jobArray[i].getMaxStats(0) == 40) {
+						promotedJobNames.add(jobArray[i].getName());
+						nonpromotedJobNames.add(jobArray[i].getName());
+					}
+					// otherwise add them to the appropriate array depending on if they're promoted or nonpromoted
+					else if(jobArray[i].getIsPromoted()) {
+						promotedJobNames.add(jobArray[i].getName());
+					}
+					else {
+						nonpromotedJobNames.add(jobArray[i].getName());
+					}
+				}
+				// add all remaining jobs to the appropriate array depending on if they're promoted or nonpromoted
+				else if(jobArray[i].getIsPromoted()) {
+					promotedJobNames.add(jobArray[i].getName());
+				}
+				else {
+					nonpromotedJobNames.add(jobArray[i].getName());
+				}
 				jobs.put(jobArray[i].getName(), jobArray[i]);
+				jobNames.add(jobArray[i].getName());
 			}
+			// Sort all job names alphabetically
+			Collections.sort(jobNames);
+			Collections.sort(promotedJobNames);
+			Collections.sort(nonpromotedJobNames);
+			
 			reader.close();
 		}
 		catch (IOException e)

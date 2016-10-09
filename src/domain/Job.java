@@ -1,9 +1,8 @@
 package domain;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
-public class Job implements Serializable{
+public class Job {
 
 	private String name;					// Name of the Job
 	private int[] baseStats;				// The base stats of the Job. Used to calculate bonuses when class changing (includes HP, but not Level)

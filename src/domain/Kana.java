@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class Kana extends ChildCharacter{
 	
+	/*
 	private String boon;
 	private String bane;
 
@@ -21,11 +22,7 @@ public class Kana extends ChildCharacter{
 
 	public void setBane(String bane) {
 		this.bane = bane;
-	}
-	
-	public void setAreYouABoy(boolean areYouABoy) {
-		this.areYouABoy = areYouABoy;
-	}
+	}*/
 	
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);
@@ -34,6 +31,6 @@ public class Kana extends ChildCharacter{
 		String allValidSpecials = Arrays.toString(validSpecials);
 		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
 				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
-				isChild + "\nfixedParent: " + fixedParent + "\nvariedParents: " + variedParents.toString() + "\nboon: " + boon + "\nbane: " + bane;
+				isChild + "\nfixedParent: " + fixedParent + "\nvariedParents: " + variedParents.toString()/* + "\nboon: " + boon + "\nbane: " + bane*/;
 	}
 }

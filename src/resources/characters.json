@@ -14,7 +14,7 @@
 		isChild : false
 	},
 	{
-		name: "Felicia(M)",
+		name: "Felicia (M)",
 		routes : [true, true, true],
 		baseClass: "Maid/Butler",
 		baseStats : {
@@ -29,7 +29,7 @@
 		isChild : false
 	},
 	{
-		name: "Felicia(F)",
+		name: "Felicia (F)",
 		routes : [true, true, true],
 		baseClass: "Maid/Butler",
 		baseStats : {
