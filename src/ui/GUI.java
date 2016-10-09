@@ -453,12 +453,10 @@ public GUI()
 		levelRange1 = new JLabel("Level Range: ");
 		levelRange2 = new JLabel("-");
 		startRangeSpinner = new JSpinner();
-			startRangeSpinner.setValue(1);
 			Component mySpinnerEditor = startRangeSpinner.getEditor();
 			JFormattedTextField startRangeSpinnerTextField = ((JSpinner.DefaultEditor) mySpinnerEditor).getTextField();
 			startRangeSpinnerTextField.setColumns(2);
 		endRangeSpinner = new JSpinner();
-			endRangeSpinner.setValue(20);
 			Component mySpinnerEditor2 = endRangeSpinner.getEditor();
 			JFormattedTextField startRangeSpinnerTextField2 = ((JSpinner.DefaultEditor) mySpinnerEditor2).getTextField();
 			startRangeSpinnerTextField2.setColumns(2);
@@ -823,10 +821,7 @@ public GUI()
 	ChartPanel inputChart = graphcontroller.getChartPanel();
 	inputChart.setPopupMenu(null); //This disables the right click menu
 	graphPanel2.add(inputChart);
-	
-	//Testing stuff
-	graphcontroller.setAxisRange(0, 20);
-	
+			
 	this.pack();
 }
 //=============================================================END GUI CLASS======================================================
@@ -953,6 +948,7 @@ public GUI()
 			// save the selected indexes so that we can retain after we remake jobHistory
 			int tempJobIndex = jobHistory.getSelectedIndex();
 			int tempReclassIndex = reclassBox.getSelectedIndex();
+			int tempLevelIndex = inputLevelBox.getSelectedIndex();
 			
 			// actually reclass
 			unitcontroller.reclass(newJob, newLevel);
@@ -966,10 +962,13 @@ public GUI()
 			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
-			
+			inputLevelBox.setSelectedIndex(tempLevelIndex);
 			// set the selected indexes to what we had
 			jobHistory.setSelectedIndex(tempJobIndex);
 			reclassBox.setSelectedIndex(tempReclassIndex);
+			
+			
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
 	}
@@ -988,8 +987,8 @@ public GUI()
 			int newLevel = jobHistory.getSelectedIndex() + startLevel;
 			
 			// save the selected index so that we can retain after we remake jobHistory
-			int tempIndex = jobHistory.getSelectedIndex();
-			
+			int tempJobIndex = jobHistory.getSelectedIndex();
+			int tempLevelIndex = inputLevelBox.getSelectedIndex();
 			// promote
 			unitcontroller.promote(promotedJob, newLevel);
 			
@@ -998,15 +997,20 @@ public GUI()
 			jobHistory.setListData(listData);
 			
 			// set the selected index to what we had
-			jobHistory.setSelectedIndex(tempIndex);
+			jobHistory.setSelectedIndex(tempJobIndex);
 			
 			// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
 			String[] possibleLevels = setUpPossibleLevels(listData);
 			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setSelectedIndex(tempLevelIndex);
 			// Once a unit is successfully promoted, disable promoting
 			promoteButton.setEnabled(false);
+			
+			//Set the end range value for the graph to be the max promoted level
+			//This gets the total level range, which is the jobHistory size + the default level of the unit...
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
 	}
@@ -1046,8 +1050,15 @@ public GUI()
 			// set up the possible levels to be displayed in the resultLevelBox and inputLevelBox
 			String[] possibleLevels = setUpPossibleLevels(listData);
 			
+			//Store the previous inputLevelBox index
+			int tempLevelIndex = inputLevelBox.getSelectedIndex();
+			
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
+			inputLevelBox.setSelectedIndex(tempLevelIndex);
+			
+			//Updates level range
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
 	}
@@ -1264,6 +1275,10 @@ public GUI()
 			{
 				JOptionPane.showMessageDialog(GUI.this, "Please enter a number for the stats", "Error", JOptionPane.ERROR_MESSAGE);
 			}
+			
+			int startingLevel = Integer.parseInt(childStartingLevelBox.getSelectedItem().toString());
+			startRangeSpinner.setValue(startingLevel - 1);
+			endRangeSpinner.setValue(jobHistory.getModel().getSize() + startingLevel);
 		}
 	}
 	//This handles the close button in the parental units window
@@ -1500,6 +1515,8 @@ public GUI()
 				SetResultBox(inputResults,localResults, maxStats);
 				
 				resultLevelBox.setEnabled(true);
+				
+				graphcontroller.setAxisRange((int)startRangeSpinner.getValue(), (int)endRangeSpinner.getValue());
 
 			//Check for max Stats, then set the boxes and adjust backgrounds
 			//HEALTH 0 
@@ -1702,7 +1719,23 @@ public GUI()
 				if(tempJob.getIsPromoted() || tempJob.getIsSpecial())
 					promoteButton.setEnabled(false);
 				
-				
+				System.out.println(" WHAT IS THE NAME? "+tempChar.getName());
+				//Sets up level Range
+				if(tempJob.getIsPromoted() == false)
+				{
+					startRangeSpinner.setValue(tempChar.getBaseStats().getStats(tempRoute, 0) - 1);
+					endRangeSpinner.setValue(jobHistory.getModel().getSize() + tempChar.getBaseStats().getStats(tempRoute, 0));
+				}
+				else if(tempChar.getName().equals("Felicia (M)") || tempChar.getName().equals("Felicia (F)") || tempChar.getName().equals("Jakob (M)") || tempChar.getName().equals("Jakob (F)"))
+				{
+					startRangeSpinner.setValue(tempChar.getBaseStats().getStats(tempRoute, 0) - 1);
+					endRangeSpinner.setValue(jobHistory.getModel().getSize() + tempChar.getBaseStats().getStats(tempRoute, 0));
+				}
+				else
+				{
+					startRangeSpinner.setValue(tempChar.getBaseStats().getStats(tempRoute, 0) - 1 + 20 );
+					endRangeSpinner.setValue(jobHistory.getModel().getSize() + tempChar.getBaseStats().getStats(tempRoute, 0) + 20 );
+				}
 				//Debug print to console
 				System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
 				System.out.println("Base Class: "+unitcontroller.getCurrentJob().getName());
@@ -1727,7 +1760,7 @@ public GUI()
 		{
 			DataStorage data = DataStorage.getInstance();
 			UnitController unitcontroller = UnitController.getInstance();
-			
+			GraphController graphcontroller = GraphController.getInstance();
 			// set the result class display
 			// get the string of the selected item
 			String str = inputLevelBox.getSelectedItem().toString();
@@ -1752,6 +1785,9 @@ public GUI()
 				possibleLevelsResultsBox[i - inputLevelBox.getSelectedIndex()] = inputLevelBox.getItemAt(i).toString();
 			}
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevelsResultsBox));
+			
+			//Adjusts graph, not sure if I want this here...
+			startRangeSpinner.setValue(inputLevel - 1);		
 		}
 	}
 	//This handler updates the result panel based on the input level
