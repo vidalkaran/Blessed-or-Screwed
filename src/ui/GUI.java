@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -102,6 +103,11 @@ public class GUI extends JFrame{
 		JButton calculateButton;
 		JButton optionsButton;
 		JButton clearButton;
+		JLabel levelRange1;
+		JLabel levelRange2;
+		JSpinner startRangeSpinner;
+		JSpinner endRangeSpinner;
+		JButton rangeButton;
 		
 //Option Window
 		JDialog optionPane;
@@ -444,6 +450,26 @@ public GUI()
 		graphStatBox.addActionListener(graphboxhandler);
 			graphPanel.add(graphStat);
 			graphPanel.add(graphStatBox);
+		levelRange1 = new JLabel("Level Range: ");
+		levelRange2 = new JLabel("-");
+		startRangeSpinner = new JSpinner();
+			startRangeSpinner.setValue(1);
+			Component mySpinnerEditor = startRangeSpinner.getEditor();
+			JFormattedTextField startRangeSpinnerTextField = ((JSpinner.DefaultEditor) mySpinnerEditor).getTextField();
+			startRangeSpinnerTextField.setColumns(2);
+		endRangeSpinner = new JSpinner();
+			endRangeSpinner.setValue(20);
+			Component mySpinnerEditor2 = endRangeSpinner.getEditor();
+			JFormattedTextField startRangeSpinnerTextField2 = ((JSpinner.DefaultEditor) mySpinnerEditor2).getTextField();
+			startRangeSpinnerTextField2.setColumns(2);
+		rangeButton = new JButton("Set");
+			graphPanel.add(levelRange1);
+			graphPanel.add(startRangeSpinner);
+			graphPanel.add(levelRange2);
+			graphPanel.add(endRangeSpinner);
+			graphPanel.add(rangeButton);
+		GraphRangeHandler graphrangehandler = new GraphRangeHandler();
+		rangeButton.addActionListener(graphrangehandler);
 		graphStatBox.setEnabled(false);
 
 	//GRAPH PANEL 2
@@ -795,7 +821,11 @@ public GUI()
 	//THIS IS WORK IN PROGRESS FOR THE GRAPH
 	graphcontroller.createGraph("");
 	ChartPanel inputChart = graphcontroller.getChartPanel();
+	inputChart.setPopupMenu(null); //This disables the right click menu
 	graphPanel2.add(inputChart);
+	
+	//Testing stuff
+	graphcontroller.setAxisRange(0, 20);
 	
 	this.pack();
 }
@@ -1627,6 +1657,16 @@ public GUI()
 //			System.out.println("INPUT LEVEL" + startLevel);
 //			System.out.println("GRAPH IS DISPLAYING:" +(displayLevel)+" - "+(startLevel));
 
+		}
+	}
+	public class GraphRangeHandler implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{			
+			GraphController graphcontroller = GraphController.getInstance();
+			int startRange = (int)startRangeSpinner.getValue();
+			int endRange = (int) endRangeSpinner.getValue();
+			graphcontroller.setAxisRange(startRange, endRange);
 		}
 	}
 	//This handler allows a user to select a route and adjusts data in the logic based on route.
