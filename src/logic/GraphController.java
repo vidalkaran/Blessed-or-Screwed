@@ -3,7 +3,10 @@ package logic;
 import java.awt.Color; 
 import java.awt.BasicStroke; 
 import org.jfree.chart.ChartPanel; 
-import org.jfree.chart.JFreeChart; 
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.xy.XYDataset; 
 import org.jfree.data.xy.XYSeries; 
 import org.jfree.ui.ApplicationFrame; 
@@ -32,7 +35,9 @@ public static GraphController getInstance() {
 	}
 	return instance;
 }
-	
+
+//The dataset is the array of x,y plots that forms the line in the graph. This should retrieved from the unitcontroller.
+//This dataset is empty, and basically clears the graph
  public XYSeriesCollection createDataset( )
  {
     final XYSeries localDataset = new XYSeries("Average Stats");          
@@ -46,7 +51,7 @@ public static GraphController getInstance() {
     dataset.addSeries(InputDataset);
     return dataset;
  }
-
+ //This is the proper dataset with the inputted values
  public XYSeriesCollection createDataset(double[] localStats, double[] inputStats, int level)
  {      
     final XYSeries InputDataset = new XYSeries("Your Stats");          
@@ -68,6 +73,17 @@ public static GraphController getInstance() {
     return dataset;
  }
  
+ //This sets the X Axis range.
+ 
+ public void setAxisRange(int startRange, int endRange)
+ {
+	 ValueAxis xRange = plot.getDomainAxis();
+	 ValueAxis yRange = plot.getRangeAxis();
+	 xRange.setRange(startRange, endRange);
+	 plot.configureRangeAxes();
+ }
+ 
+ //This initializes the graph
  public void createGraph( String applicationTitle)
  {
     xylineChart = ChartFactory.createXYLineChart(
