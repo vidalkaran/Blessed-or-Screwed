@@ -967,7 +967,11 @@ public GUI()
 			jobHistory.setSelectedIndex(tempJobIndex);
 			reclassBox.setSelectedIndex(tempReclassIndex);
 			
+			// disable resultLevelBox to prevent user from changing for the classHistory in UnitController needs to be updated from CalculateButtonHandler
+			resultLevelBox.setEnabled(false);
 			
+			//Set the end range value for the graph to be the max promoted level
+			//This gets the total level range, which is the jobHistory size + the default level of the unit...
 			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
 		}
 		
@@ -1007,6 +1011,9 @@ public GUI()
 			inputLevelBox.setSelectedIndex(tempLevelIndex);
 			// Once a unit is successfully promoted, disable promoting
 			promoteButton.setEnabled(false);
+			
+			// disable resultLevelBox to prevent user from changing for the classHistory in UnitController needs to be updated from CalculateButtonHandler
+			resultLevelBox.setEnabled(false);
 			
 			//Set the end range value for the graph to be the max promoted level
 			//This gets the total level range, which is the jobHistory size + the default level of the unit...
@@ -1056,6 +1063,9 @@ public GUI()
 			resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 			inputLevelBox.setSelectedIndex(tempLevelIndex);
+			
+			// disable resultLevelBox to prevent user from changing for the classHistory in UnitController needs to be updated from CalculateButtonHandler
+			resultLevelBox.setEnabled(false);
 			
 			//Updates level range
 			endRangeSpinner.setValue(jobHistory.getModel().getSize() + unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0));
@@ -1395,6 +1405,20 @@ public GUI()
 			
 			resultLevelBox.setEnabled(false);
 			graphStatBox.setEnabled(false);
+			
+			// set the result display to reflect the level and job highlighted of the starting level
+			// get the string of the selected item
+			String str = resultLevelBox.getSelectedItem().toString();
+			// check if it's a string for a promoted class and thus has the inner level in "(...)"
+			if(str.contains("("))
+				str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+						
+			// set the result level to the inner level
+			int resultLevel = Integer.parseInt(str);
+			int startLevel = unitcontroller.getStartLevel();
+
+			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - startLevel).toString());
+			
 			// Reset the reclass box
 			if(data.getJobs().get(tempChar.getBaseClass()).getIsPromoted())
 				reclassBox.setSelectedIndex(Arrays.asList(promotedJobs).indexOf(tempChar.getBaseClass()));
@@ -1512,7 +1536,7 @@ public GUI()
 				double[] inputResults = unitcontroller.getInputUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 				double[] localResults = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getBaseStats();
 				int[] maxStats = unitcontroller.getLocalUnitSheet().get(resultLevelBox.getSelectedIndex()).getMaxstats();
-				SetResultBox(inputResults,localResults, maxStats);
+				setResultBox(inputResults,localResults, maxStats);
 				
 				resultLevelBox.setEnabled(true);
 				
@@ -1711,7 +1735,17 @@ public GUI()
 				resultLevelBox.setModel(new DefaultComboBoxModel(possibleLevels));
 				
 				//set the result display to reflect the level and job highlighted
-				resultClassDisplay.setText("Lvl. "+tempChar.getBaseStats().getStats(tempRoute, 0)+" "+tempChar.getBaseClass());
+				// get the string of the selected item
+				String str = resultLevelBox.getSelectedItem().toString();
+				// check if it's a string for a promoted class and thus has the inner level in "(...)"
+				if(str.contains("("))
+					str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+							
+				// set the result level to the inner level
+				int resultLevel = Integer.parseInt(str);
+				int startLevel = unitcontroller.getStartLevel();
+				
+				resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - startLevel).toString());
 				
 				// set up the promote box
 				promoteBox.setModel(new DefaultComboBoxModel(unitcontroller.getCurrentJob().getPromotions()));
@@ -1816,7 +1850,7 @@ public GUI()
 
 			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - startLevel).toString());
 
-			SetResultBox(inputResults, localResults, maxStats);
+			setResultBox(inputResults, localResults, maxStats);
 		}
 	}
 	
@@ -1885,20 +1919,30 @@ public GUI()
 		
 		return possibleLevels;
 	}
-	public void SetResultBox(double[] inputResults, double[] localResults, int[] maxStats)
+	// This method sets up the result box to handle key color coding
+	// A CYAN background  for the result[Stat]Field indicates that the user's input value is over the max stat cap
+	// A GREEN background indicates that for the result[Stat]Difference, the user's input value is above the average
+	// A RED background indicates that for the result[Stat]Difference, the user's input value is below the average
+	// A WHITE background indicates that for the result[Stat]Difference, the user's input value is equal to the average
+	public void setResultBox(double[] inputResults, double[] localResults, int[] maxStats)
 	{
+		// DO WE ACTUALLY WANT TO USE THESE?
+		int[] roundedInputResults = roundAndConvertToInt(inputResults);
+		int[] roundedLocalResults = roundAndConvertToInt(localResults);
+		
 		DecimalFormat formatter = new DecimalFormat( "##.##" );
-
+		
+		// For the following set of code, the first 2 if statements of each block handle if the input value is higher than the max value for USER VALUES
 		//HEALTH 0
 		if(inputResults[0]>maxStats[0])
 		{
 			resultHPField.setText(maxStats[0]+"("+formatter.format(inputResults[0])+")");
-			resultHPField.setBackground(Color.GREEN);
+			resultHPField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[0]==maxStats[0])
 		{
 			resultHPField.setText(formatter.format(inputResults[0]));
-			resultHPField.setBackground(Color.GREEN);
+			resultHPField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -1922,12 +1966,12 @@ public GUI()
 		if(inputResults[1]>maxStats[1])
 		{
 			resultStrField.setText(maxStats[1]+"("+formatter.format(inputResults[1])+")");
-			resultStrField.setBackground(Color.GREEN);
+			resultStrField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[1]==maxStats[1])
 		{
 			resultStrField.setText(formatter.format(inputResults[1]));
-			resultStrField.setBackground(Color.GREEN);
+			resultStrField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -1951,12 +1995,12 @@ public GUI()
 		if(inputResults[2]>maxStats[2])
 		{
 			resultMagField.setText(maxStats[2]+"("+formatter.format(inputResults[2])+")");
-			resultMagField.setBackground(Color.GREEN);
+			resultMagField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[2]==maxStats[2])
 		{
 			resultMagField.setText(formatter.format(inputResults[2]));
-			resultMagField.setBackground(Color.GREEN);
+			resultMagField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -1980,12 +2024,12 @@ public GUI()
 		if(inputResults[3]>maxStats[3])
 		{
 			resultSklField.setText(maxStats[3]+"("+formatter.format(inputResults[3])+")");
-			resultSklField.setBackground(Color.GREEN);
+			resultSklField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[3]==maxStats[3])
 		{
 			resultSklField.setText(formatter.format(inputResults[3]));
-			resultSklField.setBackground(Color.GREEN);
+			resultSklField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -2009,12 +2053,12 @@ public GUI()
 		if(inputResults[4]>maxStats[4])
 		{
 			resultSpdField.setText(maxStats[4]+"("+formatter.format(inputResults[4])+")");
-			resultSpdField.setBackground(Color.GREEN);
+			resultSpdField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[4]==maxStats[4])
 		{
 			resultSpdField.setText(formatter.format(inputResults[4]));
-			resultSpdField.setBackground(Color.GREEN);
+			resultSpdField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -2038,12 +2082,12 @@ public GUI()
 		if(inputResults[5]>maxStats[5])
 		{
 			resultLckField.setText(maxStats[5]+"("+formatter.format(inputResults[5])+")");
-			resultLckField.setBackground(Color.GREEN);
+			resultLckField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[5]==maxStats[5])
 		{
 			resultLckField.setText(formatter.format(inputResults[5]));
-			resultLckField.setBackground(Color.GREEN);
+			resultLckField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -2067,12 +2111,12 @@ public GUI()
 		if(inputResults[6]>maxStats[6])
 		{
 			resultDefField.setText(maxStats[6]+"("+formatter.format(inputResults[6])+")");
-			resultDefField.setBackground(Color.GREEN);
+			resultDefField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[6]==maxStats[6])
 		{
 			resultDefField.setText(formatter.format(inputResults[6]));
-			resultDefField.setBackground(Color.GREEN);
+			resultDefField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -2096,12 +2140,12 @@ public GUI()
 		if(inputResults[7]>maxStats[7])
 		{
 			resultResField.setText(maxStats[7]+"("+formatter.format(inputResults[7])+")");
-			resultResField.setBackground(Color.GREEN);
+			resultResField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[7]==maxStats[7])
 		{
 			resultResField.setText(formatter.format(inputResults[7]));
-			resultResField.setBackground(Color.GREEN);
+			resultResField.setBackground(Color.CYAN);
 		}
 		else
 		{
@@ -2121,5 +2165,15 @@ public GUI()
 				{
 					resultResDifference.setBackground(Color.WHITE);
 				}
+	}
+	
+	public int[] roundAndConvertToInt(double[] values) {
+		int[] roundedValues = new int[values.length];
+		for(int i = 0; i < values.length; i++) {
+			double temp = Math.round(values[i]);
+			roundedValues[i] = (int) temp;
+		}
+		
+		return roundedValues;
 	}
 }
