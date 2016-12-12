@@ -10,8 +10,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 45, 30, 40, 45, 45, 35, 25],
-		validSpecials : ["Nohr Prince/ss, Nohr Noble, Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
 		isChild : false
 	},
 	{
@@ -25,8 +24,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 45, 30, 40, 45, 45, 35, 25],
-		validSpecials : ["Nohr Prince/ss, Nohr Noble, Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : false
 	}
 ]

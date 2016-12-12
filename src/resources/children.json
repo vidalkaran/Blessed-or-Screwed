@@ -10,8 +10,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [35, 45, 5, 45, 35, 25, 35, 25],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Villager"],
 		isChild : true,
 		fixedParent: "Azura",
 		variedParents : {
@@ -31,9 +30,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 45, 30, 20, 30, 30, 30, 35],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
-		isChild : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],		areYouABoy : true,
 		fixedParent: "Jakob (F)",
 		variedParents : {
 			conquest : ["Avatar (F)", "Azura", "Beruka", "Camilla", "Charlotte", "Effie", "Elise", "Felicia (F)", "Felicia (M)", "Mozu", "Nyx", "Peri", "Selena"],
@@ -52,8 +49,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [35, 35, 10, 55, 50, 35, 25, 35],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Silas",
 		variedParents : {
@@ -73,8 +69,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 35, 5, 55, 35, 50, 30, 20],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Kaze",
 		variedParents : {
@@ -93,8 +88,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [40, 45, 5, 45, 45, 45, 35, 20],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],		areYouABoy : true,
 		isChild : true,
 		fixedParent: "Xander",
 		variedParents : {
@@ -112,8 +106,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [55, 15, 65, 20, 35, 25, 25, 55],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Leo",
 		variedParents : {
@@ -131,8 +124,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [40, 50, 0, 40, 30, 55, 45, 35],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Benny",
 		variedParents : {
@@ -150,8 +142,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [50, 50, 0, 40, 40, 35, 45, 30],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard"],
 		isChild : true,
 		fixedParent: "Keaton",
 		variedParents : {
@@ -169,8 +160,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [30, 30, 5, 45, 40, 75, 55, 15],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Arthur",
 		variedParents : {
@@ -188,8 +178,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 15, 45, 40, 45, 65, 20, 30],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Odin",
 		variedParents : {
@@ -207,8 +196,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [25, 60, 0, 35, 35, 45, 35, 40],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Laslow",
 		variedParents : {
@@ -226,8 +214,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [30, 45, 30, 35, 40, 50, 25, 45],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Niles",
 		variedParents : {
@@ -245,8 +232,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [50, 50, 0, 40, 35, 35, 45, 30],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Ryouma",
 		variedParents : {
@@ -264,8 +250,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 40, 0, 45, 50, 45, 40, 15],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "NOHRIAN SCUM!",
 		variedParents : {
@@ -283,8 +268,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [40, 45, 50, 55, 45, 50, 30, 20],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Saizo",
 		variedParents : {
@@ -302,8 +286,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [35, 30, 15, 35, 55, 60, 30, 50],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Kitsune", "Nine-Tails"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard"],
 		isChild : true,
 		fixedParent: "Kaden",
 		variedParents : {
@@ -321,8 +304,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [50, 40, 0, 40, 40, 25, 30, 20],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : true,
+		InvalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Hinata",
 		variedParents : {
@@ -340,8 +322,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 40, 35, 45, 50, 50, 30, 20],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard"],
 		isChild : true,
 		fixedParent: "Azama",
 		variedParents : {
@@ -359,8 +340,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [55, 35, 15, 40, 40, 45, 35, 20],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Subaki",
 		variedParents : {
@@ -378,8 +358,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [40, 15, 60, 10, 50, 30, 25, 35],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
 		isChild : true,
 		fixedParent: "Hayato",
 		variedParents : {

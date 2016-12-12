@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -1871,8 +1872,22 @@ public GUI()
 			int resultLevel = Integer.parseInt(str);
 			int startLevel = unitcontroller.getStartLevel();
 
-			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - startLevel).toString());
+			String currentJob = jobHistory.getModel().getElementAt(resultLevel - startLevel).toString();
+			String[] invalidJobs = unitcontroller.getCurrentChar().getInvalidClasses();
+			
+			resultClassDisplay.setText(currentJob);
+			resultClassDisplay.setForeground(Color.BLACK);
 
+			//Checks to see if the class is invalid and changes text color
+			for(int i = 0; i <invalidJobs.length;i++)
+			{
+			if(currentJob.contains(invalidJobs[i]))
+				{
+					resultClassDisplay.setForeground(Color.RED);
+					System.out.println("INVALID JOB");
+				}
+			}
+			
 			setResultBox(inputResults, localResults, maxStats);
 		}
 	}
