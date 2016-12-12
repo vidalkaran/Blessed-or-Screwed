@@ -1,5 +1,6 @@
-/domain/
-/json/
+/resources/
+/ui/
 /logic/
 /testing/
-/ui/
+/domain/
+/json/

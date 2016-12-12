@@ -10,6 +10,7 @@ import domain.Unit;
 import json.DataStorage;
 import domain.Character;
 import domain.ChildCharacter;
+import domain.Avatar;
 import domain.Job;
 
 public class UnitController {
@@ -36,12 +37,18 @@ public class UnitController {
 	public TreeMap<Integer, String> classHistory; // this is shared between the
 											// localUnitSheet and
 											// inputUnitSheet.
+	public int startLevel;					// This is the unit's first level it starts at as an inner level (so promoted units will have +20 to this)
+	
+	// Used on for ChildCharacter
 	public Unit fixedParent;
 	public Unit variedParent;
 	public double[] fixedParentInputStats;
 	public double[] variedParentInputStats;
-	public int startLevel;					// This is the unit's first level it starts at as an inner level (so promoted units will have +20 to this)
-
+	
+	// Used only for avatar
+	public String myBoon;
+	public String myBane;
+	
 	// prevents instantiation
 	private UnitController() {
 
@@ -71,7 +78,11 @@ public class UnitController {
 		if (currentChar instanceof ChildCharacter) {
 			localUnit = new Unit((ChildCharacter) currentChar, newJob, currentRoute, fixedParentInputStats, fixedParent,
 					variedParentInputStats, variedParent, startLevel);
-		} else {
+		}
+		else if(currentChar instanceof Avatar) {
+			localUnit = new Unit((Avatar) currentChar, newJob, currentRoute, myBoon, myBane, startLevel);
+		}
+		else {
 			localUnit = new Unit(currentChar, newJob, currentRoute, inputLevel);
 		}
 		// Making the unitSheet
@@ -94,7 +105,11 @@ public class UnitController {
 		if (currentChar instanceof ChildCharacter) {
 			inputUnit = new Unit((ChildCharacter) currentChar, newJob, currentRoute, fixedParentInputStats, fixedParent,
 					variedParentInputStats, variedParent, startLevel);
-		} else {
+		} 
+		else if(currentChar instanceof Avatar) {
+			inputUnit = new Unit((Avatar) currentChar, newJob, currentRoute, myBoon, myBane, startLevel);
+		}
+		else {
 			inputUnit = new Unit(currentChar, newJob, currentRoute, inputLevel);
 		}
 
@@ -410,6 +425,14 @@ public class UnitController {
 		this.classHistory = classHistory;
 	}
 
+	public int getStartLevel() {
+		return startLevel;
+	}
+	
+	public void setStartLevel(int startLevel) {
+		this.startLevel = startLevel;
+	}
+	
 	public void setFixedParent(Unit fixedParent) {
 		this.fixedParent = fixedParent;
 	}
@@ -425,12 +448,21 @@ public class UnitController {
 	public void setVariedParentInputStats(double[] variedParentInputStats) {
 		this.variedParentInputStats = variedParentInputStats;
 	}
-
-	public int getStartLevel() {
-		return startLevel;
-	}
 	
-	public void setStartLevel(int startLevel) {
-		this.startLevel = startLevel;
+	public String getMyBoon() {
+		return myBoon;
 	}
+
+	public void setMyBoon(String myBoon) {
+		this.myBoon = myBoon;
+	}
+
+	public String getMyBane() {
+		return myBane;
+	}
+
+	public void setMyBane(String myBane) {
+		this.myBane = myBane;
+	}
+
 }
