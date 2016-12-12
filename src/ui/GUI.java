@@ -179,8 +179,8 @@ public class GUI extends JFrame{
 		
 		JLabel boonLabel;
 		JLabel baneLabel;
-		JComboBox boonBox;
-		JComboBox baneBox;
+		JComboBox parentAvatarBoonBox;
+		JComboBox parentAvatarBaneBox;
 		JButton parentalConfirm;
 		JButton parentalCancel;
 
@@ -191,13 +191,17 @@ public class GUI extends JFrame{
 //OTHER STUFF
 static String[] routes = {"Conquest", "Birthright", "Revelations"};
 
-static String[] conquestCharacters;
-static String[] birthrightCharacters;
-static String[] revelationsCharacters;
+static String[] conquestCharacters;					// Holds list of all characters in Conquest
+static String[] birthrightCharacters;				// Holds list of all characters in Birthright
+static String[] revelationsCharacters;				// Holds list of all characters in Revelations
 
-static String[] jobs;
-static String[] promotedJobs;
-static String[] nonpromotedJobs;
+static String[] jobs;								// Holds list of all the jobs
+static String[] promotedJobs;						// Holds list of only promoted jobs
+static String[] nonpromotedJobs;					// Holds list of only nonpromoted jobs
+
+static final String DEFAULT_CHAR = "Silas";			// The default char
+static final String DEFAULT_BOON = "Strong (Str)";	// Default boon
+static final String DEFAULT_BANE = "Fragile (Def)";	// Default bane
 
 public static void main(String[]args)
 {
@@ -469,7 +473,7 @@ public GUI()
 	//GRAPH PANEL 1
 	JPanel graphPanel = new JPanel();
 		graphStat = new JLabel("Stat: ");
-		String[] statArray = {"HP", "Str", "Mag", "Skl", "Spd", "Lck", "Def", "Res", "Rating"};
+		String[] statArray = {"Rating", "HP", "Str", "Mag", "Skl", "Spd", "Lck", "Def", "Res"};
 		graphStatBox = new JComboBox(statArray);
 		GraphBoxHandler graphboxhandler = new GraphBoxHandler();
 		graphStatBox.addActionListener(graphboxhandler);
@@ -589,10 +593,10 @@ public GUI()
 	JPanel avatarBoonBanePanel = new JPanel();
 	avatarBoonLabel = new JLabel("Boons:");
 	avatarBoonBox= new JComboBox(new DefaultComboBoxModel(data.getBOONS()));
-		avatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf("Strong (Str)"));
+		avatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf(DEFAULT_BOON));
 	avatarBaneLabel = new JLabel("Banes:");
 	avatarBaneBox= new JComboBox(new DefaultComboBoxModel(data.getBANES()));
-		avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf("Fragile (Def)"));
+		avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf(DEFAULT_BANE));
 		avatarBoonBox.setEnabled(false);
 		avatarBaneBox.setEnabled(false);
 		avatarBoonBanePanel.add(avatarBoonLabel);
@@ -645,7 +649,7 @@ public GUI()
 //Button Panel
 	JPanel buttonOptionsPanel = new JPanel();
 	confirmButton = new JButton("Confirm");
-		CloseOptionButtonHandler CloseOptionButtonHandler = new CloseOptionButtonHandler();
+		ConfirmOptionButtonHandler CloseOptionButtonHandler = new ConfirmOptionButtonHandler();
 		confirmButton.addActionListener(CloseOptionButtonHandler);
 		buttonOptionsPanel.add(confirmButton);
 	modPanel.add(buttonOptionsPanel);
@@ -787,17 +791,17 @@ public GUI()
 	JPanel baneboonPanel = new JPanel();
 	baneboonPanel.setLayout(new GridLayout(2,1));
 	boonLabel = new JLabel("Boon: ");
-	boonBox = new JComboBox(new DefaultComboBoxModel(data.getBOONS()));
-		boonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf("Quick (Spd)"));
-		boonBox.setEnabled(false);
+	parentAvatarBoonBox = new JComboBox(new DefaultComboBoxModel(data.getBOONS()));
+		parentAvatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf(DEFAULT_BOON));
+		parentAvatarBoonBox.setEnabled(false);
 	baneLabel = new JLabel("Bane: ");
-	baneBox = new JComboBox(new DefaultComboBoxModel(data.getBANES()));
-		baneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf("Unlucky (Lck)"));
-		baneBox.setEnabled(false);
+	parentAvatarBaneBox = new JComboBox(new DefaultComboBoxModel(data.getBANES()));
+		parentAvatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf(DEFAULT_BANE));
+		parentAvatarBaneBox.setEnabled(false);
 		baneboonPanel.add(boonLabel);
-		baneboonPanel.add(boonBox);
+		baneboonPanel.add(parentAvatarBoonBox);
 		baneboonPanel.add(baneLabel);
-		baneboonPanel.add(baneBox);
+		baneboonPanel.add(parentAvatarBaneBox);
 
 //This panel handles the buttons
 	JPanel parentalButtonPanel = new JPanel();
@@ -838,8 +842,8 @@ public GUI()
 	optionPane.setSize(600,250);
 	optionPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //not sure if this is right, will check when testing
 	
-	//SETS DEFAULT UNIT TO SILAS... FOR DEBUGGING FOR NOW...
-	inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf("Silas"));
+	// sets default character
+	inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf(DEFAULT_CHAR));
 
 	//THIS IS WORK IN PROGRESS FOR THE GRAPH
 	graphcontroller.createGraph("");
@@ -1098,7 +1102,7 @@ public GUI()
 		
 	}
 	//This handles the button that closes the options window
-	public class CloseOptionButtonHandler implements ActionListener
+	public class ConfirmOptionButtonHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -1187,14 +1191,46 @@ public GUI()
 					}
 				}
 				
+				// Set up parents to for calculations of growth values
+				// Separate for if parent is Avatar, ChildCharacter (for Kana), or neither
 				// Set startLevel to 0 for the parents as the level is not important
-				domain.Unit tempFixedParent = new domain.Unit((domain.Character) data.getCharacters().get(fixedParentNameDisplay.getText()), 
+				domain.Character tempFixedParentChar = data.getCharacters().get(fixedParentNameDisplay.getText());
+				domain.Character tempVariedParentChar = data.getCharacters().get(fixedParentNameDisplay.getText());
+				domain.Unit tempFixedParentUnit;
+				domain.Unit tempVariedParentUnit;
+				// Set up fixed parent
+				// If the fixed parent is Avatar
+				if(tempFixedParentChar instanceof domain.Avatar) {
+					unitcontroller.setMyBoon(parentAvatarBoonBox.getSelectedItem().toString());
+					unitcontroller.setMyBane(parentAvatarBaneBox.getSelectedItem().toString());
+					tempFixedParentUnit = new domain.Unit((domain.Avatar) tempFixedParentChar, 
 																(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
-																inputRouteBox.getSelectedItem().toString(), 0);
+																inputRouteBox.getSelectedItem().toString(), unitcontroller.getMyBoon(), unitcontroller.getMyBane(), 0);
+				} 
+				else {
+				tempFixedParentUnit = new domain.Unit(tempFixedParentChar, 
+														(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
+														inputRouteBox.getSelectedItem().toString(), 0);
+				}
 				
-				domain.Unit tempVariedParent = new domain.Unit((domain.Character) data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString()),
+				// Set up varied parent
+				// If the varied parent is Avatar
+				if(tempVariedParentChar instanceof domain.Avatar) {
+					unitcontroller.setMyBoon(parentAvatarBoonBox.getSelectedItem().toString());
+					unitcontroller.setMyBane(parentAvatarBaneBox.getSelectedItem().toString());
+					tempVariedParentUnit = new domain.Unit((domain.Avatar) tempFixedParentChar, 
+																(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
+																inputRouteBox.getSelectedItem().toString(), unitcontroller.getMyBoon(), unitcontroller.getMyBane(), 0);
+				} 
+				/*
+				else if(tempVariedParentChar instanceof domain.ChildCharacter) {
+					
+				}*/
+				else {
+					tempVariedParentUnit = new domain.Unit(tempVariedParentChar,
 																(domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()),
 																inputRouteBox.getSelectedItem().toString(), 0);
+				}
 				
 				double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()),
 																Double.parseDouble(fixedParentStrField.getText()), 
@@ -1249,14 +1285,14 @@ public GUI()
 				unitcontroller.setCurrentJob(tempJob);
 				unitcontroller.setCurrentRoute(tempRoute);
 				unitcontroller.setClassHistory(tempClassHistory);
-				unitcontroller.setFixedParent(tempFixedParent);
-				unitcontroller.setVariedParent(tempVariedParent);
+				unitcontroller.setFixedParent(tempFixedParentUnit);
+				unitcontroller.setVariedParent(tempVariedParentUnit);
 				unitcontroller.setFixedParentInputStats(tempFixedParentStats);
 				unitcontroller.setVariedParentInputStats(tempVariedParentStats);
 				unitcontroller.setStartLevel(tempStartLevel);
 				
 				// Make a temporary child unit to get the base stat data
-				domain.Unit tempChildUnit = new domain.Unit(tempChildChar, tempJob, tempRoute, tempFixedParentStats, tempFixedParent, tempVariedParentStats, tempVariedParent, tempStartLevel);
+				domain.Unit tempChildUnit = new domain.Unit(tempChildChar, tempJob, tempRoute, tempFixedParentStats, tempFixedParentUnit, tempVariedParentStats, tempVariedParentUnit, tempStartLevel);
 				
 				//Sets the stat boxes
 				inputHPField.setText(""+(int)tempChildUnit.getBaseStats()[0]);
@@ -1337,6 +1373,19 @@ public GUI()
 					domain.Character tempVariedParent = data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString());
 					domain.Job tempVariedParentJob = data.getJobs().get(tempVariedParent.getBaseClass());
 					String tempRoute = inputRouteBox.getSelectedItem().toString();
+					
+					//Check if a varied parent is the Avatar
+					if(tempVariedParent.getName().contains("Avatar") || fixedParentNameDisplay.getText().contains("Avatar")) {
+						parentAvatarBoonBox.setEnabled(true);
+						parentAvatarBaneBox.setEnabled(true);
+					}
+					else
+					{
+						parentAvatarBoonBox.setEnabled(false);
+						parentAvatarBaneBox.setEnabled(false);
+						parentAvatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf(DEFAULT_BOON));
+						parentAvatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf(DEFAULT_BANE));
+					}
 					
 					// Set up jobs list
 					variedParentClassDisplay.setModel(new DefaultComboBoxModel(jobs));
@@ -1481,6 +1530,9 @@ public GUI()
 							&& variedParentNameDisplay.getSelectedIndex() == -1)) {
 				JOptionPane.showMessageDialog(GUI.this, "Please input Parents in Child Options");
 			}
+			else if(avatarBoonBox.getSelectedIndex() == avatarBaneBox.getSelectedIndex() /*|| parentAvatarBoonBox.getSelectedIndex() == parentAvatarBaneBox.getSelectedIndex()*/) {
+				JOptionPane.showMessageDialog(GUI.this, "Cannot select the same Boon and Bane.");
+			}
 			else {
 				try
 				{
@@ -1501,6 +1553,11 @@ public GUI()
 	// WHY IS THIS GIVING THE WRONG VALUE?!
 				// if the character being checked is a child, then the input level is from the level box in the child options (because the inputLevelBox is hidden)
 				// inputJobIndex is always 0 because technically the inputed level for a child character is always the base level (aka index 0)
+				if(unitcontroller.getCurrentChar().getName().contains("Avatar")) {
+					unitcontroller.setMyBoon(avatarBoonBox.getSelectedItem().toString());
+					unitcontroller.setMyBane(avatarBaneBox.getSelectedItem().toString());
+				}
+				
 				if(unitcontroller.getCurrentChar().getIsChild())
 				{
 					String currJobInfo = childStartingLevelBox.getSelectedItem().toString();
@@ -1535,7 +1592,7 @@ public GUI()
 				int stat = graphStatBox.getSelectedIndex();
 	
 				//Looking for rating
-				if(stat == 8)
+				if(stat == 0)
 				{
 					double[] LocalStatSpread = unitcontroller.getLocalRating();
 					double[] InputStatSpread = unitcontroller.getInputRating();
@@ -1544,8 +1601,8 @@ public GUI()
 				//Looking for normal stats
 				else
 				{
-					double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-					double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+					double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat-1);
+					double[] InputStatSpread = unitcontroller.getInputStatSpread(stat-1);
 					graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, inputLevel));
 					
 				}	
@@ -1587,7 +1644,7 @@ public GUI()
 			int startLevel = unitcontroller.getStartLevel();
 			
 			//Looking for rating
-			if(stat == 8)
+			if(stat == 0)
 			{
 				double[] LocalStatSpread = unitcontroller.getLocalRating();
 				double[] InputStatSpread = unitcontroller.getInputRating();
@@ -1596,8 +1653,8 @@ public GUI()
 			//Looking for normal stats
 			else
 			{
-				double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat);
-				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat);;
+				double[] LocalStatSpread = unitcontroller.getLocalStatSpread(stat-1);
+				double[] InputStatSpread = unitcontroller.getInputStatSpread(stat-1);
 				graphcontroller.setDataset(graphcontroller.createDataset(LocalStatSpread, InputStatSpread, startLevel));
 			}
 			
@@ -1607,6 +1664,7 @@ public GUI()
 
 		}
 	}
+	//This handler allows the user to change the range of levels in the graph projection 
 	public class GraphRangeHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent arg0) 
@@ -1625,25 +1683,24 @@ public GUI()
 			if(inputRouteBox.getSelectedItem() == "Conquest")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(conquestCharacters));
-			    inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf("Silas"));
+			    inputCharBox.setSelectedIndex(Arrays.asList(conquestCharacters).indexOf(DEFAULT_CHAR));
 			    repaint();
 			}
 			else if(inputRouteBox.getSelectedItem() == "Birthright")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(birthrightCharacters));
-			    inputCharBox.setSelectedIndex(Arrays.asList(birthrightCharacters).indexOf("Silas"));
+			    inputCharBox.setSelectedIndex(Arrays.asList(birthrightCharacters).indexOf(DEFAULT_CHAR));
 			    repaint();
 			}
 			if(inputRouteBox.getSelectedItem() == "Revelations")
 			{
 			    inputCharBox.setModel(new DefaultComboBoxModel(revelationsCharacters));
-			    inputCharBox.setSelectedIndex(Arrays.asList(revelationsCharacters).indexOf("Silas"));
+			    inputCharBox.setSelectedIndex(Arrays.asList(revelationsCharacters).indexOf(DEFAULT_CHAR));
 			    repaint();
 			}
 		}
 	}
 	//This handler allows a user to select a character and adjusts data in logic and displayed data based on the character's base parameters
-	//This handler allows a user to select the character and adjusts data accordingly
 	public class CharBoxHandler implements ActionListener
 {
 	public void actionPerformed(ActionEvent e)
@@ -1686,6 +1743,20 @@ public GUI()
 				// Set up the default fixedParent
 				// temp variable for the fixedParent
 				domain.Character tempFixedParent = data.getCharacters().get(tempChildChar.getFixedParent());
+				
+				// Check if Kana to handle boons and banes
+				if(tempFixedParent.getName().contains("Avatar")) {
+					parentAvatarBoonBox.setEnabled(true);
+					parentAvatarBaneBox.setEnabled(true);
+				}
+				else
+				{
+					parentAvatarBoonBox.setEnabled(false);
+					parentAvatarBaneBox.setEnabled(false);
+					parentAvatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf(DEFAULT_BOON));
+					parentAvatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf(DEFAULT_BANE));
+				}
+				
 				// Set the name and class (among the list of classes)
 				fixedParentNameDisplay.setText(tempChildChar.getFixedParent());
 				fixedParentClassDisplay.setSelectedIndex(Arrays.asList(jobs).indexOf(tempFixedParent.getBaseClass()));
@@ -1723,6 +1794,18 @@ public GUI()
 				inputLevel.setVisible(true);
 				inputLevelBox.setVisible(true);
 				
+				if(tempChar.getName().contains("Avatar")) {
+					avatarBoonBox.setEnabled(true);
+					avatarBaneBox.setEnabled(true);
+				}
+				else
+				{
+					avatarBoonBox.setEnabled(false);
+					avatarBaneBox.setEnabled(false);
+					avatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf(DEFAULT_BOON));
+					avatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf(DEFAULT_BANE));
+				}
+				
 				//Making the class history
 				TreeMap<Integer, String> tempClassHistory = new TreeMap<Integer, String>();
 				for(int i = tempLevel + prepromoteModifier; i<=tempJob.getMaxStats(0) + tempChar.getMaxMods(0) + prepromoteModifier; i++)
@@ -1732,7 +1815,15 @@ public GUI()
 				}
 						
 				//Update UnitController
-				unitcontroller.setCurrentChar(tempChar);
+				if(tempChar.getName().contains("Avatar")) {
+					domain.Avatar tempAvatar = (domain.Avatar)tempChar;
+					unitcontroller.setCurrentChar(tempAvatar);
+					unitcontroller.setMyBoon(avatarBoonBox.getSelectedItem().toString());
+					unitcontroller.setMyBane(avatarBaneBox.getSelectedItem().toString());
+				}
+				else {
+					unitcontroller.setCurrentChar(tempChar);
+				}
 				unitcontroller.setCurrentJob(tempJob);
 				unitcontroller.setCurrentRoute(tempRoute);
 				unitcontroller.setStartLevel(tempLevel + prepromoteModifier);
@@ -1777,7 +1868,6 @@ public GUI()
 				if(tempJob.getIsPromoted() || tempJob.getIsSpecial())
 					promoteButton.setEnabled(false);
 				
-				System.out.println(" WHAT IS THE NAME? "+tempChar.getName());
 				//Sets up level Range
 				if(tempJob.getIsPromoted() == false)
 				{
@@ -1982,25 +2072,25 @@ public GUI()
 		//HEALTH 0
 		if(inputResults[0]>maxStats[0])
 		{
-			resultHPField.setText(maxStats[0]+" ("+formatter.format(inputResults[0])+")");
+			resultHPField.setText(maxStats[0]+" ("+formatter.format(roundedInputResults[0])+")");
 			resultHPField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[0]==maxStats[0])
 		{
-			resultHPField.setText(formatter.format(inputResults[0]));
+			resultHPField.setText(formatter.format(roundedInputResults[0]));
 			resultHPField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultHPField.setText(formatter.format(inputResults[0]));
+			resultHPField.setText(formatter.format(roundedInputResults[0]));
 		}
 			avgHPField.setText(formatter.format(localResults[0]));
-			resultHPDifference.setText(formatter.format(inputResults[0] - localResults[0]));
-				if((inputResults[0] - localResults[0]) < 0)
+			resultHPDifference.setText(formatter.format(roundedInputResults[0] - localResults[0]));
+				if((roundedInputResults[0] - localResults[0]) < 0)
 				{
 					resultHPDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[0] - localResults[0]) > 0)
+				else if ((roundedInputResults[0] - localResults[0]) > 0)
 				{
 					resultHPDifference.setBackground(Color.GREEN);
 				}
@@ -2011,25 +2101,25 @@ public GUI()
 		//STRENGTH 1
 		if(inputResults[1]>maxStats[1])
 		{
-			resultStrField.setText(maxStats[1]+" ("+formatter.format(inputResults[1])+")");
+			resultStrField.setText(maxStats[1]+" ("+formatter.format(roundedInputResults[1])+")");
 			resultStrField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[1]==maxStats[1])
 		{
-			resultStrField.setText(formatter.format(inputResults[1]));
+			resultStrField.setText(formatter.format(roundedInputResults[1]));
 			resultStrField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultStrField.setText(formatter.format(inputResults[1]));
+			resultStrField.setText(formatter.format(roundedInputResults[1]));
 		}
 			avgStrField.setText(formatter.format(localResults[1]));
-			resultStrDifference.setText(formatter.format(inputResults[1] - localResults[1]));
-				if((inputResults[1] - localResults[1]) < 0)
+			resultStrDifference.setText(formatter.format(roundedInputResults[1] - localResults[1]));
+				if((roundedInputResults[1] - localResults[1]) < 0)
 				{
 					resultStrDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[1] - localResults[1]) > 0)
+				else if ((roundedInputResults[1] - localResults[1]) > 0)
 				{
 					resultStrDifference.setBackground(Color.GREEN);
 				}
@@ -2040,25 +2130,25 @@ public GUI()
 		//MAGIC 2
 		if(inputResults[2]>maxStats[2])
 		{
-			resultMagField.setText(maxStats[2]+" ("+formatter.format(inputResults[2])+")");
+			resultMagField.setText(maxStats[2]+" ("+formatter.format(roundedInputResults[2])+")");
 			resultMagField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[2]==maxStats[2])
 		{
-			resultMagField.setText(formatter.format(inputResults[2]));
+			resultMagField.setText(formatter.format(roundedInputResults[2]));
 			resultMagField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultMagField.setText(formatter.format(inputResults[2]));
+			resultMagField.setText(formatter.format(roundedInputResults[2]));
 		}
 			avgMagField.setText(formatter.format(localResults[2]));
-			resultMagDifference.setText(formatter.format(inputResults[2] - localResults[2]));
-				if((inputResults[2] - localResults[2]) < 0)
+			resultMagDifference.setText(formatter.format(roundedInputResults[2] - localResults[2]));
+				if((roundedInputResults[2] - localResults[2]) < 0)
 				{
 					resultMagDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[2] - localResults[2]) > 0)
+				else if ((roundedInputResults[2] - localResults[2]) > 0)
 				{
 					resultMagDifference.setBackground(Color.GREEN);
 				}
@@ -2069,25 +2159,25 @@ public GUI()
 		//SKILL 3
 		if(inputResults[3]>maxStats[3])
 		{
-			resultSklField.setText(maxStats[3]+" ("+formatter.format(inputResults[3])+")");
+			resultSklField.setText(maxStats[3]+" ("+formatter.format(roundedInputResults[3])+")");
 			resultSklField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[3]==maxStats[3])
 		{
-			resultSklField.setText(formatter.format(inputResults[3]));
+			resultSklField.setText(formatter.format(roundedInputResults[3]));
 			resultSklField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultSklField.setText(formatter.format(inputResults[3]));
+			resultSklField.setText(formatter.format(roundedInputResults[3]));
 		}
 			avgSklField.setText(formatter.format(localResults[3]));
-			resultSklDifference.setText(formatter.format(inputResults[3] - localResults[3]));
-				if((inputResults[3] - localResults[3]) < 0)
+			resultSklDifference.setText(formatter.format(roundedInputResults[3] - localResults[3]));
+				if((roundedInputResults[3] - localResults[3]) < 0)
 				{
 					resultSklDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[3] - localResults[3]) > 0)
+				else if ((roundedInputResults[3] - localResults[3]) > 0)
 				{
 					resultSklDifference.setBackground(Color.GREEN);
 				}
@@ -2098,25 +2188,25 @@ public GUI()
 		//SPEED 4
 		if(inputResults[4]>maxStats[4])
 		{
-			resultSpdField.setText(maxStats[4]+" ("+formatter.format(inputResults[4])+")");
+			resultSpdField.setText(maxStats[4]+" ("+formatter.format(roundedInputResults[4])+")");
 			resultSpdField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[4]==maxStats[4])
 		{
-			resultSpdField.setText(formatter.format(inputResults[4]));
+			resultSpdField.setText(formatter.format(roundedInputResults[4]));
 			resultSpdField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultSpdField.setText(formatter.format(inputResults[4]));
+			resultSpdField.setText(formatter.format(roundedInputResults[4]));
 		}
 			avgSpdField.setText(formatter.format(localResults[4]));
-			resultSpdDifference.setText(formatter.format(inputResults[4] - localResults[4]));
-				if((inputResults[4] - localResults[4]) < 0)
+			resultSpdDifference.setText(formatter.format(roundedInputResults[4] - localResults[4]));
+				if((roundedInputResults[4] - localResults[4]) < 0)
 				{
 					resultSpdDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[4] - localResults[4]) > 0)
+				else if ((roundedInputResults[4] - localResults[4]) > 0)
 				{
 					resultSpdDifference.setBackground(Color.GREEN);
 				}
@@ -2127,21 +2217,21 @@ public GUI()
 		//LUCK 5
 		if(inputResults[5]>maxStats[5])
 		{
-			resultLckField.setText(maxStats[5]+" ("+formatter.format(inputResults[5])+")");
+			resultLckField.setText(maxStats[5]+" ("+formatter.format(roundedInputResults[5])+")");
 			resultLckField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[5]==maxStats[5])
 		{
-			resultLckField.setText(formatter.format(inputResults[5]));
+			resultLckField.setText(formatter.format(roundedInputResults[5]));
 			resultLckField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultLckField.setText(formatter.format(inputResults[5]));
+			resultLckField.setText(formatter.format(roundedInputResults[5]));
 		}
 			avgLckField.setText(formatter.format(localResults[5]));
-			resultLckDifference.setText(formatter.format(inputResults[5] - localResults[5]));
-				if((inputResults[5] - localResults[5]) < 0)
+			resultLckDifference.setText(formatter.format(roundedInputResults[5] - localResults[5]));
+				if((roundedInputResults[5] - localResults[5]) < 0)
 				{
 				resultLckDifference.setBackground(Color.RED);
 				}
@@ -2156,25 +2246,25 @@ public GUI()
 		//DEFENSE 6
 		if(inputResults[6]>maxStats[6])
 		{
-			resultDefField.setText(maxStats[6]+" ("+formatter.format(inputResults[6])+")");
+			resultDefField.setText(maxStats[6]+" ("+formatter.format(roundedInputResults[6])+")");
 			resultDefField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[6]==maxStats[6])
 		{
-			resultDefField.setText(formatter.format(inputResults[6]));
+			resultDefField.setText(formatter.format(roundedInputResults[6]));
 			resultDefField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultDefField.setText(formatter.format(inputResults[6]));
+			resultDefField.setText(formatter.format(roundedInputResults[6]));
 		}
 			avgDefField.setText(formatter.format(localResults[6]));
-			resultDefDifference.setText(formatter.format(inputResults[6] - localResults[6]));
-				if((inputResults[6] - localResults[6]) < 0)
+			resultDefDifference.setText(formatter.format(roundedInputResults[6] - localResults[6]));
+				if((roundedInputResults[6] - localResults[6]) < 0)
 				{
 					resultDefDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[6] - localResults[6]) > 0)
+				else if ((roundedInputResults[6] - localResults[6]) > 0)
 				{
 					resultDefDifference.setBackground(Color.GREEN);
 				}
@@ -2185,25 +2275,25 @@ public GUI()
 		//RESISTANCE 7
 		if(inputResults[7]>maxStats[7])
 		{
-			resultResField.setText(maxStats[7]+" ("+formatter.format(inputResults[7])+")");
+			resultResField.setText(maxStats[7]+" ("+formatter.format(roundedInputResults[7])+")");
 			resultResField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[7]==maxStats[7])
 		{
-			resultResField.setText(formatter.format(inputResults[7]));
+			resultResField.setText(formatter.format(roundedInputResults[7]));
 			resultResField.setBackground(Color.CYAN);
 		}
 		else
 		{
-			resultResField.setText(formatter.format(inputResults[7]));
+			resultResField.setText(formatter.format(roundedInputResults[7]));
 		}
 			avgResField.setText(formatter.format(localResults[7]));
-			resultResDifference.setText(formatter.format(inputResults[7] - localResults[7]));		
-				if((inputResults[7] - localResults[7]) < 0)
+			resultResDifference.setText(formatter.format(roundedInputResults[7] - localResults[7]));		
+				if((roundedInputResults[7] - localResults[7]) < 0)
 				{
 					resultResDifference.setBackground(Color.RED);
 				}
-				else if ((inputResults[7] - localResults[7]) > 0)
+				else if ((roundedInputResults[7] - localResults[7]) > 0)
 				{
 					resultResDifference.setBackground(Color.GREEN);
 				}

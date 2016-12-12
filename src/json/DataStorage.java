@@ -59,18 +59,12 @@ public class DataStorage implements Serializable{
 	private ArrayList<String> birthrightCharacters;		// ArrayList to hold all characters in the Birthright route
 	private ArrayList<String> revelationsCharacters;	// ArrayList to hold all characters in the Revelations route
 	
-	private Job[] jobArray;						// Array used for JSON parsing jobs
-	private Map<String, Job> jobs;				// Map based off of the jobArray Array. <key, value> = <job name, Job object>
-	private ArrayList<String> specialClasses; 	// ArrayList to hold the names of any special classes
+	private Job[] jobArray;								// Array used for JSON parsing jobs
+	private Map<String, Job> jobs;						// Map based off of the jobArray Array. <key, value> = <job name, Job object>
+	private ArrayList<String> specialClasses; 			// ArrayList to hold the names of any special classes
 	private ArrayList<String> jobNames;					// ArrayList to hold all of the jobNames to be accessed for filling out the GUI list of jobs
 	private ArrayList<String> promotedJobNames;			// ArrayList to hold all of the promoted classes to be accessed for filling out the GUI list of jobs
 	private ArrayList<String> nonpromotedJobNames;		// ArrayList to hold all of the non-promoted classes to be accessed for filling out the GUI list of jobs
-	
-	// OUTDATED
-	// Arrays representing locked Marriage Options - for example, Xander and Leo cannot marry their sisters (Camilla and Elise)
-	private final String[] AVATAR_LOCKED = {"Gunter", "Shura", "Izana", "Flora", "Scarlet", "Yukimura", "Fuga", "Anna"};
-	private final String[] NOHR_ROYALS_LOCKED = {"Camilla", "Elise"};
-	private final String[] HOSHIDO_ROYALS_LOCKED = {"Hinoka", "Sakura"};
 	
 	// prevents instantiation of the class
 	private DataStorage() {
@@ -129,19 +123,6 @@ public class DataStorage implements Serializable{
 	public String[] getBANES() {
 		return BANES;
 	}
-	
-	public String[] getAVATAR_LOCKED() {
-		return AVATAR_LOCKED;
-	}
-
-	public String[] getNOHR_ROYALS_LOCKED() {
-		return NOHR_ROYALS_LOCKED;
-	}
-
-	public String[] getHOSHIDO_ROYALS_LOCKED() {
-		return HOSHIDO_ROYALS_LOCKED;
-	}
-
 	
 	// methods
 	// parsing for characters.json
