@@ -170,7 +170,7 @@ public class Unit {
 			{
 				// FORUMLA: c = Child's absolute base stats + {(n x Child's full growth rates) rounded down}
 				//      Child's absolute base stat							 + ROUNDED DOWN	  (n * full growths while in the character's base class)
-				double c = myChildCharacter.getBaseStats().getStats(route, i+1) + n * ((growths[i] - myJob.getGrowths(i) + tempGrowths[i])/100.0);
+				double c = myChildCharacter.getBaseStats().getStats(route, i+1) + n * ((growths[i] - myJob.getGrowths(i) + (double)tempGrowths[i])/100.0);
 				//System.out.println(statblock[i] + ": " + c);
 				// Calculate the fixedParent's and variedParent's personal stats by subtracting the base stats of their job
 				double fixedParentPersonal = fixedParentStats[i] - fixedParent.getMyJob().getBaseStats(i);
