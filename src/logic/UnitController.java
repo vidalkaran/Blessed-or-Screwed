@@ -172,7 +172,6 @@ public class UnitController {
 
 	// calculates averagestats for a unit
 	public void CalculateAverageStats(Unit inputUnit, int levelDifference) {
-		System.out.println("atbarg: " + levelDifference);
 		
 		double[] tempBaseStats = inputUnit.getBaseStats();
 		double[] tempGrowths = inputUnit.getGrowths();
@@ -347,6 +346,7 @@ public class UnitController {
 		return output;
 	}
 	
+	/*
 	// PRINTER METHOD FOR TESTING
 	public void printLocalSheet() {
 		for (int i = 0; i < localUnitSheet.size(); i++) {
@@ -354,7 +354,6 @@ public class UnitController {
 			System.out.println("--------------------------------------------");
 			localUnitSheet.get(i).printUnit();
 		}
-
 	}
 
 	// PRINTER METHOD FOR TESTING
@@ -364,9 +363,8 @@ public class UnitController {
 			System.out.println("--------------------------------------------");
 			inputUnitSheet.get(i).printUnit();
 		}
-
 	}
-
+	*/
 	// ALL GETTERS/SETTERS
 	public ArrayList<Unit> getLocalUnitSheet() {
 		return localUnitSheet;
