@@ -227,7 +227,7 @@ public GUI()
 	
 		inputRoute = new JLabel("Route: ");
 		inputRouteBox = new JComboBox<String>(routes);
-		ComboBoxHandler ComboBoxHandler = new ComboBoxHandler();
+		RouteBoxHandler ComboBoxHandler = new RouteBoxHandler();
 		inputRouteBox.addActionListener(ComboBoxHandler);
 			inputPanel1.add(inputRoute);
 			inputPanel1.add(inputRouteBox);
@@ -1594,7 +1594,7 @@ public GUI()
 		}
 	}
 	//This handler allows a user to select a route and adjusts data in the logic based on route.
-	public class ComboBoxHandler implements ActionListener
+	public class RouteBoxHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
@@ -1858,13 +1858,21 @@ public GUI()
 	// This is a method that clears the results field
 	public void clearResults() {
 		resultHPField.setText("");
+		resultHPField.setBackground(Color.WHITE);
 		resultStrField.setText("");
+		resultStrField.setBackground(Color.WHITE);
 		resultMagField.setText("");
+		resultMagField.setBackground(Color.WHITE);
 		resultSpdField.setText("");
+		resultSpdField.setBackground(Color.WHITE);
 		resultSklField.setText("");
+		resultSklField.setBackground(Color.WHITE);
 		resultLckField.setText("");
+		resultLckField.setBackground(Color.WHITE);
 		resultDefField.setText("");
+		resultDefField.setBackground(Color.WHITE);
 		resultResField.setText("");
+		resultResField.setBackground(Color.WHITE);
 		
 		avgHPField.setText("");
 		avgStrField.setText("");
@@ -1936,7 +1944,7 @@ public GUI()
 		//HEALTH 0
 		if(inputResults[0]>maxStats[0])
 		{
-			resultHPField.setText(maxStats[0]+"("+formatter.format(inputResults[0])+")");
+			resultHPField.setText(maxStats[0]+" ("+formatter.format(inputResults[0])+")");
 			resultHPField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[0]==maxStats[0])
@@ -1965,7 +1973,7 @@ public GUI()
 		//STRENGTH 1
 		if(inputResults[1]>maxStats[1])
 		{
-			resultStrField.setText(maxStats[1]+"("+formatter.format(inputResults[1])+")");
+			resultStrField.setText(maxStats[1]+" ("+formatter.format(inputResults[1])+")");
 			resultStrField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[1]==maxStats[1])
@@ -1994,7 +2002,7 @@ public GUI()
 		//MAGIC 2
 		if(inputResults[2]>maxStats[2])
 		{
-			resultMagField.setText(maxStats[2]+"("+formatter.format(inputResults[2])+")");
+			resultMagField.setText(maxStats[2]+" ("+formatter.format(inputResults[2])+")");
 			resultMagField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[2]==maxStats[2])
@@ -2023,7 +2031,7 @@ public GUI()
 		//SKILL 3
 		if(inputResults[3]>maxStats[3])
 		{
-			resultSklField.setText(maxStats[3]+"("+formatter.format(inputResults[3])+")");
+			resultSklField.setText(maxStats[3]+" ("+formatter.format(inputResults[3])+")");
 			resultSklField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[3]==maxStats[3])
@@ -2052,7 +2060,7 @@ public GUI()
 		//SPEED 4
 		if(inputResults[4]>maxStats[4])
 		{
-			resultSpdField.setText(maxStats[4]+"("+formatter.format(inputResults[4])+")");
+			resultSpdField.setText(maxStats[4]+" ("+formatter.format(inputResults[4])+")");
 			resultSpdField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[4]==maxStats[4])
@@ -2081,7 +2089,7 @@ public GUI()
 		//LUCK 5
 		if(inputResults[5]>maxStats[5])
 		{
-			resultLckField.setText(maxStats[5]+"("+formatter.format(inputResults[5])+")");
+			resultLckField.setText(maxStats[5]+" ("+formatter.format(inputResults[5])+")");
 			resultLckField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[5]==maxStats[5])
@@ -2110,7 +2118,7 @@ public GUI()
 		//DEFENSE 6
 		if(inputResults[6]>maxStats[6])
 		{
-			resultDefField.setText(maxStats[6]+"("+formatter.format(inputResults[6])+")");
+			resultDefField.setText(maxStats[6]+" ("+formatter.format(inputResults[6])+")");
 			resultDefField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[6]==maxStats[6])
@@ -2139,7 +2147,7 @@ public GUI()
 		//RESISTANCE 7
 		if(inputResults[7]>maxStats[7])
 		{
-			resultResField.setText(maxStats[7]+"("+formatter.format(inputResults[7])+")");
+			resultResField.setText(maxStats[7]+" ("+formatter.format(inputResults[7])+")");
 			resultResField.setBackground(Color.CYAN);
 		}
 		else if(inputResults[7]==maxStats[7])
@@ -2167,6 +2175,7 @@ public GUI()
 				}
 	}
 	
+	// Rounds an array of doubles and then returns them as an int array
 	public int[] roundAndConvertToInt(double[] values) {
 		int[] roundedValues = new int[values.length];
 		for(int i = 0; i < values.length; i++) {
