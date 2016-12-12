@@ -259,43 +259,59 @@ public GUI()
 	JPanel inputPanel2 = new JPanel();
 	inputPanel2.setLayout(new GridLayout(4,4));
 	
-		inputHP = new JLabel("HP: ");
+		inputHP = new JLabel("Health: ");
+		inputHP.setHorizontalAlignment(SwingConstants.CENTER);
 		inputHPField = new JTextField(" ");
+		inputHPField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputHP);
 			inputPanel2.add(inputHPField);	
 	
-		inputSpd = new JLabel("Spd: ");
+		inputSpd = new JLabel("Speed: ");
+		inputSpd.setHorizontalAlignment(SwingConstants.CENTER);
 		inputSpdField = new JTextField(" ");
+		inputSpdField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputSpd);
 			inputPanel2.add(inputSpdField);		
 			
-		inputStr = new JLabel("Str: ");
+		inputStr = new JLabel("Strength: ");
+		inputStr.setHorizontalAlignment(SwingConstants.CENTER);
 		inputStrField = new JTextField(" ");
+		inputStrField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputStr);
 			inputPanel2.add(inputStrField);	
 			
-		inputLck = new JLabel("Lck: ");
+		inputLck = new JLabel("Luck: ");
+		inputLck.setHorizontalAlignment(SwingConstants.CENTER);
 		inputLckField = new JTextField(" ");
+		inputLckField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputLck);
 			inputPanel2.add(inputLckField);				
 			
-		inputMag = new JLabel("Mag: ");
+		inputMag = new JLabel("Magic: ");
+		inputMag.setHorizontalAlignment(SwingConstants.CENTER);
 		inputMagField = new JTextField(" ");
+		inputMagField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputMag);
 			inputPanel2.add(inputMagField);
 			
-		inputDef = new JLabel("Def: ");
+		inputDef = new JLabel("Defense: ");
+		inputDef.setHorizontalAlignment(SwingConstants.CENTER);
 		inputDefField = new JTextField(" ");
+		inputDefField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputDef);
 			inputPanel2.add(inputDefField);			
 			
-		inputSkl = new JLabel("Skl: ");
+		inputSkl = new JLabel("Skill: ");
+		inputSkl.setHorizontalAlignment(SwingConstants.CENTER);
 		inputSklField = new JTextField(" ");
+		inputSklField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputSkl);
 			inputPanel2.add(inputSklField);	
 			
-		inputRes = new JLabel("Res: ");
+		inputRes = new JLabel("Resistance: ");
+		inputRes.setHorizontalAlignment(SwingConstants.CENTER);
 		inputResField = new JTextField(" ");
+		inputResField.setHorizontalAlignment(SwingConstants.CENTER);
 			inputPanel2.add(inputRes);
 			inputPanel2.add(inputResField);	
 			
@@ -322,6 +338,7 @@ public GUI()
 		resultPanel.add(Difference2);
 		
 		resultHP = new JLabel("HP: ");
+		resultHP.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultHPField = new JTextField(" ");
 		resultHPField.setEditable(false);
 		avgHPField = new JTextField(" ");
@@ -337,6 +354,7 @@ public GUI()
 			resultPanel.add(resultHPDifference);
 		
 		resultSpd = new JLabel("Spd: ");
+		resultSpd.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultSpdField = new JTextField(" ");
 		resultSpdField.setEditable(false);
 		avgSpdField = new JTextField(" ");
@@ -352,6 +370,7 @@ public GUI()
 			resultPanel.add(resultSpdDifference);
 		
 		resultStr = new JLabel("Str: ");
+		resultStr.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultStrField = new JTextField(" ");
 		resultStrField.setEditable(false);
 		avgStrField = new JTextField(" ");
@@ -367,6 +386,7 @@ public GUI()
 			resultPanel.add(resultStrDifference);
 
 		resultLck = new JLabel("Lck: ");
+		resultLck.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultLckField = new JTextField(" ");
 		resultLckField.setEditable(false);
 		avgLckField = new JTextField(" ");
@@ -382,6 +402,7 @@ public GUI()
 			resultPanel.add(resultLckDifference);			
 		
 		resultMag = new JLabel("Mag: ");
+		resultMag.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultMagField = new JTextField(" ");
 		resultMagField.setEditable(false);
 		avgMagField = new JTextField(" ");
@@ -397,6 +418,7 @@ public GUI()
 			resultPanel.add(resultMagDifference);			
 		
 		resultDef = new JLabel("Def: ");
+		resultDef.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultDefField = new JTextField(" ");
 		resultDefField.setEditable(false);
 		avgDefField = new JTextField(" ");
@@ -412,6 +434,7 @@ public GUI()
 			resultPanel.add(resultDefDifference);				
 
 		resultSkl= new JLabel("Skl: ");
+		resultSkl.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultSklField = new JTextField(" ");
 		resultSklField.setEditable(false);
 		avgSklField = new JTextField(" ");
@@ -427,6 +450,7 @@ public GUI()
 			resultPanel.add(resultSklDifference);	
 			
 		resultRes= new JLabel("Res: ");
+		resultRes.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultResField = new JTextField(" ");
 		resultResField.setEditable(false);
 		avgResField = new JTextField(" ");
@@ -531,7 +555,7 @@ public GUI()
 	mainPanel.add(rightSide);
 	
 	//Main Window
-	this.setSize(500,800);
+	this.setSize(500,860);
 	this.setTitle("Blessed or Screwed!");
 	this.setResizable(true);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -1433,19 +1457,18 @@ public GUI()
 	public class CalculateButtonHandler implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
-		{			
-			int HP = 0;
-			int Str = 0;
-			int Mag = 0;
-			int Skl = 0;
-			int Spd = 0;
-			int Lck = 0;
-			int Def = 0;
-			int Res = 0;
-			
+		{				
 			UnitController unitcontroller = UnitController.getInstance();
 			GraphController graphcontroller = GraphController.getInstance();
 			
+			int HP = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 0);
+			int Str = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 1);
+			int Mag = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 2);
+			int Skl = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 3);
+			int Spd = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 4);
+			int Lck = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 5);
+			int Def = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 6);
+			int Res = unitcontroller.getCurrentChar().getBaseStats().getStats(unitcontroller.getCurrentRoute(), 7);
 			int inputLevel; 	// User input
 			
 			// If the Character in UnitController isn't the same as the one they want when they click calculate, 

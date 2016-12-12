@@ -1,4 +1,5 @@
-/resources/
-/ui/
+/domain/
+/json/
 /logic/
 /testing/
+/ui/
