@@ -13,6 +13,7 @@ public class UnitControllerTester {
 
 public static void main(String[]args)
 {
+	
 	DataStorage data = DataStorage.getInstance();
 	data.ParseJsonCharacters();
 	data.ParseJsonJobs();	
@@ -34,7 +35,7 @@ public static void main(String[]args)
 	unitController.setCurrentJob(Cavalier);
 	unitController.setCurrentRoute("Conquest");
 	unitController.setClassHistory(ClassHistory);
-	
+	/*
 	//Testing Reclass
 //	unitController.reclass("Dancer", 10);
 	
@@ -58,8 +59,8 @@ public static void main(String[]args)
 //	for(int i = 0; i < healthOverTime.length; i++)
 //	{
 //		System.out.println("HEALTH: "+healthOverTime[i]);
-//	}
-	}
+//	}*/
+}
 	
 
 

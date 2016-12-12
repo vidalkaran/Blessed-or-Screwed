@@ -10,6 +10,16 @@
 		genderLock: "none"
 	},
 	{
+		name: "Nohr Noble",
+		baseStats: [18, 8, 6, 4, 7, 2, 6, 6],
+		maxStats: [20, 60, 32, 32, 28, 32, 27, 29, 32],
+		growths: [15, 10, 15, 5, 15, 5, 5, 15],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
 		name: "Cavalier",
 		baseStats: [17, 6, 0, 5, 5, 3, 5, 3],
 		maxStats: [20, 40, 22, 15, 21, 20, 24, 22, 21],
@@ -40,12 +50,152 @@
 		genderLock: "none"
 	},
 	{
+		name: "Knight",
+		baseStats: [19, 8, 0, 5, 3, 3, 8, 1],
+		maxStats: [20, 45, 24, 15, 22, 17, 22, 26, 18],
+		growths: [20, 20, 0, 15, 5, 10, 20, 0],
+		isPromoted: false,
+		promotions: ["General", "Great Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "General",
+		baseStats: [22, 11, 0, 7, 3, 4, 12, 3],
+		maxStats: [20, 70, 40, 25, 32, 25, 32, 40, 30],
+		growths: [25, 20, 0, 15, 0, 10, 20, 5],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Fighter",
+		baseStats: [19, 7, 0, 6, 6, 2, 4, 1],
+		maxStats: [20, 45, 25, 15, 23, 22, 21, 19, 18],
+		growths: [20, 20, 0, 15, 15, 5, 5, 0],
+		isPromoted: false,
+		promotions: ["Berserker", "Hero"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Berserker",
+		baseStats: [24, 12, 0, 8, 9, 0, 5, 0],
+		maxStats: [20, 70, 40, 25, 32, 33, 25, 27, 25],
+		growths: [30, 25, 0, 15, 15, 0, 0, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Mercenary",
+		baseStats: [17, 5, 0, 7, 6, 2, 5, 2],
+		maxStats: [20, 40, 22, 15, 24, 22, 20, 21, 19],
+		growths: [10, 15, 0, 20, 15, 5, 10, 5],
+		isPromoted: false,
+		promotions: ["Hero", "Bow Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Hero",
+		baseStats: [20, 8, 0, 10, 8, 3, 7, 2],
+		maxStats: [20, 60, 32, 25, 35, 32, 31, 30, 27],
+		growths: [20, 15, 0, 20, 15, 5, 10, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Bow Knight",
+		baseStats: [18, 6, 0, 8, 9, 3, 5, 6],
+		maxStats: [20, 55, 29, 25, 32, 33, 30, 27, 32],
+		growths: [10, 10, 0, 15, 15, 10, 0, 10],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Outlaw",
+		baseStats: [16, 3, 1, 4, 8, 1, 2, 4],
+		maxStats: [20, 35, 19, 18, 20, 24, 18, 17, 22],
+		growths: [0, 10, 5, 10, 20, 0, 0, 20],
+		isPromoted: false,
+		promotions: ["Adventurer", "Bow Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Adventurer",
+		baseStats: [17, 4, 6, 6, 10, 2, 3, 8],
+		maxStats: [20, 50, 27, 31, 27, 34, 27, 25, 34],
+		growths: [0, 5, 15, 5, 20, 0, 0, 20],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Wyvern Rider",
+		baseStats: [17, 6, 0, 5, 4, 2, 7, 0],
+		maxStats: [20, 40, 22, 17, 21, 20, 19, 24, 15],
+		growths: [10, 15, 5, 10, 10, 5, 20, 0],
+		isPromoted: false,
+		promotions: ["Wyvern Lord", "Malig Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Wyvern Lord",
+		baseStats: [19, 8, 0, 9, 6, 3, 10, 1],
+		maxStats: [20, 60, 33, 25, 33, 29, 28, 35, 26],
+		growths: [10, 15, 0, 15, 10, 5, 20, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Malig Knight",
+		baseStats: [18, 7, 6, 6, 5, 0, 8, 6],
+		maxStats: [20, 55, 31, 30, 28, 27, 25, 31, 31],
+		growths: [0, 15, 15, 10, 5, 0, 10, 15],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
 		name: "Dark Mage",
 		baseStats: [16, 0, 6, 3, 3, 1, 3, 5],
 		maxStats: [20, 35, 19, 24, 16, 19, 18, 19, 22],
 		growths: [0, 10, 20, 0, 10, 0, 5, 10],
 		isPromoted: false,
 		promotions: ["Sorcerer", "Dark Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Sorcerer",
+		baseStats: [17, 0, 9, 4, 6, 1, 5, 8],
+		maxStats: [20, 50, 25, 35, 26, 29, 26, 29, 33],
+		growths: [0, 0, 25, 0, 10, 0, 5, 15],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Dark Knight",
+		baseStats: [19, 8, 6, 6, 5, 3, 8, 6],
+		maxStats: [20, 55, 32, 31, 28, 27, 31, 34, 30],
+		growths: [15, 20, 10, 5, 5, 5, 15, 5],
+		isPromoted: true,
+		promotions: [],
 		isSpecial: false,
 		genderLock: "none"
 	},
@@ -74,6 +224,126 @@
 		baseStats: [18, 4, 5, 9, 8, 4, 5, 4],
 		maxStats: [20, 50, 28, 31, 33, 33, 32, 29, 29],
 		growths: [0, 10, 10, 15, 15, 10, 5, 10],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Wolfskin",
+		baseStats: [19, 8, 0, 4, 6, 0, 4, 0],
+		maxStats: [20, 45, 24, 15, 18, 22, 17, 21, 15],
+		growths: [20, 20, 0, 5, 15, 5, 10, 0],
+		isPromoted: false,
+		promotions: ["Wolfssegner"],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Wolfssegner",
+		baseStats: [22, 11, 0, 6, 7, 1, 7, 1],
+		maxStats: [20, 65, 36, 25, 29, 31, 26, 32, 26],
+		growths: [20, 20, 0, 5, 15, 5, 10, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Hoshido Noble",
+		baseStats: [19, 10, 4, 5, 6, 4, 7, 3],
+		maxStats: [20, 60, 34, 28, 29, 30, 33, 31, 28],
+		growths: [15, 15, 10, 10, 10, 10, 15, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Samurai",
+		baseStats: [17, 4, 0, 5, 8, 3, 3, 3],
+		maxStats: [20, 40, 20, 16, 23, 25, 24, 18, 20],
+		growths: [10, 10, 0, 15, 20, 15, 0, 10],
+		isPromoted: false,
+		promotions: ["Swordmaster", "Master of Arms"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Swordmaster",
+		baseStats: [18, 6, 2, 7, 11, 4, 5, 5],
+		maxStats: [20, 55, 30, 28, 32, 35, 33, 27, 31],
+		growths: [10, 10, 5, 15, 20, 15, 0, 10],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Master of Arms",
+		baseStats: [20, 8, 0, 6, 9, 3, 7, 3],
+		maxStats: [20, 65, 33, 25, 30, 30, 31, 31, 28],
+		growths: [20, 15, 0, 10, 10, 10, 10, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Oni Savage",
+		baseStats: [18, 6, 1, 2, 5, 0, 7, 1],
+		maxStats: [20, 45, 24, 19, 16, 20, 17, 23, 16],
+		growths: [20, 20, 10, 0, 10, 0, 20, 0],
+		isPromoted: false,
+		promotions: ["Oni Chieftain", "Blacksmith"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Oni Chieftain",
+		baseStats: [19, 9, 5, 2, 7, 0, 10, 5],
+		maxStats: [20, 60, 34, 28, 25, 30, 25, 36, 31],
+		growths: [10, 20, 15, 0, 10, 0, 20, 5],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Blacksmith",
+		baseStats: [21, 8, 0, 9, 8, 3, 8, 2],
+		maxStats: [20, 65, 33, 25, 32, 31, 30, 32, 27],
+		growths: [20, 15, 0, 15, 10, 5, 15, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Spear Fighter",
+		baseStats: [17, 6, 0, 6, 6, 2, 7, 3],
+		maxStats: [20, 40, 22, 15, 23, 22, 21, 22, 21],
+		growths: [15, 15, 0, 15, 15, 5, 10, 5],
+		isPromoted: false,
+		promotions: ["Spear Master", "Basara"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Spear Master",
+		baseStats: [18, 9, 0, 8, 8, 3, 7, 3],
+		maxStats: [20, 60, 34, 25, 33, 32, 29, 30, 29],
+		growths: [15, 15, 0, 15, 15, 5, 10, 5],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Basara",
+		baseStats: [20, 7, 5, 7, 7, 5, 7, 6],
+		maxStats: [20, 65, 31, 30, 30, 31, 35, 30, 32],
+		growths: [20, 10, 10, 10, 10, 15, 5, 10],
 		isPromoted: true,
 		promotions: [],
 		isSpecial: false,
@@ -140,6 +410,126 @@
 		genderLock: "female"
 	},
 	{
+		name: "Sky Knight",
+		baseStats: [16, 3, 0, 5, 7, 4, 2, 6],
+		maxStats: [20, 35, 19, 16, 21, 23, 25, 18, 25],
+		growths: [0, 10, 0, 10, 15, 20, 0, 20],
+		isPromoted: false,
+		promotions: ["Falcon Knight", "Kinshi Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Falcon Knight",
+		baseStats: [18, 5, 4, 6, 10, 5, 5, 9],
+		maxStats: [20, 55, 28, 27, 30, 34, 35, 27, 35],
+		growths: [0, 10, 10, 10, 15, 20, 0, 20],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Kinshi Knight",
+		baseStats: [17, 4, 1, 9, 8, 5, 4, 7],
+		maxStats: [20, 50, 27, 26, 33, 31, 34, 25, 31],
+		growths: [0, 5, 0, 15, 15, 15, 0, 15],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Archer",
+		baseStats: [17, 5, 0, 7, 5, 2, 4, 1],
+		maxStats: [20, 40, 21, 15, 23, 21, 20, 20, 17],
+		growths: [10, 15, 0, 15, 15, 5, 10, 0],
+		isPromoted: false,
+		promotions: ["Sniper", "Kinshi Knight"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Sniper",
+		baseStats: [19, 7, 0, 10, 9, 3, 6, 2],
+		maxStats: [20, 55, 31, 25, 35, 33, 30, 31, 28],
+		growths: [10, 15, 0, 20, 15, 5, 10, 0],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Ninja",
+		baseStats: [16, 3, 0, 8, 8, 1, 3, 3],
+		maxStats: [20, 35, 17, 15, 25, 25, 18, 19, 20],
+		growths: [5, 5, 0, 20, 20, 0, 5, 15],
+		isPromoted: false,
+		promotions: ["Master Ninja", "Mechanist"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Master Ninja",
+		baseStats: [17, 5, 0, 10, 11, 2, 4, 8],
+		maxStats: [20, 55, 27, 25, 35, 35, 28, 26, 34],
+		growths: [5, 5, 0, 20, 20, 0, 5, 20],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Mechanist",
+		baseStats: [18, 7, 0, 9, 7, 2, 6, 6],
+		maxStats: [20, 60, 30, 25, 33, 30, 30, 31, 31],
+		growths: [10, 10, 0, 15, 10, 5, 5, 15],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Apothecary",
+		baseStats: [18, 6, 0, 4, 4, 2, 6, 2],
+		maxStats: [20, 45, 24, 15, 19, 19, 21, 23, 20],
+		growths: [20, 20, 0, 10, 10, 5, 10, 5],
+		isPromoted: false,
+		promotions: ["Merchant", "Mechanist"],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Merchant",
+		baseStats: [20, 8, 0, 6, 5, 4, 8, 5],
+		maxStats: [20, 65, 33, 25, 29, 28, 32, 33, 30],
+		growths: [20, 20, 0, 10, 5, 15, 10, 5],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: false,
+		genderLock: "none"
+	},
+	{
+		name: "Kitsune",
+		baseStats: [16, 5, 1, 6, 8, 4, 1, 4],
+		maxStats: [20, 40, 20, 18, 23, 24, 24, 18, 23],
+		growths: [10, 10, 0, 15, 20, 10, 0, 20],
+		isPromoted: false,
+		promotions: ["Nine-Tails"],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Nine-Tails",
+		baseStats: [19, 6, 2, 9, 10, 5, 2, 8],
+		maxStats: [20, 55, 29, 29, 33, 34, 33, 27, 34],
+		growths: [10, 10, 0, 15, 20, 10, 0, 20],
+		isPromoted: true,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
 		name: "Songstress",
 		baseStats: [16, 3, 0, 6, 5, 3, 2, 3],
 		maxStats: [40, 45, 28, 27, 31, 31, 35, 27, 28],
@@ -148,5 +538,95 @@
 		promotions: [],
 		isSpecial: true,
 		genderLock: "none"
+	},
+	{
+		name: "Villager",
+		baseStats: [17, 5, 0, 4, 5, 3, 4, 0],
+		maxStats: [20, 35, 19, 15, 19, 19, 22, 18, 15],
+		growths: [10, 10, 0, 10, 10, 20, 10, 0],
+		isPromoted: false,
+		promotions: ["Merchant", "Master of Arms"],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Dread Fighter",
+		baseStats: [18, 8, 3, 6, 8, 1, 6, 9],
+		maxStats: [40, 55, 32, 28, 29, 31, 26, 29, 34],
+		growths: [15, 15, 5, 5, 15, 0, 5, 20],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Dark Falcon",
+		baseStats: [17, 4, 7, 5, 9, 4, 3, 9],
+		maxStats: [40, 45, 27, 32, 28, 33, 32, 26, 34],
+		growths: [0, 10, 15, 5, 15, 15, 0, 20],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "none"
+	},
+	{
+		name: "Ballistician",
+		baseStats: [18, 10, 0, 7, 2, 4, 3, 1],
+		maxStats: [40, 50, 39, 25, 31, 25, 32, 27, 26],
+		growths: [5, 25, 0, 15, 0, 10, 5, 5],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "male"
+	},
+	{
+		name: "Witch",
+		baseStats: [17, 0, 10, 5, 9, 3, 4, 5],
+		maxStats: [40, 50, 25, 36, 27, 34, 28, 26, 29],
+		growths: [5, 0, 25, 5, 20, 5, 0, 10],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "female"
+	},
+	{
+		name: "Lodestar",
+		baseStats: [19, 7, 0, 10, 9, 7, 7, 2],
+		maxStats: [40, 60, 29, 26, 35, 33, 40, 30, 29],
+		growths: [15, 10, 0, 20, 10, 25, 5, 5],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "male"
+	},
+	{
+		name: "Vanguard",
+		baseStats: [21, 10, 0, 6, 7, 3, 9, 1],
+		maxStats: [40, 65, 36, 25, 29, 30, 30, 32, 27],
+		growths: [20, 20, 0, 5, 5, 10, 15, 0],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "male"
+	},
+	{
+		name: "Great Lord",
+		baseStats: [18, 8, 1, 8, 9, 5, 7, 3],
+		maxStats: [40, 60, 30, 25, 32, 34, 35, 29, 31],
+		growths: [15, 15, 0, 10, 10, 15, 10, 5],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "female"
+	},
+	{
+		name: "Grandmaster",
+		baseStats: [18, 7, 6, 8, 7, 2, 6, 8],
+		maxStats: [40, 55, 31, 33, 33, 29, 26, 28, 33],
+		growths: [10, 15, 15, 15, 5, 0, 5, 15],
+		isPromoted: false,
+		promotions: [],
+		isSpecial: true,
+		genderLock: "male"
 	}
 ]
