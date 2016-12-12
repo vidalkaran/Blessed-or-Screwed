@@ -2051,10 +2051,6 @@ public GUI()
 		int[] roundedInputResults = roundAndConvertToInt(inputResults);
 		int[] roundedLocalResults = roundAndConvertToInt(localResults);
 		
-		for(int i = 0; i < roundedInputResults.length; i++)
-			System.out.println("inputResultRounded: " + roundedInputResults[i]);
-		System.out.println("inputHP: " + inputResults[0] + ", localHP: " + localResults[0] + ", Difference: " + (inputResults[0]-localResults[0]));
-		
 		DecimalFormat formatter = new DecimalFormat( "##.##" );
 		
 		// For the following set of code, the first 2 if statements of each block handle if the input value is higher than the max value for USER VALUES
