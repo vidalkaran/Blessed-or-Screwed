@@ -538,7 +538,7 @@
 		promotions: [],
 		isSpecial: true,
 		genderLock: "none"
-	}
+	},
 	{
 		name: "Villager",
 		baseStats: [17, 5, 0, 4, 5, 3, 4, 0],
