@@ -10,7 +10,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [30, 35, 30, 40, 45, 45, 25, 25],
-		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord"],
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Songstress"],
 		isChild : true,
 		fixedParent: "Avatar (M)",
 		variedParents : {
@@ -30,7 +30,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [30, 35, 30, 40, 45, 45, 25, 25],
-		invalidClasses : ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard"],
+		invalidClasses : ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Songstress"],
 		isChild : true,
 		fixedParent: "Avatar (F)",
 		variedParents : {

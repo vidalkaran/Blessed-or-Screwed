@@ -10,7 +10,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 45, 30, 40, 45, 45, 35, 25],
-		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails","Songstress"],
 		isChild : false
 	},
 	{
@@ -24,7 +24,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [45, 45, 30, 40, 45, 45, 35, 25],
-		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails"],
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Wolfskin", "Wolfssenger","Kitsune", "Nine-Tails","Songstress"],
 		isChild : false
 	}
 ]
