@@ -2,5 +2,10 @@
 /ui/
 /logic/
 /testing/
+<<<<<<< HEAD
+/ui/
+/resources/
+=======
 /domain/
 /json/
+>>>>>>> refs/remotes/origin/master
