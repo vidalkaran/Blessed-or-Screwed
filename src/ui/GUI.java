@@ -154,12 +154,15 @@ public class GUI extends JFrame{
 		JTextField fixedParentDefField;
 		JTextField fixedParentResField;
 		
+		JPanel childParentPanel; 
 		JLabel variedParentName;
 		JComboBox variedParentNameDisplay;
 		JLabel variedParentClass;
 		JComboBox variedParentClassDisplay;
 		JComboBox childStartingLevelBox;
-		
+		JLabel childParentVariedParentLabel;
+		JComboBox childParentVariedParentBox;
+
 		JLabel variedParentHP;
 		JLabel variedParentStr;
 		JLabel variedParentMag;
@@ -742,6 +745,16 @@ public GUI()
 			variedParentPanel1.add(variedParentNameDisplay);
 			variedParentPanel1.add(variedParentClass);
 			variedParentPanel1.add(variedParentClassDisplay);
+			
+	//This panel has the child parent varied parent
+		childParentPanel = new JPanel();
+		childParentVariedParentLabel = new JLabel("Child's Varied Parent");
+		childParentVariedParentBox = new JComboBox();
+			childParentPanel.add(childParentVariedParentLabel);
+			childParentPanel.add(childParentVariedParentBox);
+		childParentVariedParentBox.setEnabled(false);
+		childParentPanel.setVisible(false);
+
 	
 			//this panel has the stats
 		JPanel variedParentPanel2 = new JPanel();
@@ -818,6 +831,7 @@ public GUI()
 	fixedParentPanelMain.add(fixedParentPanel1);
 	fixedParentPanelMain.add(fixedParentPanel2);
 	variedParentPanelMain.add(variedParentPanel1);
+	variedParentPanelMain.add(childParentPanel);
 	variedParentPanelMain.add(variedParentPanel2);
 	parentalUnitsPanel.add(fixedParentPanelMain);
 	parentalUnitsPanel.add(variedParentPanelMain);
@@ -828,7 +842,7 @@ public GUI()
 	parentalUnitsPane.add(parentalUnitsPanel);
 	parentalUnitsPane.setTitle("Parents");
 	parentalUnitsPane.setResizable(true);
-	parentalUnitsPane.setSize(375,450);
+	parentalUnitsPane.setSize(375,500);
 	parentalUnitsPane.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
 
 	//Add all Components
@@ -998,6 +1012,21 @@ public GUI()
 			
 			// disable resultLevelBox to prevent user from changing for the classHistory in UnitController needs to be updated from CalculateButtonHandler
 			resultLevelBox.setEnabled(false);
+			
+			// set the text color of the classDisplay depending on its validity
+			String[] invalidJobs = unitcontroller.getCurrentChar().getInvalidClasses();
+			
+			resultClassDisplay.setForeground(Color.BLACK);
+
+			//Checks to see if the class is invalid and changes text color
+			for(int i = 0; i <invalidJobs.length;i++)
+			{
+			if(newJob.contains(invalidJobs[i]))
+				{
+					resultClassDisplay.setForeground(Color.RED);
+					System.out.println("INVALID JOB");
+				}
+			}
 			
 			//Set the end range value for the graph to be the max promoted level
 			//This gets the total level range, which is the jobHistory size + the default level of the unit...
@@ -1195,7 +1224,7 @@ public GUI()
 				// Separate for if parent is Avatar, ChildCharacter (for Kana), or neither
 				// Set startLevel to 0 for the parents as the level is not important
 				domain.Character tempFixedParentChar = data.getCharacters().get(fixedParentNameDisplay.getText());
-				domain.Character tempVariedParentChar = data.getCharacters().get(fixedParentNameDisplay.getText());
+				domain.Character tempVariedParentChar = data.getCharacters().get(variedParentNameDisplay.getSelectedItem().toString());
 				domain.Unit tempFixedParentUnit;
 				domain.Unit tempVariedParentUnit;
 				// Set up fixed parent
@@ -1204,13 +1233,15 @@ public GUI()
 					unitcontroller.setMyBoon(parentAvatarBoonBox.getSelectedItem().toString());
 					unitcontroller.setMyBane(parentAvatarBaneBox.getSelectedItem().toString());
 					tempFixedParentUnit = new domain.Unit((domain.Avatar) tempFixedParentChar, 
-																(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
-																inputRouteBox.getSelectedItem().toString(), unitcontroller.getMyBoon(), unitcontroller.getMyBane(), 0);
+															(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
+															inputRouteBox.getSelectedItem().toString(), unitcontroller.getMyBoon(), unitcontroller.getMyBane(), 
+															0);
 				} 
 				else {
 				tempFixedParentUnit = new domain.Unit(tempFixedParentChar, 
 														(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
-														inputRouteBox.getSelectedItem().toString(), 0);
+														inputRouteBox.getSelectedItem().toString(), 
+														0);
 				}
 				
 				// Set up varied parent
@@ -1219,17 +1250,43 @@ public GUI()
 					unitcontroller.setMyBoon(parentAvatarBoonBox.getSelectedItem().toString());
 					unitcontroller.setMyBane(parentAvatarBaneBox.getSelectedItem().toString());
 					tempVariedParentUnit = new domain.Unit((domain.Avatar) tempFixedParentChar, 
-																(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
-																inputRouteBox.getSelectedItem().toString(), unitcontroller.getMyBoon(), unitcontroller.getMyBane(), 0);
+															(domain.Job) data.getJobs().get(fixedParentClassDisplay.getSelectedItem().toString()), 
+															inputRouteBox.getSelectedItem().toString(), unitcontroller.getMyBoon(), unitcontroller.getMyBane(), 
+															0);
 				} 
-				/*
+				// If the varied parent is a child character
 				else if(tempVariedParentChar instanceof domain.ChildCharacter) {
-					
-				}*/
+					// create a temp of the child character parent
+					domain.ChildCharacter tempChild = (domain.ChildCharacter) tempVariedParentChar;
+					// create a temp unit of the child character parent's fixed parent
+					// set job to Cavalier as it's unimportant
+					// level is unimportant
+					domain.Unit tempChildFixedParent = new domain.Unit(data.getCharacters().get(tempChild.getFixedParent()), 
+																		(domain.Job) data.getJobs().get("Cavalier"), 
+																		inputRouteBox.getSelectedItem().toString(), 
+																		0);
+					// create a temp unit of the child character parent's fixed parent
+					// set job to Cavalier as it's unimportant
+					// level is unimportant
+					domain.Unit tempChildVariedParent = new domain.Unit(data.getCharacters().get(childParentVariedParentBox.getSelectedItem().toString()), 
+																		(domain.Job) data.getJobs().get("Cavalier"), 
+																		inputRouteBox.getSelectedItem().toString(), 
+																		0);
+					// parent stats here are unimportant
+					double[] tempDummyStats = {0, 0, 0, 0, 0, 0, 0, 0};
+					// create the parent unit as a child character
+					tempVariedParentUnit = new domain.Unit(tempChild,
+															(domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()),
+															inputRouteBox.getSelectedItem().toString(), 
+															tempDummyStats, tempChildFixedParent, 
+															tempDummyStats, tempChildVariedParent, 
+															0);
+				}
 				else {
 					tempVariedParentUnit = new domain.Unit(tempVariedParentChar,
-																(domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()),
-																inputRouteBox.getSelectedItem().toString(), 0);
+															(domain.Job) data.getJobs().get(variedParentClassDisplay.getSelectedItem().toString()),
+															inputRouteBox.getSelectedItem().toString(), 
+															0);
 				}
 				
 				double[] tempFixedParentStats = new double[] {Double.parseDouble(fixedParentHPField.getText()),
@@ -1323,12 +1380,38 @@ public GUI()
 				resultClassDisplay.setText("Lvl. "+tempStartLevel+" "+tempJob.getName());
 				
 				//resultLevelBox.setSelectedIndex(childStartingLevelBox.getSelectedIndex());
-				resultLevelBox.setEnabled(true);
+				//resultLevelBox.setEnabled(false);
 				
 				reclassBox.setModel(new DefaultComboBoxModel(nonpromotedJobs));
 				
 				// set up the promote box
 				promoteBox.setModel(new DefaultComboBoxModel(unitcontroller.getCurrentJob().getPromotions()));
+				
+				// Checks if either parent has an invalid job selected. Let's the user know that there was an invalid chosen job among the parents
+				String[] fixedParentInvalidJobs = tempFixedParentUnit.getMyCharacter().getInvalidClasses();
+				String[] fixedVariedInvalidJobs = tempVariedParentUnit.getMyCharacter().getInvalidClasses();
+
+				resultClassDisplay.setForeground(Color.BLACK);
+
+				
+				//Checks to see if the fixed parent is an invalid class changes text color
+				for(int i = 0; i <fixedParentInvalidJobs.length;i++)
+				{
+					if(tempFixedParentUnit.getMyJob().getName().contains(fixedParentInvalidJobs[i]))
+					{
+						resultClassDisplay.setForeground(Color.BLUE);
+						System.out.println("INVALID JOB ON FIXED PARENT");
+					}
+				}
+				//Checks to see if the varied parent is an invalid class changes text color
+				for(int i = 0; i <fixedVariedInvalidJobs.length;i++)
+				{
+					if(tempVariedParentUnit.getMyJob().getName().contains(fixedVariedInvalidJobs[i]))
+					{
+						resultClassDisplay.setForeground(Color.MAGENTA);
+						System.out.println("INVALID JOB ON VARIED PARENT");
+					}
+				}
 				
 				//Debug print to console
 				System.out.println("Character: "+unitcontroller.getCurrentChar().getName());
@@ -1385,6 +1468,22 @@ public GUI()
 						parentAvatarBaneBox.setEnabled(false);
 						parentAvatarBoonBox.setSelectedIndex(Arrays.asList(data.getBOONS()).indexOf(DEFAULT_BOON));
 						parentAvatarBaneBox.setSelectedIndex(Arrays.asList(data.getBANES()).indexOf(DEFAULT_BANE));
+					}
+					
+					// if the variedParent is a child, let the user set up the parent of that parent to calculate growths
+					if(tempVariedParent instanceof domain.ChildCharacter) {
+						ArrayList<String> tempArray = new ArrayList<String>(Arrays.asList(((domain.ChildCharacter) tempVariedParent).getVariedParents().getVariedParentsList(tempRoute)));
+						if(tempArray.contains("Avatar (F)")) {
+							tempArray.remove("Avatar (F)");
+						}
+						if(tempArray.contains("Avatar (M)")) {
+							tempArray.remove("Avatar (M)");
+						}
+						childParentVariedParentBox.setEnabled(true);
+						childParentVariedParentBox.setModel(new DefaultComboBoxModel(tempArray.toArray()));
+					}
+					else {
+						childParentVariedParentBox.setEnabled(false);
 					}
 					
 					// Set up jobs list
@@ -1491,6 +1590,7 @@ public GUI()
 			int resultLevel = Integer.parseInt(str);
 			int startLevel = unitcontroller.getStartLevel();
 
+			// Reset the class display
 			resultClassDisplay.setText(jobHistory.getModel().getElementAt(resultLevel - startLevel).toString());
 			
 			// Reset the reclass box
@@ -1748,6 +1848,7 @@ public GUI()
 				if(tempFixedParent.getName().contains("Avatar")) {
 					parentAvatarBoonBox.setEnabled(true);
 					parentAvatarBaneBox.setEnabled(true);
+					childParentPanel.setVisible(true);
 				}
 				else
 				{
@@ -1793,6 +1894,7 @@ public GUI()
 				parentalUnitsButton.setVisible(false);
 				inputLevel.setVisible(true);
 				inputLevelBox.setVisible(true);
+				childParentPanel.setVisible(false);
 				
 				if(tempChar.getName().contains("Avatar")) {
 					avatarBoonBox.setEnabled(true);
@@ -2027,6 +2129,8 @@ public GUI()
 		resultDefDifference.setBackground(Color.WHITE);
 		resultResDifference.setText("");
 		resultResDifference.setBackground(Color.WHITE);
+		
+		resultClassDisplay.setForeground(Color.BLACK);
 	}
 	// This method sets up levels with the correct format of displaying inner levels and display levels based on an object array
 	// This is only invoked if there is a chance that promoted classes are in the listData
