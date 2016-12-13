@@ -12,8 +12,7 @@ public class Character {
 	protected BaseStats baseStats;			// Object that holds baseStats - is an object because bases can vary depending on routes (includes both level and HP)
 	protected int[] maxMods;				// Mods to the class stat caps unique to each character (includes Level, but not HP)
 	protected int[] growths;				// Character's base growths (includes HP, but not level)
-	protected String[] validSpecials;		// Holds the names of all special classes the character can be - EMPTY ARRAY if none
-	protected boolean areYouABoy;			// True - character is male, False - character is female
+	protected String[] invalidClasses;		// Holds the names of all invalidclasses the character can be 
 	protected boolean isChild;				// True - character is a child unit, False - character is a parent unit
 
 	//getters
@@ -28,19 +27,11 @@ public class Character {
 	public boolean[] getRoutes() {
 		return routes;
 	}
-
-	public boolean getAreYouABoy() {
-		return areYouABoy;
-	}
 	
 	public boolean getIsChild() {
 		return isChild;
 	}
 		
-	public String[] getValidSpecials() {
-		return validSpecials;
-	}
-
 	public int[] getMaxMods() {
 		return maxMods;
 	}
@@ -60,14 +51,19 @@ public class Character {
 	public BaseStats getBaseStats() {
 		return baseStats;
 	}
+	
+	public String[] getInvalidClasses()
+	{
+		return invalidClasses;
+	}
 
 	public String toString() {
 		String allRoutes = Arrays.toString(routes);
 		String allMaxMods = Arrays.toString(maxMods);
 		String allGrowths = Arrays.toString(growths);
-		String allValidSpecials = Arrays.toString(validSpecials);
+		String allValidSpecials = Arrays.toString(invalidClasses);
 		return "name: " + name + "\nroutes: " + allRoutes + "\nBaseStats: " + baseStats.toString() + "\nmaxMods: " + allMaxMods +
-				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + areYouABoy + "\nisChild: " + 
+				"\ngrowths: " + allGrowths + "\nvalidSpecials: " + allValidSpecials + "\nareYouABoy: " + "\nisChild: " + 
 				isChild;
 	}
 }

@@ -9,8 +9,7 @@
 		},
 		maxMods : [0, 2, 0, 1,-2, 0, 2, -2],
 		growths : [15, 5, 0, 5, 0, 15, 5, 5],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -24,8 +23,7 @@
 		},
 		maxMods : [20, -2, 2, 0, 1, 0, -1, 1],
 		growths : [40, 10, 35, 30, 40, 55, 15, 35],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard", "Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -39,8 +37,7 @@
 		},
 		maxMods : [20, -2, 2, 0, 1, 0, -1, 1],
 		growths : [40, 10, 35, 30, 40, 55, 15, 35],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -54,8 +51,7 @@
 		},
 		maxMods : [20, 2, -2, 2, 0, -1, 0, -1],
 		growths : [50, 30, 15, 40, 35, 45, 25, 25],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -69,8 +65,7 @@
 		},
 		maxMods : [20, 2, -2, 2, 0, -1, 0, -1],
 		growths : [50, 30, 15, 40, 35, 45, 25, 25],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -84,8 +79,7 @@
 		},
 		maxMods : [0, -2, 0, 2, 3, -2, -1, 1],
 		growths : [55, 40, 0, 45, 65, 20, 20, 35],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -99,8 +93,7 @@
 		},
 		maxMods : [0, 0, 0, 1, 3, 0, -3, 0],
 		growths : [25, 50, 25, 60, 60, 40, 15, 35],
-		validSpecials : ["Songstress"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", Villager"],
 		isChild : false
 	},
 	{
@@ -114,8 +107,7 @@
 		},
 		maxMods : [0, 1, 0, 2, 0, -1, 0, -1],
 		growths : [40, 45, 5, 50, 40, 40, 40, 25],
-		validSpecials : ["Songstress"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -129,8 +121,7 @@
 		},
 		maxMods : [0, -1, 0, -1, 3, -1, -2, 2],
 		growths : [30, 25, 10, 20, 35, 30, 15, 35],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -143,8 +134,7 @@
 		},
 		maxMods : [0, 0, 1, 1, -2, 0, 0, 1],
 		growths : [45, 15, 35, 55, 30, 45, 35, 35],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -158,8 +148,7 @@
 		},
 		maxMods : [0, 0, 0, 1, 1, 1, 0, -2],
 		growths : [30, 40, 5, 50, 55, 45, 35, 30],
-		validSpecials : ["Villager"],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress"],
 		isChild : false
 	},
 	{
@@ -172,8 +161,7 @@
 		},
 		maxMods : [0, -1, 3, -2, 1, 1, -3, 1],
 		growths : [30, 5, 65, 25, 55, 70, 15, 40],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -186,8 +174,7 @@
 		},
 		maxMods : [0, 1, 0, 3, 0, -3, 1, -1],
 		growths : [50, 45, 0, 55, 35, 5, 45, 20],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord", "Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -200,8 +187,7 @@
 		},
 		maxMods : [0, 3, 0, -1, 1, 0, -1, -1],
 		growths : [35, 60, 0, 35, 50, 50, 35, 30],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -214,8 +200,7 @@
 		},
 		maxMods : [0, 0, 1, 1, -1, 1, 0, -1],
 		growths : [55, 35, 30, 55, 35, 60, 40, 20],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -228,8 +213,7 @@
 		},
 		maxMods : [0, -2, 0, -1, 3, 0, 0, 1],
 		growths : [40, 35, 20, 40, 50, 30, 30, 40],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -242,8 +226,7 @@
 		},
 		maxMods : [0, 0, 3, -2, 2, -1, -2, 1],
 		growths : [30, 5, 50, 35, 50, 25, 15, 30],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -256,8 +239,7 @@
 		},
 		maxMods : [0, 1, -1, 1, 1, -2, 1, 0],
 		growths : [40, 50, 25, 50, 55, 25, 35, 45],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -270,8 +252,7 @@
 		},
 		maxMods : [0, -1, 0, -1, 2, 0, 1, 0],
 		growths : [40, 30, 5, 25, 45, 30, 45, 30],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -284,8 +265,7 @@
 		},
 		maxMods : [0, -1, 0, 2, -2, 0, 2, -1],
 		growths : [45, 30, 10, 55, 30, 45, 40, 25],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -298,8 +278,7 @@
 		},
 		maxMods : [0, 1, 0, 2, -1, 1, -1, -1],
 		growths : [50, 45, 0, 45, 30, 55, 35, 25],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -312,8 +291,7 @@
 		},
 		maxMods : [0, 1, 0, -1, 1, 0, -2, 2],
 		growths : [30, 50, 5, 30, 50, 35, 25, 45],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -326,8 +304,7 @@
 		},
 		maxMods : [0, 0, 0, 0, -3, 0, 3, 1],
 		growths : [50, 40, 0, 50, 10, 35, 55, 45],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -340,8 +317,7 @@
 		},
 		maxMods : [0, 3, 0, 0, 2, 0, -2, -2],
 		growths : [65, 55, 0, 35, 50, 45, 20, 5],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -354,8 +330,7 @@
 		},
 		maxMods : [0, -2, 2, 0, -2, 0, 0, 2],
 		growths : [45, 25, 55, 35, 45, 45, 30, 45],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -368,8 +343,7 @@
 		},
 		maxMods : [0, 3, 0, -2, -1, 0, 2, -1],
 		growths : [60, 60, 0, 20, 35, 30, 50, 25],
-		validSpecials : ["Wolfskin", "Wolfssenger"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -382,8 +356,7 @@
 		},
 		maxMods : [0, 2, -1, -1, -1, 2, 1, -2],
 		growths : [45, 50, 5, 40, 35, 60, 40, 15],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -396,8 +369,7 @@
 		},
 		maxMods : [0, 1, -1, 2, 0, -1, 1, -1],
 		growths : [35, 40, 20, 45, 30, 35, 30, 30],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -410,8 +382,7 @@
 		},
 		maxMods : [0, -1, 0, -2, 1, 0, 2, 0],
 		growths : [20, 25, 15, 50, 45, 35, 45, 20],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -424,8 +395,7 @@
 		},
 		maxMods : [0, 0, 2, -1, 1, 0, -1, 0],
 		growths : [45, 30, 50, 40, 40, 55, 30, 20],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -438,8 +408,7 @@
 		},
 		maxMods : [0, 1, 0, 1, 2, -1, -3, 1],
 		growths : [25, 55, 10, 45, 55, 25, 20, 30],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -452,8 +421,7 @@
 		},
 		maxMods : [0, -1, 0, 2, -2, -1, 3, -1],
 		growths : [55, 30, 20, 50, 20, 25, 45, 5],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -466,8 +434,7 @@
 		},
 		maxMods : [0, 1, 0, 3, -2, 0, 1, -2],
 		growths : [40, 50, 45, 60, 30, 55, 45, 10],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -480,8 +447,7 @@
 		},
 		maxMods : [0, 0, 3, 2, -2, -1, -2, 1],
 		growths : [35, 5, 65, 50, 15, 35, 25, 45],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -494,8 +460,7 @@
 		},
 		maxMods : [0, 1, -1, -1, 1, 0, -1, 2],
 		growths : [45, 45, 15, 40, 45, 40, 35, 40],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -508,8 +473,7 @@
 		},
 		maxMods : [0, 2, -3, 0, 1, 0, 1, 0],
 		growths : [55, 50, 20, 40, 45, 40, 40, 20],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -522,8 +486,7 @@
 		},
 		maxMods : [0, 0, 0, 1, 3, -1, -1, -1],
 		growths : [30, 20, 0, 30, 60, 30, 15, 40],
-		validSpecials : [],
-		areYouABoy : false,
+invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -536,8 +499,7 @@
 		},
 		maxMods : [0, 0, 1, -1, 2, 1, -1, -1],
 		growths : [50, 30, 40, 30, 45, 60, 40, 20],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -550,8 +512,7 @@
 		},
 		maxMods : [0, 1, -1, 1, 1, -1, 1, -1],
 		growths : [30, 40, 20, 40, 40, 40, 40, 30],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -564,8 +525,7 @@
 		},
 		maxMods : [0, 1, 0, -1, -2, 0, 2, 0],
 		growths : [55, 35, 0, 25, 15, 45, 45, 15],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -578,8 +538,7 @@
 		},
 		maxMods : [0, 1, 0, 3, -2, 1, 0, -2],
 		growths : [50, 35, 0, 60, 40, 45, 35, 20],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -592,8 +551,7 @@
 		},
 		maxMods : [0, 3, 0, -1, -1, 0, -1, 1],
 		growths : [30, 65, 0, 20, 50, 30, 25, 40],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -606,8 +564,7 @@
 		},
 		maxMods : [0, 2, 0, 0, 2, -1, -2, -1],
 		growths : [40, 45, 5, 20, 45, 10, 20, 10],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -620,8 +577,7 @@
 		},
 		maxMods : [0, 1, 0, -3, 2, 1, -2, 2],
 		growths : [45, 40, 10, 25, 45, 50, 35, 40],
-		validSpecials : ["Kitsune", "Nine-Tails"],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -634,8 +590,7 @@
 		},
 		maxMods : [0, 1, 0, 2, 1, 1, -2, -2],
 		growths : [50, 45, 0, 50, 45, 40, 35, 25],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -648,8 +603,7 @@
 		},
 		maxMods : [0, 2, 0, 0, 1, -1, 1, -2],
 		growths : [30, 45, 20, 40, 50, 40, 25, 20],
-		validSpecials : [],
-		areYouABoy : false,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -661,8 +615,7 @@
 		},
 		maxMods : [0, -1, 0, 3, -1, 0, -1, 0],
 		growths : [25, 25, 5, 40, 15, 30, 25, 30],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -674,8 +627,7 @@
 		},
 		maxMods : [0, 2, -1, 1, 0, -1, 2, -2],
 		growths : [20, 20, 0, 15, 5, 20, 10, 10],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	},
 	{
@@ -689,8 +641,7 @@
 		},
 		maxMods : [0, -1, 1, 0, -1, 2, -2, 2],
 		growths : [35, 30, 55, 30, 40, 70, 20, 45],
-		validSpecials : [],
-		areYouABoy : true,
+		invalidClasses: ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Nohr Prince/ss", "Nohr Noble", "Wolfskin", "Wolfssegner", "Hoshido Noble", "Kitsune", "Nine-Tails", "Songstress", "Villager"],
 		isChild : false
 	}
 ]

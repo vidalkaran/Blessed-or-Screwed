@@ -10,8 +10,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [30, 35, 30, 40, 45, 45, 25, 25],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
-		areYouABoy : false,
+		invalidClasses: ["Shrine Maiden", "Priestess", "Witch", "Great Lord","Songstress"],
 		isChild : true,
 		fixedParent: "Avatar (M)",
 		variedParents : {
@@ -31,8 +30,7 @@
 		},
 		maxMods : [0, 0, 0, 0, 0, 0, 0, 0],
 		growths : [30, 35, 30, 40, 45, 45, 25, 25],
-		validSpecials : ["Nohr Prince/ss", "Nohr Noble", "Hoshido Noble", "Wolfskin", "Wolfssenger", "Kitsune", "Nine-Tails"],
-		areYouABoy : true,
+		invalidClasses : ["Monk", "Great Master", "Ballistician", "Lodestar", "Grandmaster", "Vanguard","Songstress"],
 		isChild : true,
 		fixedParent: "Avatar (F)",
 		variedParents : {
