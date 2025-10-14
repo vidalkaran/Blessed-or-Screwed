@@ -1,3 +1,7 @@
+Requires:
+Java 8 or higher
+Maven
+
 To setup, run
 
 > mvn install
